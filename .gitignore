@@ -1,0 +1,52 @@
+# Ignorar el directorio de configuración de PhpStorm
+.idea/
+
+# Ignorar dependencias de Composer
+vendor/
+
+# Ignorar configuraciones locales de entorno
+.env
+.env.local
+.env.*.local
+
+# Ignorar caché de Laravel (si usas Laravel)
+storage/
+bootstrap/cache/
+
+# Ignorar caché de Symfony (si usas Symfony)
+var/
+
+# Ignorar archivos de logs y depuración
+*.log
+*.cache
+*.pid
+*.seed
+*.log.*
+
+# Ignorar archivos de bases de datos SQLite
+*.sqlite
+*.sqlite3
+
+# Ignorar archivos de carga de usuario
+public/uploads/
+public/storage/
+
+# Ignorar archivos de Composer
+composer.lock
+
+# Ignorar node_modules si usas npm en tu proyecto
+node_modules/
+
+# Ignorar dependencias de PHPStan o herramientas de análisis
+phpstan.neon
+phpstan-baseline.neon
+phpcs.xml
+phpcs.xml.dist
+
+# Ignorar archivos generados por PHPUnit
+phpunit.xml
+phpunit.xml.dist
+
+# Ignorar archivos del sistema operativo
+.DS_Store
+Thumbs.db
