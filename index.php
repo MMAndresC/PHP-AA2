@@ -1,13 +1,16 @@
 <?php
+
+use controller\DatabaseController;
+
 require_once "controller/database_controller.php";
 
 
-$messages = (new \controller\DatabaseController())->dbConnect();
+$messages = (new DatabaseController())->dbConnect();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="css/estilos.css">
+<link rel="stylesheet" href="">
 
 <head>
     <meta charset="UTF-8">
@@ -21,7 +24,6 @@ if (is_array($messages)) {
         echo $message . "<br>";
     }
 } else {
-    // Si no es array, imprimir directamente
     echo $messages . "<br>";
 }
 ?>

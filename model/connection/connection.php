@@ -38,6 +38,26 @@ class Connection
 
     }
 
+    public function createDatabase($connection){
+        try{
+            require_once "model/connection/db_queries.php";
+            $connection->exec(CREATE_DATABASE);
+            return $connection;
+        }catch(PDOException $e){
+            return $this->getErrorMessages($e->getMessage());
+        }
+    }
+
+    public function createTables($connection){
+        try{
+            require_once "model/connection/db_queries.php";
+            $connection->exec(CREATE_TABLE_USERS);
+            return $connection;
+        }catch(PDOException $e){
+            return $this->getErrorMessages($e->getMessage());
+        }
+    }
+
     private function getErrorMessages($e){
         switch($e){
             case "2002":
