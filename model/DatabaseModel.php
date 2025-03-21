@@ -3,6 +3,7 @@
 require_once "connection/Connection.php";
 
 use connection\Connection;
+use seed\Seeder;
 
 class DatabaseModel
 {
@@ -21,7 +22,9 @@ class DatabaseModel
         //la base de datos forum existe, crear todas las tablas
         $response = $this->conn->createTables($response);
         if($response instanceof \PDO){
-            return "<p>All set</p>";
+            require_once "seed/Seeder.php";
+            $seeder = new Seeder();
+            return $seeder->loadSeed($response);
         }
         return $response;
     }

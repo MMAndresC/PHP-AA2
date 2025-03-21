@@ -53,8 +53,11 @@ class Connection
     public function createTables($connection){
         try{
             require_once "connection/db_queries.php";
+            //Entrar en la base de datos forum
             $connection->exec("USE " . DB_NAME);
+            //Crear todas las tablas en orden de dependencia
             $connection->exec(CREATE_TABLE_USERS);
+            $connection->exec(CREATE_TABLE_THEMES);
             $connection->exec(CREATE_TABLE_TOPICS);
             $connection->exec(CREATE_TABLE_THREADS);
             $connection->exec(CREATE_TABLE_SUB_THREADS);
