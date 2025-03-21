@@ -2,7 +2,7 @@
 
 use controller\DatabaseController;
 
-require_once "controller/database_controller.php";
+require_once "controller/DatabaseController.php";
 
 
 $messages = (new DatabaseController())->dbConnect();
@@ -23,9 +23,10 @@ if (is_array($messages)) {
     foreach ($messages as $message) {
         echo $message . "<br>";
     }
-} else {
+} else if($messages instanceof \PDO) {
+    echo "<p>Conexion con forum</p><br>";
+} else if(is_string($messages))
     echo $messages . "<br>";
-}
 ?>
 </body>
 

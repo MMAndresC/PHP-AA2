@@ -2,9 +2,11 @@
 
 namespace controller;
 
-require_once "model/database_model.php"; // Cargar el archivo de la clase
+use DatabaseModel;
 
-use model\DatabaseModel;
+require_once "model/DatabaseModel.php"; // Cargar el archivo de la clase
+
+
 class DatabaseController
 {
     public function __construct() {}
@@ -12,6 +14,6 @@ class DatabaseController
     public function dbConnect()
     {
         $database = new DatabaseModel();
-        return $database->initializeDatabase();
+        return $database->start();
     }
 }

@@ -9,8 +9,8 @@ class Connection
 {
     public function connect(){
         try{
-            if(file_exists("model/connection/db_connection.php")){
-                require_once "model/connection/db_connection.php";
+            if(file_exists("connection/db_connection.php")){
+                require_once "connection/db_connection.php";
                 // Instanciar objeto PDO
                 $connection = new PDO("mysql:host=".DB_HOST."; dbname=".DB_NAME, DB_USER, DB_PASS);
                 //Asignación de atributos para detección de errores.
@@ -27,21 +27,23 @@ class Connection
 
     public function testConnection(){
         try{
-            require_once "model/connection/db_connection.php";
+            require_once "connection/db_connection.php";
             return new PDO("mysql:host=".DB_HOST,DB_USER,DB_PASS);
         }catch(PDOException $e){
-            if ($e->getCode() == 1049) { // Código de error de base de datos no encontrada
-                return "DB_NOT_FOUND";
-            }
             return $this->getErrorMessages($e->getMessage());
         }
 
     }
 
-    public function createDatabase($connection){
+    public function createDatabase(){
         try{
-            require_once "model/connection/db_queries.php";
+            require_once "connection/db_queries.php";
+            $connection = $this->testConnection();
             $connection->exec(CREATE_DATABASE);
+            //Asignación de atributos para detección de errores.
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            //Codificación para evitar símbolos en carácteres especiales.
+            $connection->exec("SET CHARACTER SET utf8");
             return $connection;
         }catch(PDOException $e){
             return $this->getErrorMessages($e->getMessage());
@@ -50,10 +52,29 @@ class Connection
 
     public function createTables($connection){
         try{
-            require_once "model/connection/db_queries.php";
+            require_once "connection/db_queries.php";
+            $connection->exec("USE " . DB_NAME);
             $connection->exec(CREATE_TABLE_USERS);
+            $connection->exec(CREATE_TABLE_TOPICS);
+            $connection->exec(CREATE_TABLE_THREADS);
+            $connection->exec(CREATE_TABLE_SUB_THREADS);
             return $connection;
         }catch(PDOException $e){
+            return $this->getErrorMessages($e->getMessage());
+        }
+    }
+
+    public function changeDatabase($connection){
+        try{
+            require_once "connection/db_connection.php";
+            //Entrar en la base de datos forum
+            $connection->exec("USE " . DB_NAME);
+            //Asignación de atributos para detección de errores.
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            //Codificación para evitar símbolos en carácteres especiales.
+            $connection->exec("SET CHARACTER SET utf8");
+            return $connection;
+        }catch (PDOException $e){
             return $this->getErrorMessages($e->getMessage());
         }
     }
@@ -61,7 +82,7 @@ class Connection
     private function getErrorMessages($e){
         switch($e){
             case "2002":
-                if(file_exists("model/connection/db_connection.php")){
+                if(file_exists("connection/db_connection.php")){
                     return "<p class='error-form'>Error to connect, incorrect host: (" . $e.")</p>";
                 }else{
                     return "<p class='warning-form'>Info to connect to DB not found</p>";
