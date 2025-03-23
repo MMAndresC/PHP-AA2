@@ -1,6 +1,6 @@
 <?php
 
-require_once "config/db_connection.php";
+require_once "db_connection.php";
 const CREATE_DATABASE = "CREATE DATABASE IF NOT EXISTS " . DB_NAME . "  CHARACTER SET utf8 COLLATE utf8_spanish_ci";
 const CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS `user` ( 
     `username` VARCHAR(20) NOT NULL , 

@@ -27,9 +27,9 @@ function validateNotEmpty($params){
 }
 
 function existErrors($errors, $old_data, $mode){
+     $_SESSION['old_data'] = $old_data;
     if (!empty($errors)) {
          $_SESSION['errors'] = $errors;
-         $_SESSION['old_data'] = $old_data;
          header("Location: ../view/login.php?mode=$mode");
          exit();
     }
@@ -41,14 +41,14 @@ $params = extractParams($mode);
 
 // Validar que los campos no estén vacíos
 $errors = validateNotEmpty($params);
-$old_data = ['email' => $params['email']];
+$old_data = $params;
 
 // Volver a la vista si ya hay algún error
 existErrors($errors, $old_data, $mode);
 
 // Validar email
 if (!filter_var($params['email'], FILTER_VALIDATE_EMAIL)) {
-    $errors[] = "Email no válido";
+    $errors['email'] = "Email no válido";
 }
 
 // En el registro validar el resto de campos
@@ -72,7 +72,7 @@ if($mode != "login") {
 
 }
 
-// Volver a la vista si ya hay algún erro
+// Volver a la vista si ya hay algún error
 existErrors($errors, $old_data, $mode);
 
 // Validaciones hechas pasar al modelo

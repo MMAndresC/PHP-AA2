@@ -10,7 +10,7 @@ $messages = (new DatabaseController())->dbConnect();
 
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="css/style.css">
 
 <head>
     <meta charset="UTF-8">
