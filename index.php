@@ -23,10 +23,10 @@ if (is_array($messages)) {
     foreach ($messages as $message) {
         echo $message . "<br>";
     }
-} else if($messages instanceof \PDO) {
-    echo "<p>Conexion con forum</p><br>";
 } else if(is_string($messages))
     echo $messages . "<br>";
+header("Location: view/login.php?mode=login");
+exit();
 ?>
 </body>
 
