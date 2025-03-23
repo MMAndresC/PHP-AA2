@@ -2,11 +2,11 @@
 
 const USER_DATA = [
     "INSERT INTO `user` (`username`, `name`, `surname`, `email`, `password`, `role`, `image_path`) 
-    VALUES ('controller', 'johnny', 'doe', 'admin@example.com', 'hashed_password', 'admin', 'images/controller.jpg');",
+    VALUES ('controller', 'johnny', 'doe', 'admin@example.com', :hashed_password, 'admin', 'images/controller.jpg');",
     "INSERT INTO `user` (`username`, `name`, `surname`, `email`, `password`, `role`, `image_path`) 
-    VALUES ('Super Pro', 'Jane', 'Doe', 'super_pro99@example.com', 'hashed_password', 'moderator', 'images/super_pro.jpg');",
+    VALUES ('Super Pro', 'Jane', 'Doe', 'super_pro99@example.com', :hashed_password, 'moderator', 'images/super_pro.jpg');",
     "INSERT INTO `user` (`username`, `name`, `surname`, `email`, `password`, `role`, `image_path`) 
-    VALUES ('anonimo97', 'Anna', 'Doe', 'gg@example.com', 'hashed_password', 'user', 'images/anonimo.jpg');"
+    VALUES ('anonimo97', 'Anna', 'Doe', 'gg@example.com', :hashed_password, 'user', 'images/anonimo.jpg');"
 ];
 
 const THEME_DATA = [

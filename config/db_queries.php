@@ -1,6 +1,6 @@
 <?php
 
-require_once "connection/db_connection.php";
+require_once "config/db_connection.php";
 const CREATE_DATABASE = "CREATE DATABASE IF NOT EXISTS " . DB_NAME . "  CHARACTER SET utf8 COLLATE utf8_spanish_ci";
 const CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS `user` ( 
     `username` VARCHAR(20) NOT NULL , 
@@ -58,3 +58,10 @@ const CREATE_TABLE_SUB_THREADS = "CREATE TABLE IF NOT EXISTS `sub_thread` (
     FOREIGN KEY (`thread_id`) REFERENCES `thread`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB;
 ";
+
+const COUNT_USERS = "SELECT COUNT(*) FROM `user`";
+const COUNT_THEMES = "SELECT COUNT(*) FROM `theme`";
+const COUNT_TOPICS = "SELECT COUNT(*) FROM `topic`";
+const COUNT_THREADS = "SELECT COUNT(*) FROM `thread`";
+const COUNT_SUB_THREADS = "SELECT COUNT(*) FROM `sub_thread`";
+
