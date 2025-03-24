@@ -2,11 +2,11 @@
 
 const USER_DATA = [
     "INSERT INTO `user` (`username`, `name`, `surname`, `email`, `password`, `role`, `image_path`) 
-    VALUES ('controller', 'johnny', 'doe', 'admin@example.com', 'hashed_password', 'admin', 'images/controller.jpg');",
+    VALUES ('controller', 'johnny', 'doe', 'admin@example.com', :hashed_password, 'admin', 'images/controller.jpg');",
     "INSERT INTO `user` (`username`, `name`, `surname`, `email`, `password`, `role`, `image_path`) 
-    VALUES ('Super Pro', 'Jane', 'Doe', 'super_pro99@example.com', 'hashed_password', 'moderator', 'images/super_pro.jpg');",
+    VALUES ('Super Pro', 'Jane', 'Doe', 'super_pro99@example.com', :hashed_password, 'moderator', 'images/super_pro.jpg');",
     "INSERT INTO `user` (`username`, `name`, `surname`, `email`, `password`, `role`, `image_path`) 
-    VALUES ('anonimo97', 'Anna', 'Doe', 'gg@example.com', 'hashed_password', 'user', 'images/anonimo.jpg');"
+    VALUES ('anonimo97', 'Anna', 'Doe', 'gg@example.com', :hashed_password, 'user', 'images/anonimo.jpg');"
 ];
 
 const THEME_DATA = [
@@ -30,16 +30,16 @@ const TOPIC_DATA = [
 
 const THREAD_DATA = [
     "INSERT INTO `thread` (`topic_id`, `title`, `status`, `last_updater`) 
-     VALUES (1, 'Desarrollo de la historia', 'open', 'anonimo97');",
+     VALUES (1, 'Desarrollo de la historia', 'open', 'gg@example.com');",
     "INSERT INTO `thread` (`topic_id`, `title`, `status`, `last_updater`) 
-     VALUES (1, 'Mejores escenas', 'open', 'Super Pro');"
+     VALUES (1, 'Mejores escenas', 'open', 'super_pro99@example.com');"
 ];
 
 const SUB_THREAD_DATA = [
     "INSERT INTO `sub_thread` (`thread_id`, `creator`, `content`, `main`) 
-    VALUES (1, 'controller', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', TRUE);",
+    VALUES (1, 'admin@example.com', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', TRUE);",
     "INSERT INTO `sub_thread` (`thread_id`, `creator`, `content`, `main`) 
-    VALUES (1, 'anonimo97', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', FALSE);",
+    VALUES (1, 'gg@example.com', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', FALSE);",
     "INSERT INTO `sub_thread` (`thread_id`, `creator`, `content`, `main`) 
-    VALUES (2, 'Super Pro', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', TRUE);"
+    VALUES (2, 'super_pro99@example.com', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', TRUE);"
 ];
