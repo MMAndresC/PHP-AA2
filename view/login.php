@@ -4,10 +4,12 @@ session_start();
 
 $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
 $old_data = isset($_SESSION['old_data']) ? $_SESSION['old_data'] : [];
-unset($_SESSION['errors'], $_SESSION['old_data']);
+$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+unset($_SESSION['errors'], $_SESSION['old_data'], $_SESSION['message']);
 
 $mode = isset($_GET['mode']) ? $_GET['mode'] : 'login';
 $isRegister = ($mode === 'register');
+
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +37,7 @@ $isRegister = ($mode === 'register');
         </label>
     </nav>
 </header>
+    <h3><?= $message ?></h3>
     <section id="form">
         <div id="container-form">
             <form action="../controller/UserController.php" method="post">

@@ -15,8 +15,8 @@ class Database
     public static function connect(){
         if (!isset(self::$connection)) {
             try {
-                require_once "config/db_connection.php";
-                require_once "config/db_queries.php";
+                require_once "db_connection.php";
+                require_once "db_queries.php";
 
                 // Instanciar objeto PDO
                 self::$connection = new PDO("mysql:host=" . DB_HOST, DB_USER, DB_PASS, [

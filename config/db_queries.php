@@ -65,8 +65,8 @@ const COUNT_TOPICS = "SELECT COUNT(*) FROM `topic`";
 const COUNT_THREADS = "SELECT COUNT(*) FROM `thread`";
 const COUNT_SUB_THREADS = "SELECT COUNT(*) FROM `sub_thread`";
 
-const FIND_EMAIL_USER = "SELECT * FROM `users` WHERE `email` = :email";
-const FIND_USERNAME_USER = "SELECT * FROM `users` WHERE `username` = :username";
+const FIND_EMAIL_USER = "SELECT * FROM `user` WHERE `email` = :email";
+const FIND_USERNAME_USER = "SELECT * FROM `user` WHERE `username` = :username";
 
 const INSERT_USER = "INSERT INTO user (email, password, username, name, surname, role) 
     VALUES (:email, :password, :username, :name, :surname, :role)";

@@ -92,7 +92,7 @@ if ($mode === 'login') {
 } else {
     $registerSuccess = $userModel->register($params['email'], $params['password'], $params['username'],  $params['name'], $params['surname']);
     if ($registerSuccess) {
-        $_SESSION['message'] = "Bienvenido " . $params['username'] . " Logueate para empezar!";
+        $_SESSION['message'] = "Bienvenido " . $params['username'] . "! Logueate con tun mail para empezar!";
         header("Location: ../view/login.php?mode=login");
     } else {
         $_SESSION['errors']['email'] = "Ya existe un usuario con ese email";
