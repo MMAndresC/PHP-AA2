@@ -1,12 +1,12 @@
 <?php
 
 const USER_DATA = [
-    "INSERT INTO `user` (`username`, `name`, `surname`, `email`, `password`, `role`, `image_path`) 
-    VALUES ('controller', 'johnny', 'doe', 'admin@example.com', :hashed_password, 'admin', 'images/controller.jpg');",
-    "INSERT INTO `user` (`username`, `name`, `surname`, `email`, `password`, `role`, `image_path`) 
-    VALUES ('Super Pro', 'Jane', 'Doe', 'super_pro99@example.com', :hashed_password, 'moderator', 'images/super_pro.jpg');",
-    "INSERT INTO `user` (`username`, `name`, `surname`, `email`, `password`, `role`, `image_path`) 
-    VALUES ('anonimo97', 'Anna', 'Doe', 'gg@example.com', :hashed_password, 'user', 'images/anonimo.jpg');"
+    "INSERT INTO `user` (`username`, `name`, `surname`, `email`, `password`, `role`, `image_path`, `verified`) 
+    VALUES ('controller', 'johnny', 'doe', 'admin@example.com', :hashed_password, 'admin', 'images/controller.jpg', true);",
+    "INSERT INTO `user` (`username`, `name`, `surname`, `email`, `password`, `role`, `image_path`, `verified`) 
+    VALUES ('Super Pro', 'Jane', 'Doe', 'super_pro99@example.com', :hashed_password, 'moderator', 'images/super_pro.jpg', true);",
+    "INSERT INTO `user` (`username`, `name`, `surname`, `email`, `password`, `role`, `image_path`, `verified`) 
+    VALUES ('anonimo97', 'Anna', 'Doe', 'gg@example.com', :hashed_password, 'user', 'images/anonimo.jpg', true);"
 ];
 
 const THEME_DATA = [

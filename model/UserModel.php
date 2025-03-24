@@ -16,18 +16,20 @@ class UserModel
 
     public function login($email, $password)
     {
-        $stmt = $this->db->prepare(FIND_EMAIL_USER);
+        $stmt = $this->db->prepare(FIND_EMAIL_VERIFIED_USER);
         $stmt->bindValue(":email", $email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($password, $user['password'])) {
+            // Quitar los datos sensibles del usuario antes de devolverlo
+            unset($user['password'], $user['name'], $user['surname']);
             return $user;
         }
         return false;
     }
 
-    public function register($email, $password, $username, $name, $surname)
+    public function register($email, $password, $username, $name, $surname): array
     {
         // Verificar si el email ya existe
         $stmt = $this->db->prepare(FIND_EMAIL_USER);
@@ -52,6 +54,7 @@ class UserModel
         }
 
         // Añadir usuario
+        $token = bin2hex(random_bytes(32));
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $this->db->prepare(INSERT_USER);
         //Manera de aglomerar los bindValues
@@ -61,8 +64,12 @@ class UserModel
             ":username" => $username,
             ":name" => $name,
             ":surname" => $surname,
-            ":role" => "user"
+            ":role" => "user",
+            ":verification_token" => $token,
         ];
-        return $stmt->execute($params);
+        return [
+            "registerSuccess" => $stmt->execute($params),
+            "token" => $token
+        ];
     }
 }

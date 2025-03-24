@@ -3,20 +3,22 @@
 session_start();
 require_once "../model/UserModel.php";
 
-function extractParams($mode){
+function extractParams($mode): array
+{
     $params = array();
-    $params["email"] = trim(isset($_POST['email']) ? $_POST['email'] : '');
-    $params["password"] = trim(isset($_POST['password']) ? $_POST['password'] : '');
+    $params["email"] = trim($_POST['email'] ?? '');
+    $params["password"] = trim($_POST['password'] ?? '');
     if($mode != "login"){
-        $params["confirm_password"] = trim(isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '');
-        $params["username"] = trim(isset($_POST['username']) ? $_POST['username'] : '');
-        $params["name"] = trim(isset($_POST['name']) ? $_POST['name'] : '');
-        $params["surname"] = trim(isset($_POST['surname']) ? $_POST['surname'] : '');
+        $params["confirm_password"] = trim($_POST['confirm_password'] ?? '');
+        $params["username"] = trim($_POST['username'] ?? '');
+        $params["name"] = trim($_POST['name'] ?? '');
+        $params["surname"] = trim($_POST['surname'] ?? '');
     }
     return $params;
 }
 
-function validateNotEmpty($params){
+function validateNotEmpty($params): array
+{
     $errors = array();
     foreach ($params as $key => $value){
         if(empty($value)){
@@ -26,7 +28,8 @@ function validateNotEmpty($params){
     return $errors;
 }
 
-function existErrors($errors, $old_data, $mode){
+function existErrors($errors, $old_data, $mode): void
+{
      $_SESSION['old_data'] = $old_data;
     if (!empty($errors)) {
          $_SESSION['errors'] = $errors;
@@ -36,7 +39,7 @@ function existErrors($errors, $old_data, $mode){
 }
 
 // Obtener los datos del formulario
-$mode = isset($_POST['mode']) ? $_POST['mode'] : 'login';
+$mode = $_POST['mode'] ?? 'login';
 $params = extractParams($mode);
 
 // Validar que los campos no estén vacíos
@@ -90,9 +93,13 @@ if ($mode === 'login') {
         header("Location: ../view/login.php?mode=login");
     }
 } else {
-    $registerSuccess = $userModel->register($params['email'], $params['password'], $params['username'],  $params['name'], $params['surname']);
-    if ($registerSuccess) {
-        $_SESSION['message'] = "Bienvenido " . $params['username'] . "! Logueate con tun mail para empezar!";
+    $response = $userModel->register($params['email'], $params['password'], $params['username'],  $params['name'], $params['surname']);
+    $params['token'] = $response['token'];
+    if ($response['registerSuccess']) {
+        $_SESSION['message'] = "Bienvenido " . $params['username'] . "! Recibirás un mail para confirmar tu cuenta.";
+        require_once "../email/Email.php";
+        $result = Email::sendEmail($params);
+        $_SESSION['mail'] = $result;
         header("Location: ../view/login.php?mode=login");
     } else {
         $_SESSION['errors']['email'] = "Ya existe un usuario con ese email";

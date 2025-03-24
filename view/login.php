@@ -2,12 +2,12 @@
 
 session_start();
 
-$errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
-$old_data = isset($_SESSION['old_data']) ? $_SESSION['old_data'] : [];
-$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+$errors = $_SESSION['errors'] ?? [];
+$old_data = $_SESSION['old_data'] ?? [];
+$message = $_SESSION['message'] ?? '';
 unset($_SESSION['errors'], $_SESSION['old_data'], $_SESSION['message']);
 
-$mode = isset($_GET['mode']) ? $_GET['mode'] : 'login';
+$mode = $_GET['mode'] ?? 'login';
 $isRegister = ($mode === 'register');
 
 ?>
@@ -46,17 +46,17 @@ $isRegister = ($mode === 'register');
                 <div class="div-input">
                     <label class="label-user-form" for="email">Email</label>
                     <input type="text" class="user-form" name="email" id="email" placeholder="Email"
-                           value="<?= htmlspecialchars(isset($old_data['email']) ? $old_data['email'] : '') ?>"
+                           value="<?= htmlspecialchars($old_data['email'] ?? '') ?>"
                            autofocus="<?= isset($errors['email']) ? 'autofocus' : '' ?>"
                     >
-                    <span style="color:red;"><?= isset($errors['email']) ? $errors['email'] : '' ?></span>
+                    <span style="color:red;"><?= $errors['email'] ?? '' ?></span>
                 </div>
 
                 <!-- Campo password  -->
                 <div class="div-input">
                     <label class="label-user-form" for="password">Contraseña</label>
                     <input type="password" class="user-form" name="password" id="password" placeholder="Contraseña">
-                    <span style="color:red;"><?= isset($errors['password']) ? $errors['password'] : '' ?></span>
+                    <span style="color:red;"><?= $errors['password'] ?? '' ?></span>
                 </div>
 
                 <!-- Todos los campos extras que tiene el registro-->
@@ -64,8 +64,8 @@ $isRegister = ($mode === 'register');
                     <!-- Campo confirm password para el registro -->
                     <div class="div-input">
                         <label class="label-user-form" for="confirm_password">Confirmar Contraseña:</label>
-                        <input type="password" class="user-form" name="confirm_password" id="confirm_password" placeholder="Password">
-                        <span style="color:red;"><?= isset($errors['confirm_password']) ? $errors['confirm_password'] : '' ?></span>
+                        <input type="password" class="user-form" name="confirm_password" id="confirm_password" placeholder="Confirmar contraseña">
+                        <span style="color:red;"><?= $errors['confirm_password'] ?? '' ?></span>
                         <br>
                     </div>
 
@@ -73,10 +73,10 @@ $isRegister = ($mode === 'register');
                     <div class="div-input">
                         <label class="label-user-form" for="username">Nombre en el foro:</label>
                         <input type="text" class="user-form" name="username" id="username" placeholder="Username"
-                               value="<?= htmlspecialchars(isset($old_data['username']) ? $old_data['username'] : '') ?>"
+                               value="<?= htmlspecialchars($old_data['username'] ?? '') ?>"
                                autofocus="<?= isset($errors['username']) ? 'autofocus' : '' ?>"
                         >
-                        <span style="color:red;"><?= isset($errors['username']) ? $errors['username'] : '' ?></span>
+                        <span style="color:red;"><?= $errors['username'] ?? '' ?></span>
                         <br>
                     </div>
 
@@ -84,10 +84,10 @@ $isRegister = ($mode === 'register');
                     <div class="div-input">
                         <label class="label-user-form" for="name">Nombre:</label>
                         <input type="text" class="user-form" name="name" id="name" placeholder="Nombre"
-                               value="<?= htmlspecialchars(isset($old_data['name']) ? $old_data['name'] : '') ?>"
+                               value="<?= htmlspecialchars($old_data['name'] ?? '') ?>"
                                autofocus="<?= isset($errors['name']) ? 'autofocus' : '' ?>"
                         >
-                        <span style="color:red;"><?= isset($errors['name']) ? $errors['name'] : '' ?></span>
+                        <span style="color:red;"><?= $errors['name'] ?? '' ?></span>
                         <br>
                     </div>
 
@@ -95,10 +95,10 @@ $isRegister = ($mode === 'register');
                     <div class="div-input">
                         <label class="label-user-form" for="surname">Apellido:</label>
                         <input type="text" class="user-form" name="surname" id="surname" placeholder="Apellido"
-                               value="<?= htmlspecialchars(isset($old_data['surname']) ? $old_data['surname'] : '') ?>"
+                               value="<?= htmlspecialchars($old_data['surname'] ?? '') ?>"
                                autofocus="<?= isset($errors['surname']) ? 'autofocus' : '' ?>"
                         >
-                        <span style="color:red;"><?= isset($errors['surname']) ? $errors['surname'] : '' ?></span>
+                        <span style="color:red;"><?= $errors['surname'] ?? '' ?></span>
                         <br>
                     </div>
 

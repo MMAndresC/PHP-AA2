@@ -7,7 +7,8 @@ require_once "config/Database.php";
 
 class DatabaseModel
 {
-    public function initializeDatabase(){
+    public function initializeDatabase(): array|string
+    {
         try{
             Database::createTables();
             return Database::insertInitialData();
