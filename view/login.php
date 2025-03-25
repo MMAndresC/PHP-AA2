@@ -25,22 +25,12 @@ $isRegister = ($mode === 'register');
 <body>
 <header>
     <h1><?= $isRegister ? 'Registro de Usuario' : 'Inicio de Sesión' ?></h1>
-    <nav>
-        <label for="check-menu">
-            <input id="check-menu" type="checkbox">
-            <div class="btn-menu">Menú</div>
-            <ul class="ul-menu">
-                <li><a href="../index.php">Inicio</a></li>
-                <li><a href="login.php">Acceder</a></li>
-                <li><a href="login.php<?= '?registrar'; ?>">Registrarse</a></li>
-            </ul>
-        </label>
-    </nav>
 </header>
     <h3><?= $message ?></h3>
     <section id="form">
         <div id="container-form">
             <form action="../controller/UserController.php" method="post">
+                <!-- Campo mode para diferenciar registro de login en el controlador -->
                 <input type="hidden" name="mode" value="<?= $mode ?>">
                 <!-- Campo Email-->
                 <div class="div-input">
@@ -106,6 +96,14 @@ $isRegister = ($mode === 'register');
 
                 <!-- Botón submit del formulario-->
                 <input type="submit" name="login" value="<?= $isRegister ? 'Registrarse' : 'Iniciar Sesión' ?>">
+                <?php if (!$isRegister){ ?>
+                     <p class="p-registrar-login">
+                        Has olvidado tu contraseña? Recuperar contraseña
+                        <a class="log-reg" href="reset_password.php">
+                            aquí
+                        </a>
+                     </p>
+                <?php }; ?>
                 <p class="p-registrar-login">
                     <?= $isRegister ? '¿Ya tienes una cuenta?' : '¿No tienes cuenta?' ?>
                     <a class="log-reg" href="?mode=<?= $isRegister ? 'login' : 'register' ?>">

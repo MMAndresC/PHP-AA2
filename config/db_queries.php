@@ -11,7 +11,9 @@ const CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS `user` (
     `role` VARCHAR(10) NOT NULL ,
     `image_path` VARCHAR(100) ,
     `verified` BOOLEAN DEFAULT FALSE ,
-    `verification_token` VARCHAR(255) DEFAULT NULL ,
+    `verification_token` CHAR(64) DEFAULT NULL ,
+    `reset_token` CHAR(100) DEFAULT NULL ,
+    `reset_token_expires` DATETIME DEFAULT NULL ,
     PRIMARY KEY (`email`)
 ) ENGINE = InnoDB;";
 
@@ -71,9 +73,13 @@ const FIND_EMAIL_USER = "SELECT * FROM `user` WHERE `email` = :email";
 const FIND_USERNAME_USER = "SELECT * FROM `user` WHERE `username` = :username";
 const FIND_EMAIL_VERIFIED_USER = "SELECT * FROM `user` WHERE `email` = :email AND `verified` = true";
 const FIND_VERIFICATION_TOKEN_USER = "SELECT * FROM `user` WHERE `verification_token` = :verification_token";
+const FIND_RESET_PASSWORD_USER = "SELECT * FROM `user` WHERE `reset_token` = :reset_token AND reset_token_expires > NOW()";
 
 const INSERT_USER = "INSERT INTO user (email, password, username, name, surname, role, verification_token) 
     VALUES (:email, :password, :username, :name, :surname, :role, :verification_token)";
 
 const UPDATE_VERIFIED_USER = "UPDATE `user` SET `verified` = true, `verification_token` = NULL WHERE  email = :email";
+
+const UPDATE_RESET_PASSWORD = "UPDATE `user` SET `reset_token` = :reset_token, `reset_token_expires` = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE `email` = :email";
+const UPDATE_CHANGE_PASSWORD = "UPDATE `user` SET `password` = :password, `reset_token` = NULL, `reset_token_expires` = NULL WHERE `email` = :email";
 
