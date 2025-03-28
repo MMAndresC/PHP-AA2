@@ -2,7 +2,7 @@
 
 session_start();
 
-require_once "../model/UserModel.php";
+require_once "../model/AuthModel.php";
 require_once "../util/validation.php";
 require_once "../util/extract_params.php";
 
@@ -19,7 +19,7 @@ function existErrors($errors, $old_data, $mode): void
 
 // Obtener los datos del formulario
 $mode = $_POST['mode'] ?? 'login';
-$params = extractParamsUser($mode);
+$params = extractParamsAuth($mode);
 
 // Validar que los campos no estén vacíos
 $errors = validateNotEmpty($params);
@@ -29,20 +29,19 @@ $old_data = $params;
 existErrors($errors, $old_data, $mode);
 
 //Validar que el mail y contraseña sean válidos y que el resto de campos tengan una longitud minima
-$errors = validateValidDataUser($errors, $params, $mode);
+$errors = validateValidDataAuth($errors, $params, $mode);
 
 // Volver a la vista si ya hay algún error
 existErrors($errors, $old_data, $mode);
 
 // Validaciones hechas, pasar al modelo
-$userModel = new UserModel();
+$userModel = new AuthModel();
 
 if ($mode === 'login') {
     $user = $userModel->login($params['email'], $params['password']);
     if ($user) {
         $_SESSION['user'] = $user;
-        //TODO mandarlo al foro principal
-        //header("Location: ../view/dashboard.php");
+        header("Location: ../view/main.php");
     } else {
         $_SESSION['errors']['password'] = "Email o contraseña incorrectos.";
         $_SESSION['old_data'] = $old_data;

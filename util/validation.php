@@ -11,7 +11,7 @@ function validateNotEmpty($params): array
     return $errors;
 }
 
-function validateValidDataUser($errors, $params, $mode){
+function validateValidDataAuth($errors, $params, $mode){
     $MIN_LEN = 3;
     // Validar email
     if (!filter_var($params['email'], FILTER_VALIDATE_EMAIL)) {
@@ -37,5 +37,33 @@ function validateValidDataUser($errors, $params, $mode){
         if (strlen($params['username']) < $MIN_LEN)
             $errors['username'] = "El nombre de usuario debe tener al menos 3 caracteres";
     }
+    return $errors;
+}
+
+function validateValidDataUser($errors, $params)
+{
+    $MIN_LEN = 3;
+
+    $password = $params['password'];
+    $new_password = $params['new_password'];
+    if(trim($new_password) != ""){
+        // Validar la contraseña (mínimo 8 caracteres, un número y un carácter especial)
+        if (strlen($new_password) < 8 || !preg_match('/\d/', $new_password) || !preg_match('/\W/', $new_password)) {
+            $errors['password'] = "La contraseña debe tener al menos 8 caracteres, un número y un carácter especial.";
+        }
+
+        if ($password !== $new_password)
+            $errors['new_password'] = "Las contraseñas no coinciden";
+    }
+
+    if (strlen($params['name']) < $MIN_LEN)
+        $errors['name'] = "El nombre debe tener al menos 3 caracteres";
+
+    if (strlen($params['surname']) < $MIN_LEN)
+        $errors['surname'] = "El apellido debe tener al menos 3 caracteres";
+
+    if (strlen($params['username']) < $MIN_LEN)
+        $errors['username'] = "El nombre de usuario debe tener al menos 3 caracteres";
+
     return $errors;
 }

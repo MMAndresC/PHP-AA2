@@ -5,9 +5,9 @@ use database\Database;
 require_once "../config/Database.php";
 require_once  "../config/db_queries.php";
 
-class UserModel
+class AuthModel
 {
-    private $db;
+    private PDO $db;
 
     public function __construct()
     {

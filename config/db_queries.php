@@ -9,7 +9,7 @@ const CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS `user` (
     `email` VARCHAR(50) NOT NULL , 
     `password` VARCHAR(70) NOT NULL , 
     `role` VARCHAR(10) NOT NULL ,
-    `image_path` VARCHAR(100) ,
+    `image_name` VARCHAR(100) DEFAULT NULL ,
     `verified` BOOLEAN DEFAULT FALSE ,
     `verification_token` CHAR(64) DEFAULT NULL ,
     `reset_token` CHAR(100) DEFAULT NULL ,
@@ -74,6 +74,8 @@ const FIND_USERNAME_USER = "SELECT * FROM `user` WHERE `username` = :username";
 const FIND_EMAIL_VERIFIED_USER = "SELECT * FROM `user` WHERE `email` = :email AND `verified` = true";
 const FIND_VERIFICATION_TOKEN_USER = "SELECT * FROM `user` WHERE `verification_token` = :verification_token";
 const FIND_RESET_PASSWORD_USER = "SELECT * FROM `user` WHERE `reset_token` = :reset_token AND reset_token_expires > NOW()";
+const FIND_EMAIL_PASSWORD_USER = "SELECT * FROM `user` WHERE `email` = :email AND `password` = :password";
+const FIND_USERNAME_NOT_EMAIL_USER = "SELECT * FROM `user` WHERE `username` = :username AND `email` != :email";
 
 const INSERT_USER = "INSERT INTO user (email, password, username, name, surname, role, verification_token) 
     VALUES (:email, :password, :username, :name, :surname, :role, :verification_token)";
@@ -82,4 +84,5 @@ const UPDATE_VERIFIED_USER = "UPDATE `user` SET `verified` = true, `verification
 
 const UPDATE_RESET_PASSWORD = "UPDATE `user` SET `reset_token` = :reset_token, `reset_token_expires` = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE `email` = :email";
 const UPDATE_CHANGE_PASSWORD = "UPDATE `user` SET `password` = :password, `reset_token` = NULL, `reset_token_expires` = NULL WHERE `email` = :email";
-
+const UPDATE_EDIT_USER_WITHOUT_PASS = "UPDATE `user` SET `name` = :name, `surname` = :surname, `username` = :username, `image_name` = :image_name WHERE `email` = :email ";
+const UPDATE_EDIT_USER_WITH_PASS = "UPDATE `user` SET `name` = :name, `surname` = :surname, `username` = :username, `image_name` = :image_name, `password` = :password WHERE `email` = :email ";

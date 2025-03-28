@@ -29,7 +29,7 @@ $isRegister = ($mode === 'register');
     <h3><?= $message ?></h3>
     <section id="form">
         <div id="container-form">
-            <form action="../controller/UserController.php" method="post">
+            <form action="../controller/AuthController.php" method="post">
                 <!-- Campo mode para diferenciar registro de login en el controlador -->
                 <input type="hidden" name="mode" value="<?= $mode ?>">
                 <!-- Campo Email-->
