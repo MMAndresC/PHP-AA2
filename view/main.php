@@ -17,6 +17,7 @@ if(!isset($_SESSION["user"])){
     <meta charset="UTF-8">
     <title>Foro</title>
     <link rel="stylesheet" href="../css/index.css">
+    <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
 </head>
 
 <body>

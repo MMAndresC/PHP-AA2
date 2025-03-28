@@ -16,6 +16,7 @@ unset($_SESSION['errors'], $_SESSION['response']);
     <meta charset="UTF-8">
     <title>Forum</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
 </head>
 
 <body>

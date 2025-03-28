@@ -12,7 +12,7 @@ unset($_SESSION['result_verification']);
     <meta charset="UTF-8">
     <title>Forum</title>
     <link rel="stylesheet" href="">
-
+    <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
 </head>
 
 <body>

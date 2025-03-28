@@ -14,7 +14,8 @@ $messages = (new DatabaseController())->dbConnect();
 
 <head>
     <meta charset="UTF-8">
-    <title>Forum</title>
+    <title>Foro</title>
+    <link rel="icon" href="assets/images/logo/favicon.png" type="image/x-icon"/>
 </head>
 
 <body>
