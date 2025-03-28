@@ -65,7 +65,7 @@ if(isset($_SESSION["user"])){
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-light">
+                        <a class="button is-light" href="../view/main.php?mode=close">
                             Cerrar Sesión
                         </a>
                     </div>

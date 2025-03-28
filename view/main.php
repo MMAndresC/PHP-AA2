@@ -4,6 +4,12 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+$mode = $_GET['mode'] ?? 'no_mode';
+if($mode == 'close'){
+    require_once "../util/destroy_session.php";
+    header("Location: ../view/main.php");
+    exit();
+}
 $isLoggedIn = false;
 if(!isset($_SESSION["user"])){
     $isLoggedIn = true;
