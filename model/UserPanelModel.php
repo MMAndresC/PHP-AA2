@@ -65,7 +65,11 @@ class UserPanelModel
             if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
                 $image_name = process_image($_FILES["image"]);
                 if(trim($image_name) === "") $image_name = null;
-            }else $image_name = null;
+            }else {
+                // En el caso de que no se mande imagen nueva, pero ya hubiera una guardada para no borrar con nulo la guardada
+                if($old_image !== null) $image_name = $old_image;
+                else $image_name = null;
+            }
             if(trim($params['new_password']) != ""){
                 $hashed_password = password_hash($params['new_password'], PASSWORD_DEFAULT);
                 $stmt = $this->db->prepare(UPDATE_EDIT_USER_WITH_PASS);
@@ -88,7 +92,7 @@ class UserPanelModel
                 ]);
             }
             //Borrar la imagen almacenada anterior si existía
-            if($old_image !== null) deleteImage($old_image);
+            if($old_image !== null && $old_image != $image_name) deleteImage($old_image);
             $newData = [
                 "username" => $params['username'],
                 "email" => $params['email'],
@@ -96,7 +100,7 @@ class UserPanelModel
                 "surname" => $params['surname'],
                 "image_name" => $image_name
             ];
-            return ['data' => $newData];
+            return ['data' => $newData, 'success' => true];
 
         }catch (PDOException $e){
             $errors['critical'] = 'Error en la base de datos';

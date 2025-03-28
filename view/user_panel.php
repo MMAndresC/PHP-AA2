@@ -3,6 +3,8 @@
 $errors = $_SESSION["errors"] ?? [];
 $data = $_SESSION["data"] ?? [];
 $user = $_SESSION["user"] ?? [];
+$success = $_SESSION["success"] ?? false;
+unset($_SESSION["errors"],$_SESSION["success"], $_SESSION["data"]);
 
 if(trim($data['image_name']) == '') $data['image_name'] = null;
 if(!$user){
@@ -32,7 +34,7 @@ if(!$user){
 </header>
 <h1></h1>
 <main class="container">
-    <form class="user-form" action="../controller/UserPanelController.php" method="post" enctype="multipart/form-data">
+    <form class="user-form box" action="../controller/UserPanelController.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="email" id="email" value="<?= $data['email'] ?>" readonly>
         <div class="is-flex-direction-row is-display-flex field is-align-items-center" id="container-image">
             <div >
@@ -158,7 +160,7 @@ if(!$user){
         </div>
 
         <!-- Borrar la cuenta de usuario -->
-        <!--<div id="modal-delete" class="modal">
+        <div id="modal-delete" class="modal">
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
@@ -175,11 +177,18 @@ if(!$user){
                         <button class="button">Cancelar</button>
                     </div>
                 </footer>
-            </div>-->
+            </div>
         </div>
 
     </form>
-
+    <?php if($success){ ?>
+    <article class="message is-success" id="toast">
+        <div class="message-header">
+            <p>Datos modificados con éxito</p>
+            <button class="delete" aria-label="delete" onclick="document.getElementById('toast').remove()"></button>
+        </div>
+    </article>
+    <?php } ?>
 </main>
 
 

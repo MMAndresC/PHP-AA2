@@ -32,6 +32,7 @@ if (isset($_POST["action"])) {
              $response = $userPanelModel->modifyUser($data);
              if(isset($response["errors"])) $errors = $response["errors"];
              if(isset($response["data"])) $data = $response["data"];
+             if(isset($response["success"])) $_SESSION["success"] = true;
         }
         $_SESSION["data"] = $data;
         $_SESSION['errors'] = $errors;

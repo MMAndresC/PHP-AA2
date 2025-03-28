@@ -36,5 +36,5 @@ function process_image($image): string
 function deleteImage($image_name) : void
 {
     $image_path = "../../uploads/" . $image_name;
-    unlink($image_path);
+    if(file_exists($image_path)) unlink($image_path);
 }

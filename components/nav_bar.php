@@ -10,6 +10,9 @@ if(isset($_SESSION["user"])){
 
 }?>
 
+<script type="text/javascript">
+    <?php require_once "../scripts/navBarScript.js"; ?>
+</script>
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
