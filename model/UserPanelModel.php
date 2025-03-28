@@ -33,25 +33,24 @@ class UserPanelModel
     {
         try{
             $errors = array();
+
+            //Buscar al usuario
+            $stmt = $this->db->prepare(FIND_EMAIL_USER);
+            $stmt->execute([":email" => $params['email']]);
+            $data = $stmt->fetch(PDO::FETCH_ASSOC);
+            if(!$data) {
+                $errors['critical'] = 'Email no encontrado en la base de datos';
+                return ['errors' => $errors];
+            }
+
+            //En caso de que haya que cambiar contraseña, verificarla
             if(trim($params['new_password']) != ""){
-                $hashed_password = password_hash($params['password'], PASSWORD_DEFAULT);
-                //Que esté el usuario y que el password coincida
-                $stmt = $this->db->prepare(FIND_EMAIL_PASSWORD_USER);
-                $stmt->execute([":email" => $params['email'], ":password" => $hashed_password]);
-                $data = $stmt->fetch(PDO::FETCH_ASSOC);
-                if(!$data) {
+                if (!password_verify($params['password'], $data["password"])) {
                     $errors['password'] = 'Password incorrecto';
                     return ['errors' => $errors];
                 }
-            }else{
-                $stmt = $this->db->prepare(FIND_EMAIL_USER);
-                $stmt->execute([":email" => $params['email']]);
-                $data = $stmt->fetch(PDO::FETCH_ASSOC);
-                if(!$data) {
-                    $errors['critical'] = 'Email no encontrado en la base de datos';
-                    return ['errors' => $errors];
-                }
             }
+
             $old_image = $data['image_name'];
             //Buscar si el username lo está usando otro usuario
             $stmt = $this->db->prepare(FIND_USERNAME_NOT_EMAIL_USER);
@@ -105,6 +104,34 @@ class UserPanelModel
         }catch (PDOException $e){
             $errors['critical'] = 'Error en la base de datos';
             return ['errors' => $errors];
+        }
+    }
+
+    public function deleteUser($email, $password, $deleteContent): int
+    {
+        try{
+            $stmt = $this->db->prepare(FIND_EMAIL_USER);
+            $stmt->execute([":email" => $email]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$user || !password_verify($password, $user["password"])) {
+                // Si no existe el usuario o la contraseña es incorrecta, no hacemos nada
+                return 0;
+            }
+
+            $stmt = $this->db->prepare(DELETE_USER);
+            $stmt->execute([":email" => $email]);
+            $result = $stmt->rowCount();
+
+            // Si se eliminó el usuario y deleteContent es true, eliminamos su contenido asociado
+            if ($result > 0 && $deleteContent) {
+                $stmt = $this->db->prepare(DELETE_SUB_THREAD_USER);
+                $stmt->execute([":email" => $email]);
+            }
+
+            return $result;
+        } catch (PDOException $e) {
+            return 0;
         }
     }
 }

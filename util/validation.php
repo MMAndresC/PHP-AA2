@@ -51,9 +51,6 @@ function validateValidDataUser($errors, $params)
         if (strlen($new_password) < 8 || !preg_match('/\d/', $new_password) || !preg_match('/\W/', $new_password)) {
             $errors['password'] = "La contraseña debe tener al menos 8 caracteres, un número y un carácter especial.";
         }
-
-        if ($password !== $new_password)
-            $errors['new_password'] = "Las contraseñas no coinciden";
     }
 
     if (strlen($params['name']) < $MIN_LEN)
