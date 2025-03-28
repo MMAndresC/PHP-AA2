@@ -4,6 +4,7 @@ use database\Database;
 
 require_once "../config/Database.php";
 require_once  "../config/db_queries.php";
+require_once  "../util/process_image.php";
 
 class UserPanelModel
 {
@@ -40,7 +41,7 @@ class UserPanelModel
                 $data = $stmt->fetch(PDO::FETCH_ASSOC);
                 if(!$data) {
                     $errors['password'] = 'Password incorrecto';
-                    return $errors;
+                    return ['errors' => $errors];
                 }
             }else{
                 $stmt = $this->db->prepare(FIND_EMAIL_USER);
@@ -48,17 +49,23 @@ class UserPanelModel
                 $data = $stmt->fetch(PDO::FETCH_ASSOC);
                 if(!$data) {
                     $errors['critical'] = 'Email no encontrado en la base de datos';
-                    return $errors;
+                    return ['errors' => $errors];
                 }
             }
+            $old_image = $data['image_name'];
             //Buscar si el username lo está usando otro usuario
             $stmt = $this->db->prepare(FIND_USERNAME_NOT_EMAIL_USER);
             $stmt->execute([":username" => $params['username'], ":email" => $params['email']]);
             if($stmt->fetch()){
                 $errors['username'] = 'Nombre de usuario ya existente';
-                return $errors;
+                return ['errors' => $errors];
             }
-            //Preparar los datos para hacer el update y mirar si han mandado cambio de password
+            //Preparar los datos para hacer el update diferenciando si han mandado cambio de password
+            // Tratar la imagen
+            if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
+                $image_name = process_image($_FILES["image"]);
+                if(trim($image_name) === "") $image_name = null;
+            }else $image_name = null;
             if(trim($params['new_password']) != ""){
                 $hashed_password = password_hash($params['new_password'], PASSWORD_DEFAULT);
                 $stmt = $this->db->prepare(UPDATE_EDIT_USER_WITH_PASS);
@@ -68,7 +75,7 @@ class UserPanelModel
                     ":name" => $params['name'],
                     ":surname" => $params['surname'],
                     ":password" => $hashed_password,
-                    "image_name" => trim($params['image_name']) != "" ? trim($params['image_name']) : null
+                    "image_name" => $image_name
                 ]);
             }else{
                 $stmt = $this->db->prepare(UPDATE_EDIT_USER_WITHOUT_PASS);
@@ -77,14 +84,23 @@ class UserPanelModel
                     ":email" => $params['email'],
                     ":name" => $params['name'],
                     ":surname" => $params['surname'],
-                    "image_name" => trim($params['image_name']) != "" ? trim($params['image_name']) : null
+                    "image_name" => $image_name
                 ]);
             }
-            return [];
+            //Borrar la imagen almacenada anterior si existía
+            if($old_image !== null) deleteImage($old_image);
+            $newData = [
+                "username" => $params['username'],
+                "email" => $params['email'],
+                "name" => $params['name'],
+                "surname" => $params['surname'],
+                "image_name" => $image_name
+            ];
+            return ['data' => $newData];
 
         }catch (PDOException $e){
             $errors['critical'] = 'Error en la base de datos';
-            return $errors;
+            return ['errors' => $errors];
         }
     }
 }

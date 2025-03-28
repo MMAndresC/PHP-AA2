@@ -25,13 +25,15 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 if (isset($_POST["action"])) {
     if ($_POST["action"] === "edit"){
-        $params = extractParamsUser();
+        $data = extractParamsUser();
         $errors = array();
-        $errors = validateValidDataUser($errors, $params);
+        $errors = validateValidDataUser($errors, $data);
         if (empty($errors)) {
-             $errors = $userPanelModel->modifyUser($params);
+             $response = $userPanelModel->modifyUser($data);
+             if(isset($response["errors"])) $errors = $response["errors"];
+             if(isset($response["data"])) $data = $response["data"];
         }
-        $_SESSION["data"] = $params;
+        $_SESSION["data"] = $data;
         $_SESSION['errors'] = $errors;
     }else if($_POST["action"] === "delete"){
 

@@ -4,6 +4,7 @@ $errors = $_SESSION["errors"] ?? [];
 $data = $_SESSION["data"] ?? [];
 $user = $_SESSION["user"] ?? [];
 
+if(trim($data['image_name']) == '') $data['image_name'] = null;
 if(!$user){
     unset($_SESSION["user"]);
     header("Location:login.php");
@@ -13,7 +14,7 @@ if(!$user){
 ?>
 
 <script type="text/javascript">
-    <?php require_once "../scripts/modalScript.js"?>
+    <?php require_once "../scripts/userPanelScript.js"?>
 </script>
 
 <!DOCTYPE html>
@@ -36,7 +37,10 @@ if(!$user){
         <div class="is-flex-direction-row is-display-flex field is-align-items-center" id="container-image">
             <div >
                 <figure class="image is-128x128 cursor-type" onclick="document.getElementById('image').click()">
-                    <img class="is-rounded" src="<?= $data['image_name'] != null ? $data['image_name'] : "../assets/images/no_image.jpg"; ?>"  alt="avatar"/>
+                    <img class="is-rounded" id="previewImg"
+                         src="<?= $data['image_name'] != null ? "../../uploads/" . $data['image_name'] : "../assets/images/no_image.jpg"; ?>"
+                         alt="avatar"
+                    />
                 </figure>
                 <input type="file" name="image" id="image" accept="image/*" class="is-display-none"/>
             </div>
@@ -44,7 +48,8 @@ if(!$user){
             <div class="ml-5">
                 <label class="label" for="username">Nombre de usuario</label>
                 <div class="control has-icons-right">
-                    <input class="input is-success" type="text" placeholder="Nombre de usuario"
+                    <input class="input <?= isset($errors['username']) ? 'is-danger' : ''?>"
+                           type="text" placeholder="Nombre de usuario"
                            name="username" id="username" required
                            value="<?= $data['username'] ?>"
                     >
@@ -60,7 +65,8 @@ if(!$user){
            <div>
                <label class="label" for="name">Nombre</label>
                <div class="control has-icons-right">
-                   <input class="input is-success" type="text" placeholder="Nombre"
+                   <input class="input <?= isset($errors['name']) ? 'is-danger' : ''?>"
+                          type="text" placeholder="Nombre"
                           name="name" id="name" required
                           value="<?= $data['name'] ?>"
                    >
@@ -73,7 +79,8 @@ if(!$user){
            <div class="ml-5">
                <label class="label" for="surname">Apellidos</label>
                <div class="control has-icons-right">
-                   <input class="input is-success" type="text" placeholder="Apellidos"
+                   <input class="input <?= isset($errors['surname']) ? 'is-danger' : ''?>"
+                          type="text" placeholder="Apellidos"
                           name="surname" id="surname" required
                           value="<?= $data['surname'] ?>"
                    >
@@ -89,7 +96,8 @@ if(!$user){
             <p class="help is-danger">*Solo para cambiar contraseña</p>
             <label class="label" for="password">Contraseña actual</label>
             <p class="control has-icons-right has-icons-left">
-                <input class="input is-success" type="password" placeholder="Contraseña actual"
+                <input class="input <?= isset($errors['password']) ? 'is-danger' : ''?>"
+                       type="password" placeholder="Contraseña actual"
                        name="password" id="password"
                 >
                 <span class="icon is-small is-left">
@@ -105,7 +113,8 @@ if(!$user){
         <div class="field">
             <label class="label" for="new-password">Nueva contraseña</label>
             <div class="control has-icons-right">
-                <input class="input is-success" type="password" placeholder="Nueva contraseña"
+                <input class="input <?= isset($errors['new_password']) ? 'is-danger' : ''?>"
+                       type="password" placeholder="Nueva contraseña"
                     name="new-password" id="new-password"
                 >
                 <span class="icon is-small is-right">

@@ -72,10 +72,10 @@ if(isset($_SESSION["user"])){
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a class="button is-primary">
+                            <a class="button is-primary" href="../view/login.php?register">
                                 <strong>Registrarse</strong>
                             </a>
-                            <a class="button is-light">
+                            <a class="button is-light" href="../view/login.php">
                                 Iniciar sesión
                             </a>
                         </div>
