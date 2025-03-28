@@ -7,7 +7,8 @@ use PDO;
 require_once "seed/db_data.php";
 class Seeder
 {
-    public static function loadSeed($connection){
+    public static function loadSeed($connection): array
+    {
         require_once "config/db_queries.php";
         $messages = array();
         if(self::countRegisters($connection, COUNT_USERS) == 0)
@@ -28,7 +29,8 @@ class Seeder
         return $count->fetchColumn();
     }
 
-    private static function executeConsults($consults, $connection, $name){
+    private static function executeConsults($consults, $connection, $name): string
+    {
         try{
             $hashed_password = password_hash("1234", PASSWORD_DEFAULT);
             $connection->exec("USE " . DB_NAME);

@@ -9,10 +9,11 @@ use seed\Seeder;
 
 class Database
 {
-    private static $connection;
+    private static PDO $connection;
 
     private function __construct() {} // Evitar instancias directas
-    public static function connect(){
+    public static function connect(): PDO
+    {
         if (!isset(self::$connection)) {
             try {
                 require_once "db_connection.php";
@@ -38,7 +39,8 @@ class Database
     }
 
 
-    public static function createTables(){
+    public static function createTables(): void
+    {
         try{
             require_once "config/db_queries.php";
             //Obtener la conexión a la base de datos
@@ -49,21 +51,18 @@ class Database
             $connection->exec(CREATE_TABLE_TOPICS);
             $connection->exec(CREATE_TABLE_THREADS);
             $connection->exec(CREATE_TABLE_SUB_THREADS);
-        }catch(PDOException $e){
-            throw new Exception("Error to create tables: " . $e->getMessage());
-        } catch (Exception $e) {
+        }catch(PDOException|Exception $e){
             throw new Exception("Error to create tables: " . $e->getMessage());
         }
     }
 
-    public static function insertInitialData() {
+    public static function insertInitialData(): array
+    {
         try {
             require_once "seed/Seeder.php";
             $connection = self::connect();
             return Seeder::loadSeed($connection);
-        } catch (PDOException $e) {
-            throw new Exception("Error loading seed: " . $e->getMessage());
-        } catch (Exception $e) {
+        } catch (PDOException|Exception $e) {
             throw new Exception("Error loading seed: " . $e->getMessage());
         }
     }

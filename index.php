@@ -10,11 +10,12 @@ $messages = (new DatabaseController())->dbConnect();
 
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/index.css">
 
 <head>
     <meta charset="UTF-8">
-    <title>Forum</title>
+    <title>Foro</title>
+    <link rel="icon" href="assets/images/logo/favicon.png" type="image/x-icon"/>
 </head>
 
 <body>
@@ -25,7 +26,8 @@ if (is_array($messages)) {
     }
 } else if(is_string($messages))
     echo $messages . "<br>";
-header("Location: view/login.php?mode=login");
+//header("Location: view/login.php?mode=login");
+header("Location: view/main.php");
 exit();
 ?>
 </body>
