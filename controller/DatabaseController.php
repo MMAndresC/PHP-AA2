@@ -4,7 +4,7 @@ namespace controller;
 
 use DatabaseModel;
 
-require_once "model/DatabaseModel.php"; // Cargar el archivo de la clase
+require_once __DIR__ . "/../model/DatabaseModel.php"; // Cargar el archivo de la clase
 
 
 class DatabaseController

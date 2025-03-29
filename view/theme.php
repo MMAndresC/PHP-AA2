@@ -4,27 +4,29 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$message = $_SESSION['result_verification'] ?? '';
-unset($_SESSION['result_verification']);
+$theme_id = $_GET['id-theme'] ?? null;
+if ($theme_id === null) {
+    header("Location: main.php");
+    exit();
+}
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Forum</title>
-    <link rel="stylesheet" href="">
+    <title>Foro</title>
+    <link rel="stylesheet" href="../css/index.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
 </head>
 
 <body>
 <header>
-    <h1>Verificación de mail</h1>
+    <?php require_once __DIR__ . "/../components/nav_bar.php"; ?>
 </header>
 
-<section id="container">
-  <h1><?= $message ?></h1>
-</section>
 </body>
 </html>
+

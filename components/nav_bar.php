@@ -1,23 +1,40 @@
 <?php
 
+require_once __DIR__ . "/../controller/ThemeController.php";
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+if(!isset($_SESSION["themes"])){
+    $_SESSION["themes"] = ThemeController::getAllThemes();
+}
+
+$themes = $_SESSION["themes"];
+
 $isLoggedIn = false;
 if(isset($_SESSION["user"])){
    $isLoggedIn = true;
+}
 
-}?>
+//Para saber que theme está seleccionado, ya que no le llega el $_GET
+$id_selected = -1;
+$url = $_SERVER['REQUEST_URI'];
+$position = strpos($url, "=");
+if($position !== false && str_contains($url, "theme.php?id-theme=")){
+    $id_selected = (int) substr($url, $position + 1);
+}
+
+?>
 
 <script type="text/javascript">
-    <?php require_once "../scripts/navBarScript.js"; ?>
+    <?php require_once __DIR__ . "/../scripts/navBarScript.js"; ?>
 </script>
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="">
-            <?php require_once("../assets/images/logo/logo.svg"); ?>
+            <?php require_once __DIR__ . "/../assets/images/logo/logo.svg"; ?>
         </a>
 
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
@@ -40,23 +57,18 @@ if(isset($_SESSION["user"])){
             <?php } ?>
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
-                    More
+                    Foros
                 </a>
 
                 <div class="navbar-dropdown">
-                    <a class="navbar-item">
-                        About
-                    </a>
-                    <a class="navbar-item is-selected">
-                        Jobs
-                    </a>
-                    <a class="navbar-item">
-                        Contact
-                    </a>
-                    <hr class="navbar-divider">
-                    <a class="navbar-item">
-                        Report an issue
-                    </a>
+                    <?php foreach($themes as $theme){ ?>
+                        <a class="navbar-item <?= $theme['id'] == $id_selected ? 'is-selected' : ''; ?>"
+                           href="../view/theme?id-theme=<?= $theme['id']; ?>"
+                        >
+                            <?= $theme['name']; ?>
+                        </a>
+                        <hr class="navbar-divider">
+                    <?php } ?>
                 </div>
             </div>
         </div>

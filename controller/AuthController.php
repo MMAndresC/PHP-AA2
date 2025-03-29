@@ -2,9 +2,9 @@
 
 session_start();
 
-require_once "../model/AuthModel.php";
-require_once "../util/validation.php";
-require_once "../util/extract_params.php";
+require_once __DIR__ . "/../model/AuthModel.php";
+require_once __DIR__ . "/../util/validation.php";
+require_once __DIR__ . "/../util/extract_params.php";
 
 
 function existErrors($errors, $old_data, $mode): void
@@ -52,7 +52,7 @@ if ($mode === 'login') {
     if ($response['registerSuccess']) {
         $params['token'] = $response['token'];
         $_SESSION['message'] = "Bienvenido " . $params['username'] . "! Recibirás un mail para confirmar tu cuenta.";
-        require_once "../email/Email.php";
+        require_once __DIR__ . "/../email/Email.php";
         $result = Email::sendVerificationEmail($params);
         $_SESSION['mail'] = $result;
         header("Location: ../view/login.php?mode=login");

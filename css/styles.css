@@ -1,3 +1,13 @@
 .cursor-type {
     cursor: pointer !important;
 }
+
+.themes-section {
+    width: 60% !important;
+    margin-left: 20% !important;
+}
+
+.themes-section figure {
+    max-height: 250px;
+    width: 100%;
+}

@@ -6,15 +6,20 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $mode = $_GET['mode'] ?? 'no_mode';
 if($mode == 'close'){
-    require_once "../util/destroy_session.php";
+    require_once __DIR__ . "/../util/destroy_session.php";
     header("Location: ../view/main.php");
     exit();
 }
 $isLoggedIn = false;
 if(!isset($_SESSION["user"])){
     $isLoggedIn = true;
+}
 
-}?>
+$themes = $_SESSION["themes"];
+
+$banner_path = '../assets/images/banner/';
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,8 +33,23 @@ if(!isset($_SESSION["user"])){
 
 <body>
 <header>
-    <?php require_once "../components/nav_bar.php"; ?>
+    <?php require_once __DIR__ . "/../components/nav_bar.php"; ?>
 </header>
-<h1>FORO</h1>
+<main class="container">
+    <?php foreach ($themes as $theme){ ?>
+        <section class="box themes-section">
+            <a href="theme.php?id-theme=<?= $theme['id'] ?>">
+                <p class="has-text-centered is-size-3"><?= $theme['name'] ?></p>
+                <figure class="image image is-2by1">
+                    <img class=""
+                         src="<?= isset($theme['banner']) ? $banner_path . $theme['banner'] : $banner_path . "banner_default.png"; ?>"
+                         alt="<?= $theme['name'] . 'banner'?>"
+                    />
+                </figure>
+            </a>
+            <p><?= $theme['description'] ?></p>
+        </section>
+    <?php } ?>
+</main>
 </body>
 </html>

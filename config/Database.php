@@ -7,6 +7,9 @@ use PDO;
 use PDOException;
 use seed\Seeder;
 
+require_once __DIR__ . "/db_connection.php";
+require_once __DIR__ . "/db_queries.php";
+
 class Database
 {
     private static PDO $connection;
@@ -16,9 +19,6 @@ class Database
     {
         if (!isset(self::$connection)) {
             try {
-                require_once "db_connection.php";
-                require_once "db_queries.php";
-
                 // Instanciar objeto PDO
                 self::$connection = new PDO("mysql:host=" . DB_HOST, DB_USER, DB_PASS, [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -42,13 +42,12 @@ class Database
     public static function createTables(): void
     {
         try{
-            require_once "config/db_queries.php";
+            require_once __DIR__ . "/../config/db_queries.php";
             //Obtener la conexión a la base de datos
             $connection = self::connect();
             //Crear todas las tablas en orden de dependencia
             $connection->exec(CREATE_TABLE_USERS);
             $connection->exec(CREATE_TABLE_THEMES);
-            $connection->exec(CREATE_TABLE_TOPICS);
             $connection->exec(CREATE_TABLE_THREADS);
             $connection->exec(CREATE_TABLE_SUB_THREADS);
         }catch(PDOException|Exception $e){
