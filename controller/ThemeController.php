@@ -8,4 +8,10 @@ class ThemeController
         $themeModel = new ThemeModel();
         return $themeModel->getThemes();
     }
+
+    public static function getTheme(int $id): array
+    {
+        $themeModel = new ThemeModel();
+        return $themeModel->getTheme($id);
+    }
 }

@@ -20,9 +20,9 @@ if(isset($_SESSION["user"])){
 //Para saber que theme está seleccionado, ya que no le llega el $_GET
 $id_selected = -1;
 $url = $_SERVER['REQUEST_URI'];
-$position = strpos($url, "=");
-if($position !== false && str_contains($url, "theme.php?id-theme=")){
-    $id_selected = (int) substr($url, $position + 1);
+$position = strpos($url, "id-theme=");
+if($position !== false && str_contains($url, "id-theme=")){
+    $id_selected = (int) substr($url, $position + 9); // id-theme= tiene 9 caracteres, asi que hay que coger pos + 10
 }
 
 ?>
@@ -63,7 +63,7 @@ if($position !== false && str_contains($url, "theme.php?id-theme=")){
                 <div class="navbar-dropdown">
                     <?php foreach($themes as $theme){ ?>
                         <a class="navbar-item <?= $theme['id'] == $id_selected ? 'is-selected' : ''; ?>"
-                           href="../view/theme?id-theme=<?= $theme['id']; ?>"
+                           href="../view/theme?pag=0&id-theme=<?= $theme['id']; ?>"
                         >
                             <?= $theme['name']; ?>
                         </a>

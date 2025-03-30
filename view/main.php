@@ -38,7 +38,7 @@ $banner_path = '../assets/images/banner/';
 <main class="container">
     <?php foreach ($themes as $theme){ ?>
         <section class="box themes-section">
-            <a href="theme.php?id-theme=<?= $theme['id'] ?>">
+            <a href="theme.php?pag=0&id-theme=<?= $theme['id'] ?>">
                 <p class="has-text-centered is-size-3"><?= $theme['name'] ?></p>
                 <figure class="image image is-2by1">
                     <img class=""
