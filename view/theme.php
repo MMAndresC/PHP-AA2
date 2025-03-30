@@ -15,8 +15,8 @@ if ($theme_id === null) {
 
 $FORMAT_DATE = "d/m/Y H:i";
 $threads = ThreadController::getThreadsByTheme($theme_id);
-$theme = ThemeController::getTheme($theme_id);
-//TODO paginacion con limit y offset no funciona con el execute
+$theme_actual = ThemeController::getTheme($theme_id);
+//TODO paginación con limit y offset no funciona con el execute
 ?>
 
 <!DOCTYPE html>
@@ -33,8 +33,8 @@ $theme = ThemeController::getTheme($theme_id);
 <header>
     <?php require_once __DIR__ . "/../components/nav_bar.php"; ?>
 </header>
+<p><?= $theme_actual['name'] ?></p>
 <main class="container">
-    <h1><?= $theme['name']; ?></h1>
     <!-- Paginación -->
     <!--<nav class="pagination is-centered" role="navigation" aria-label="pagination">
         <a href="#" class="pagination-previous">Previous</a>

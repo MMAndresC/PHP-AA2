@@ -30,7 +30,7 @@ class ThemeModel
         try{
             $stmt = $this->db->prepare(GET_THEME_BY_ID);
             $stmt->execute([":id" => $id]);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         }catch (PDOException $e){
             return null;
         }
