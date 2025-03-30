@@ -14,9 +14,14 @@ if ($theme_id === null) {
 }
 
 $FORMAT_DATE = "d/m/Y H:i";
-$threads = ThreadController::getThreadsByTheme($theme_id);
+$LIMIT = 1;
+$page = $_GET['page'] ?? 0;
+$response = ThreadController::getThreadsByTheme($theme_id, $LIMIT, $page * $LIMIT);
+$total_registers = $response['count'] ?? 0;
+$last_page = ceil($total_registers / $LIMIT);
+$threads = $response['threads'] ?? [];
 $theme_actual = ThemeController::getTheme($theme_id);
-//TODO paginación con limit y offset no funciona con el execute
+
 ?>
 
 <!DOCTYPE html>
@@ -28,26 +33,34 @@ $theme_actual = ThemeController::getTheme($theme_id);
     <link rel="stylesheet" href="../css/index.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
 </head>
-
+<?php var_dump($threads); ?>
 <body>
 <header>
     <?php require_once __DIR__ . "/../components/nav_bar.php"; ?>
 </header>
-<p><?= $theme_actual['name'] ?></p>
+<p><?= (is_array($theme_actual) && isset($theme_actual['name'])) ? $theme_actual['name'] : '' ?></p>
 <main class="container">
     <!-- Paginación -->
-    <!--<nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        <a href="#" class="pagination-previous">Previous</a>
-        <a href="#" class="pagination-next">Next page</a>
+    <nav class="pagination is-small" role="navigation" aria-label="pagination">
+        <a href="theme.php?pag=<?= (($page - 1) < 0) ? 0 : $page - 1 ?>&id-theme=<?= $theme_id ?>"
+           class="pagination-previous <?= $page === 0 ? 'is-disabled' : '' ?>"
+        >
+            Anterior
+        </a>
+        <a href="theme.php?pag=<?= (($page + 1) >= $last_page) ? $last_page : $page + 1 ?>&id-theme=<?= $theme_id ?>"
+           class="pagination-next <?= $page ===  ($last_page - 1)? 'is-disabled' : '' ?>"
+        >
+            Siguiente
+        </a>
         <ul class="pagination-list">
             <li><a href="#" class="pagination-link" aria-label="Goto page 1">1</a></li>
             <li><span class="pagination-ellipsis">&hellip;</span></li>
             <li><a href="#" class="pagination-link" aria-label="Goto page 45">45</a></li>
             <li>
                 <a
-                    class="pagination-link is-current"
-                    aria-label="Page 46"
-                    aria-current="page"
+                        class="pagination-link is-current"
+                        aria-label="Page 46"
+                        aria-current="page"
                 >46</a
                 >
             </li>
@@ -55,7 +68,7 @@ $theme_actual = ThemeController::getTheme($theme_id);
             <li><span class="pagination-ellipsis">&hellip;</span></li>
             <li><a href="#" class="pagination-link" aria-label="Goto page 86">86</a></li>
         </ul>
-    </nav>-->
+    </nav>
 
     <?php foreach ($threads as $thread){ ?>
         <article class="message">

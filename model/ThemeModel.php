@@ -25,14 +25,16 @@ class ThemeModel
         }
     }
 
-    public function getTheme(int $id): ?array
+    public function getTheme(int $id)
     {
         try{
             $stmt = $this->db->prepare(GET_THEME_BY_ID);
             $stmt->execute([":id" => $id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $theme = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($theme) return $theme;
+            return [];
         }catch (PDOException $e){
-            return null;
+            return [];
         }
     }
 }
