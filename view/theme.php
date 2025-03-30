@@ -14,8 +14,8 @@ if ($theme_id === null) {
 }
 
 $FORMAT_DATE = "d/m/Y H:i";
-$LIMIT = 1;
-$page = $_GET['page'] ?? 0;
+$LIMIT = 5;
+$page = $_GET['pag'] ?? 0;
 $response = ThreadController::getThreadsByTheme($theme_id, $LIMIT, $page * $LIMIT);
 $total_registers = $response['count'] ?? 0;
 $last_page = ceil($total_registers / $LIMIT);
@@ -33,40 +33,73 @@ $theme_actual = ThemeController::getTheme($theme_id);
     <link rel="stylesheet" href="../css/index.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
 </head>
-<?php var_dump($threads); ?>
+
 <body>
 <header>
     <?php require_once __DIR__ . "/../components/nav_bar.php"; ?>
 </header>
+
 <p><?= (is_array($theme_actual) && isset($theme_actual['name'])) ? $theme_actual['name'] : '' ?></p>
 <main class="container">
     <!-- Paginación -->
     <nav class="pagination is-small" role="navigation" aria-label="pagination">
-        <a href="theme.php?pag=<?= (($page - 1) < 0) ? 0 : $page - 1 ?>&id-theme=<?= $theme_id ?>"
-           class="pagination-previous <?= $page === 0 ? 'is-disabled' : '' ?>"
-        >
-            Anterior
-        </a>
-        <a href="theme.php?pag=<?= (($page + 1) >= $last_page) ? $last_page : $page + 1 ?>&id-theme=<?= $theme_id ?>"
-           class="pagination-next <?= $page ===  ($last_page - 1)? 'is-disabled' : '' ?>"
-        >
-            Siguiente
-        </a>
+        <!-- Botones anterior/siguiente-->
+        <?php if($page != 0){?>
+            <a href="theme.php?pag=<?= $page - 1 ?>&id-theme=<?= $theme_id ?>"
+               class="pagination-previous">Anterior</a>
+        <?php }else {?>
+            <button class="pagination-previous" disabled>Anterior</button>
+        <?php } ?>
+        <?php if(($page + 1) != $last_page){?>
+            <a href="theme.php?pag=<?= $page + 1 ?>&id-theme=<?= $theme_id ?>"
+               class="pagination-next">Siguiente</a>
+        <?php }else {?>
+            <button class="pagination-previous" disabled>Siguiente</button>
+        <?php } ?>
+
+        <!-- Botones con números-->
         <ul class="pagination-list">
-            <li><a href="#" class="pagination-link" aria-label="Goto page 1">1</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a href="#" class="pagination-link" aria-label="Goto page 45">45</a></li>
             <li>
-                <a
-                        class="pagination-link is-current"
-                        aria-label="Page 46"
-                        aria-current="page"
-                >46</a
-                >
+                <a <?= $page != 0 ? 'href="theme.php?pag=0&id-theme=' . $theme_id. '"' : ''?>
+                   class="pagination-link <?= $page == 0 ? 'is-current' : ''?>" aria-label="Ir a página 1">1
+                </a>
             </li>
-            <li><a href="#" class="pagination-link" aria-label="Goto page 47">47</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a href="#" class="pagination-link" aria-label="Goto page 86">86</a></li>
+            <!-- ... -->
+            <?php if($page > 2){ ?>
+                <li><span class="pagination-ellipsis">&hellip;</span></li>
+            <?php } ?>
+            <!-- anterior al seleccionado -->
+            <?php if($page > 1 && $page < $last_page){ ?>
+                <li><a href="theme.php?pag=<?= $page ?>&id-theme=<?= $theme_id ?>" class="pagination-link" aria-label="Ir a página <?= $page ?>"><?= $page ?></a></li>
+            <?php } ?>
+            <!-- seleccionado -->
+            <?php if($page > 0 && $page + 1 < $last_page){ ?>
+                <li>
+                    <a
+                            class="pagination-link is-current"
+                            aria-label="<?= $page + 1 ?>"
+                            aria-current="page"
+                    ><?= $page + 1 ?></a
+                    >
+                </li>
+            <?php } ?>
+            <!-- Posterior al seleccionado -->
+            <?php if($page + 2 < $last_page){ ?>
+                <li><a href="theme.php?pag=<?= $page + 2 ?>&id-theme=<?= $theme_id ?>" class="pagination-link" aria-label="Ir a página <?= $page + 2 ?>"><?= $page + 2 ?></a></li>
+            <?php } ?>
+            <!-- ... -->
+            <?php if(($page + 2) < ($last_page - 1)){ ?>
+                <li><span class="pagination-ellipsis">&hellip;</span></li>
+            <?php } ?>
+            <!-- Último botón -->
+            <?php if($last_page > 1 ){ ?>
+                <li>
+                    <a <?= $page + 1 != $last_page ? 'href="theme.php?pag='. ($last_page - 1) . '&id-theme=' . $theme_id. '"' : ''?>
+                       class="pagination-link <?= $page + 1 == $last_page ? 'is-current' : ''?>"
+                       aria-label="Ir a página "<?= $last_page ?>><?= $last_page ?>
+                    </a>
+                </li>
+            <?php } ?>
         </ul>
     </nav>
 
