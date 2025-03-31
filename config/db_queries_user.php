@@ -18,5 +18,5 @@ const UPDATE_EDIT_USER_WITHOUT_PASS = "UPDATE `user` SET `name` = :name, `surnam
 const UPDATE_EDIT_USER_WITH_PASS = "UPDATE `user` SET `name` = :name, `surname` = :surname, `username` = :username, `image_name` = :image_name, `password` = :password WHERE `email` = :email ";
 
 const DELETE_USER = "DELETE FROM `user` WHERE `email` = :email";
-const DELETE_SUB_THREAD_USER = "DELETE FROM `sub_thread` WHERE `creator` = :email";
+const DELETE_SUB_THREAD_USER = "DELETE FROM `sub_thread` WHERE `author` = :email";
 

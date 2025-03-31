@@ -31,7 +31,7 @@ if (is_array($messages)) {
     }
 } else if(is_string($messages))
     echo $messages . "<br>";
-header("Location: view/main.php");
+header("Location: view/theme.php");
 exit();
 ?>
 </body>

@@ -11,3 +11,12 @@
     max-height: 250px;
     width: 100%;
 }
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    min-width: 200px;
+    display: none;
+    z-index: 1000;
+}

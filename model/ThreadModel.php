@@ -4,7 +4,6 @@ use database\Database;
 
 require_once __DIR__ . "/../config/Database.php";
 require_once  __DIR__ . "/../config/db_queries_thread.php";
-require_once __DIR__ . "/../model/ThreadModel.php";
 class ThreadModel
 {
     private PDO $db;
@@ -31,6 +30,25 @@ class ThreadModel
         }catch(PDOException $e){
             return ["count" => 0, "threads" => []];
         }
+    }
 
+    public function addNewThread(array $thread): array
+    {
+        try{
+            $stmt = $this->db->prepare(INSERT_THREAD);
+            $stmt->execute([
+                ":theme_id" => $thread["theme_id"],
+                ":title" => $thread["title"],
+                ":status" => $thread["status"],
+                ":last_updater" => $thread["last_updater"]
+            ]);
+            $success = $stmt->rowCount() > 0;
+            if($success){
+                $thread['thread_id'] = $this->db->lastInsertId();
+                return $thread;
+            }else return [];
+        }catch(PDOException $e){
+            return [];
+        }
     }
 }

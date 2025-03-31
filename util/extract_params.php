@@ -25,3 +25,19 @@ function extractParamsUser(): array
     $params["surname"] = trim($_POST['surname'] ?? '');
     return $params;
 }
+
+function extractParamsThread(): array
+{
+    //Prepara params para thread y sub-thread
+    $params = array();
+    //Propios de thread
+    $params["theme_id"] = trim($_POST['theme_id'] ?? '');
+    $params["title"] = trim($_POST['title'] ?? '');
+    $params["status"] = 'active';
+    $params["last_updater"] = trim($_POST['author'] ?? '');
+    //Propios de sub-thread, solo faltara thread_id
+    $params["author"] = trim($_POST['author'] ?? '');
+    $params["content"] = trim($_POST['content'] ?? '');
+    $params["main"] = true;
+    return $params;
+}

@@ -51,7 +51,7 @@ if (isset($_POST["action"])) {
                 $_SESSION["failed_delete"] = true;
             }else{
                 require_once __DIR__ . "/../util/destroy_session.php";
-                header("Location: ../view/main.php");
+                header("Location: ../view/theme.php");
                 exit();
             }
         }else  $_SESSION["failed_delete"] = true;

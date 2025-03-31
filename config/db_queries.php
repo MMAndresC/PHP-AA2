@@ -48,12 +48,12 @@ const CREATE_TABLE_THREADS = "CREATE TABLE IF NOT EXISTS `thread` (
 const CREATE_TABLE_SUB_THREADS = "CREATE TABLE IF NOT EXISTS `sub_thread` ( 
     `id` INT(11) NOT NULL AUTO_INCREMENT ,
     `thread_id` INT(11) NOT NULL ,
-    `creator` VARCHAR(50) NOT NULL ,
+    `author` VARCHAR(50) NOT NULL ,
     `content` TEXT NOT NULL ,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     `main` BOOLEAN NOT NULL DEFAULT FALSE ,
     PRIMARY KEY (`id`) , 
-    FOREIGN KEY (`creator`) REFERENCES `user`(`email`) ON UPDATE CASCADE ,
+    FOREIGN KEY (`author`) REFERENCES `user`(`email`) ON UPDATE CASCADE ,
     FOREIGN KEY (`thread_id`) REFERENCES `thread`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB;
 ";

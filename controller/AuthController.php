@@ -41,7 +41,7 @@ if ($mode === 'login') {
     $user = $userModel->login($params['email'], $params['password']);
     if ($user) {
         $_SESSION['user'] = $user;
-        header("Location: ../view/main.php");
+        header("Location: ../view/theme.php");
     } else {
         $_SESSION['errors']['password'] = "Email o contraseña incorrectos.";
         $_SESSION['old_data'] = $old_data;

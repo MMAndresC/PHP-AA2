@@ -63,7 +63,7 @@ if($position !== false && str_contains($url, "id-theme=")){
                 <div class="navbar-dropdown">
                     <?php foreach($themes as $theme){ ?>
                         <a class="navbar-item <?= $theme['id'] == $id_selected ? 'is-selected' : ''; ?>"
-                           href="../view/theme.php?pag=0&id-theme=<?= $theme['id']; ?>"
+                           href="../view/thread.php?pag=0&id-theme=<?= $theme['id']; ?>"
                         >
                             <?= $theme['name']; ?>
                         </a>
@@ -77,7 +77,7 @@ if($position !== false && str_contains($url, "id-theme=")){
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-light" href="../view/main.php?mode=close">
+                        <a class="button is-light" href="../view/theme.php?mode=close">
                             Cerrar Sesión
                         </a>
                     </div>
