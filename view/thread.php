@@ -29,7 +29,7 @@ $error_critical = $_SESSION['error_critical'] ?? false;
 $result = $_SESSION['result'] ?? false;
 
 unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result']);
-//TODO no funciona lo que muestra los errores y tiene que ir hacia el anchor
+
 ?>
 
 

@@ -72,10 +72,10 @@ function validateValidThread($errors, $params) {
     if(trim($params['author']) == '' || trim($params['last_updater']) == '')
         $errors['author'] = "Autor desconocido";
 
-    if(trim($params['title']) < $MIN_LEN_TITLE)
+    if(strlen(trim($params['title'])) < $MIN_LEN_TITLE)
         $errors['title'] = "Titulo del nuevo post obligatorio y no menor de " . $MIN_LEN_TITLE . " caracteres";
 
-    if(trim($params['content']) < $MIN_LEN_CONTENT)
+    if(strlen(trim($params['content'])) < $MIN_LEN_CONTENT)
         $errors['content'] = "El mensaje no puede tener menos de  " . $MIN_LEN_CONTENT . " caracteres";
 
     return $errors;
