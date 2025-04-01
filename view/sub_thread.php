@@ -100,13 +100,13 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                     <li><span class="pagination-ellipsis">&hellip;</span></li>
                 <?php } ?>
                 <!-- anterior al seleccionado -->
-                <?php if($page > 1 && $page < $last_page){ ?>
-                    <li><a href="sub_thread.php?pag=<?= $page ?>&id-thread=<?= $thread_id ?>"
+                <?php if($page >= 2){ ?>
+                    <li><a href="sub_thread.php?pag=<?= $page - 1 ?>&id-thread=<?= $thread_id ?>"
                            class="pagination-link" aria-label="Ir a página <?= $page ?>"><?= $page ?></a>
                     </li>
                 <?php } ?>
                 <!-- seleccionado -->
-                <?php if($page > 0 && $page + 1 < $last_page){ ?>
+                <?php if($page != 0 && $page + 1 != $last_page){ ?>
                     <li>
                         <a
                             class="pagination-link is-current"
@@ -118,8 +118,8 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                 <?php } ?>
                 <!-- Posterior al seleccionado -->
                 <?php if($page + 2 < $last_page){ ?>
-                    <li><a href="sub_thread.php?pag=<?= $page + 2 ?>&id-thread=<?= $thread_id ?>"
-                           class="pagination-link" aria-label="Ir a página <?= $page + 2 ?>"><?= $page + 2 ?></a>
+                    <li><a href="sub_thread.php?pag=<?= $page + 1 ?>&id-thread=<?= $thread_id ?>"
+                           class="pagination-link" aria-label="Ir a página <?= $page + 2 ?>">P<?= $page + 2 ?></a>
                     </li>
                 <?php } ?>
                 <!-- ... -->
@@ -127,7 +127,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                     <li><span class="pagination-ellipsis">&hellip;</span></li>
                 <?php } ?>
                 <!-- Último botón -->
-                <?php if($last_page > 1 ){ ?>
+                <?php if($last_page > 1){ ?>
                     <li>
                         <a <?= $page + 1 != $last_page ? 'href="sub_thread.php?pag='. ($last_page - 1) . '&id-thread=' . $thread_id. '"' : ''?>
                             class="pagination-link <?= $page + 1 == $last_page ? 'is-current' : ''?>"

@@ -99,13 +99,13 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                     <li><span class="pagination-ellipsis">&hellip;</span></li>
                 <?php } ?>
                 <!-- anterior al seleccionado -->
-                <?php if($page > 1 && $page < $last_page){ ?>
-                    <li><a href="thread.php?pag=<?= $page ?>&id-theme=<?= $theme_id ?>"
+                <?php if($page >= 2){ ?>
+                    <li><a href="thread.php?pag=<?= $page - 1?>&id-theme=<?= $theme_id ?>"
                            class="pagination-link" aria-label="Ir a página <?= $page ?>"><?= $page ?></a>
                     </li>
                 <?php } ?>
                 <!-- seleccionado -->
-                <?php if($page > 0 && $page + 1 < $last_page){ ?>
+                <?php if($page != 0 && $page + 1 != $last_page){ ?>
                     <li>
                         <a
                                 class="pagination-link is-current"
@@ -117,7 +117,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                 <?php } ?>
                 <!-- Posterior al seleccionado -->
                 <?php if($page + 2 < $last_page){ ?>
-                    <li><a href="thread.php?pag=<?= $page + 2 ?>&id-theme=<?= $theme_id ?>"
+                    <li><a href="thread.php?pag=<?= $page + 1 ?>&id-theme=<?= $theme_id ?>"
                            class="pagination-link" aria-label="Ir a página <?= $page + 2 ?>"><?= $page + 2 ?></a>
                     </li>
                 <?php } ?>
