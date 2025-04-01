@@ -59,4 +59,16 @@ class SubThreadModel
             return 0;
         }
     }
+
+    public function countSubThreads(int $thread_id): int
+    {
+        try{
+            $stmt = $this->db->prepare(GET_SUB_THREADS_BY_THREAD_ID);
+            $stmt->execute([":thread_id" => $thread_id]);
+            return $stmt->rowCount();
+        }catch(PDOException $e){
+            return -1;
+        }
+
+    }
 }

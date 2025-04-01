@@ -6,6 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+//Cerrar sesión
 $mode = $_GET['mode'] ?? 'no_mode';
 if($mode == 'close'){
     require_once __DIR__ . "/../util/destroy_session.php";

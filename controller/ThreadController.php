@@ -17,19 +17,30 @@ class ThreadController
         $threadModel = new ThreadModel();
         return $threadModel->addNewThread($params);
     }
+
+    public static function deleteThread(int $thread_id): int
+    {
+        $threadModel = new ThreadModel();
+        return $threadModel->deleteThread($thread_id);
+    }
 }
 
 
-if (basename($_SERVER['PHP_SELF']) === 'ThreadController.php') {
 
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $action = $_POST["action-thread"] ?? null;
+}else{
+    $action = $_GET["action"] ?? null;
+}
 
-    if ($action == "add-thread") {
-        $errors = array();
+$errors = array();
+
+switch ($action) {
+    case "add-thread": {
         $params = extractParamsThread();
         $errors = validateValidThread($errors, $params);
         if ($errors) {
@@ -47,7 +58,7 @@ if (basename($_SERVER['PHP_SELF']) === 'ThreadController.php') {
             //Se ha guardado en thread, guardar el mensaje en sub thread
             $row_count = SubThreadController::addNewSubThread($params);
             //TODO si devuelve 0 que hacemos?
-            $_SESSION['result'] = "Nuevo hilo añadido";
+            $_SESSION['result-thread'] = "Nuevo hilo añadido";
             header("Location: ../view/thread.php?pag=0&id-theme=" . $params["theme_id"]);
         }
         exit();

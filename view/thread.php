@@ -23,12 +23,13 @@ $total_registers = (int) $response['count'] ?? 0;
 $last_page = ceil($total_registers / $LIMIT);
 $threads = $response['threads'] ?? [];
 $theme_actual = ThemeController::getTheme($theme_id);
+$_SESSION['theme_id'] = $theme_id;
 
 $errors = $_SESSION['errors'] ?? [];
 $error_critical = $_SESSION['error_critical'] ?? false;
-$result = $_SESSION['result'] ?? false;
+$result = $_SESSION['result-thread'] ?? false;
 
-unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result']);
+unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread']);
 
 ?>
 

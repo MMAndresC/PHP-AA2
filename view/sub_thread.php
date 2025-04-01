@@ -24,10 +24,10 @@ $sub_threads = $response['sub_threads'] ?? [];
 $user = $_SESSION['user'] ?? null;
 
 $errors = $_SESSION['errors'] ?? [];
-$result = $_SESSION['result'] ?? false;
+$result = $_SESSION['result-sub-thread'] ?? false;
 $critical_error = $_SESSION['critical_error'] ?? false;
 
-unset($_SESSION['errors'],$_SESSION['result'], $_SESSION['critical_error']);
+unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_error']);
 
 ?>
 
@@ -41,7 +41,7 @@ unset($_SESSION['errors'],$_SESSION['result'], $_SESSION['critical_error']);
     <link rel="stylesheet" href="../css/index.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
 </head>
-<h1><?= var_dump($sub_threads) ?></h1>
+
 <body>
     <header>
         <?php require_once __DIR__ . "/../components/nav_bar.php"; ?>

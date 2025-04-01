@@ -51,4 +51,16 @@ class ThreadModel
             return [];
         }
     }
+
+    public function deleteThread(int $thread_id): int
+    {
+        try{
+            $stmt = $this->db->prepare(DELETE_THREAD);
+            $stmt->execute([":thread_id" => $thread_id]);
+            return $stmt->rowCount();
+        }catch(PDOException $e){
+            return 0;
+        }
+
+    }
 }

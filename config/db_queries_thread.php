@@ -11,3 +11,4 @@ INNER JOIN user u2 ON st.author = u2.email
 WHERE t.theme_id = :theme_id ORDER BY t.updated_at DESC";
 
 const INSERT_THREAD = "INSERT INTO thread (theme_id, title, status, last_updater) VALUES (:theme_id, :title, :status, :last_updater)";
+const DELETE_THREAD = "DELETE FROM thread WHERE id = :thread_id";
