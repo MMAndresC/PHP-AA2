@@ -31,6 +31,10 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
 
 ?>
 
+<script type="text/javascript">
+    <?php require_once "../scripts/userPanelScript.js"?>
+</script>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,10 +51,10 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
         <?php require_once __DIR__ . "/../components/nav_bar.php"; ?>
     </header>
 
-    <div class="container">
+    <div class="container mb-6 mt-6">
         <?php if($user !== null){ ?>
             <a href="#new-sub-thread"
-               class="pagination-previous">Nuevo mensaje</a>
+               class="tag is-medium is-primary is-light">Nuevo mensaje</a>
         <?php } ?>
     </div>
 
@@ -159,9 +163,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                                     <a class="tag is-link">
                                         Editar
                                     </a>
-                                    <a class="tag is-danger"
-                                       href="../controller/SubThreadController.php?action=delete-sub-thread&id-thread=<?= $thread_id ?>&id-sub-thread=<?= $sub_thread['id']?>"
-                                    >Borrar</a>
+                                    <button type="button" class="button tag is-light is-danger js-modal-trigger" data-target="modal-delete-<?=$sub_thread['id']?>">Borrar</button>
                                 </div>
                             </div>
                         <?php } ?>
@@ -176,6 +178,28 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                             <time>Última edición: <?= date_format(date_create($sub_thread['updated_at']), $FORMAT_DATE) ?></time>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Borrar el sub thread -->
+            <div id="modal-delete-<?= $sub_thread['id']?>" class="modal">
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Borrar el mensaje</p>
+                        <button class="delete" aria-label="close"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        <p class="is-danger">El mensaje se borrará, esta acción no se puede deshacer.</p>
+                    </section>
+                    <footer class="modal-card-foot">
+                        <div class="buttons">
+                            <a class="tag is-danger"
+                               href="../controller/SubThreadController.php?action=delete-sub-thread&id-thread=<?= $thread_id ?>&id-sub-thread=<?= $sub_thread['id']?>"
+                            >Borrar</a>
+                            <button class="button tag is-link">Cancelar</button>
+                        </div>
+                    </footer>
                 </div>
             </div>
         <?php } ?>

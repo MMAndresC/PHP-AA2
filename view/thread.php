@@ -49,11 +49,11 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
         <?php require_once __DIR__ . "/../components/nav_bar.php"; ?>
     </header>
 
-    <div class="container">
-        <p><?= (is_array($theme_actual) && isset($theme_actual['name'])) ? $theme_actual['name'] : '' ?></p>
+    <div class="container mb-6 mt-6">
+        <p class="has-text-centered is-size-2 mt-2"><?= (is_array($theme_actual) && isset($theme_actual['name'])) ? $theme_actual['name'] : '' ?></p>
         <?php if($user !== null){ ?>
             <a href="#new-thread"
-               class="pagination-previous">Nuevo mensaje</a>
+               class="tag is-light is-primary is-medium">Nuevo mensaje</a>
         <?php } ?>
     </div>
 
