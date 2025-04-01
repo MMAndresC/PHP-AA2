@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $user = $_SESSION['user'] ?? null;
 
-$theme_id = $_GET['id-theme'] ?? null;
+$theme_id = (int) $_GET['id-theme'] ?? null;
 if ($theme_id === null) {
     header("Location: theme.php");
     exit();
@@ -17,9 +17,9 @@ if ($theme_id === null) {
 
 $FORMAT_DATE = "d/m/Y H:i";
 $LIMIT = 5;
-$page = $_GET['pag'] ?? 0;
+$page = (int) $_GET['pag'] ?? 0;
 $response = ThreadController::getThreadsByTheme($theme_id, $LIMIT, $page * $LIMIT);
-$total_registers = $response['count'] ?? 0;
+$total_registers = (int) $response['count'] ?? 0;
 $last_page = ceil($total_registers / $LIMIT);
 $threads = $response['threads'] ?? [];
 $theme_actual = ThemeController::getTheme($theme_id);
@@ -175,11 +175,10 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result']);
             <form action="../controller/ThreadController.php" method="post" class="user-form box" id="new-thread">
                 <input class="input" type="hidden" name="author" id="author" value="<?= $user['email'] ?>">
                 <input class="input" type="hidden" name="theme_id" id="theme_id" value="<?= $theme_id ?>">
-                <input class="input" type="hidden" name="action" id="action" value="add">
                 <div class="field">
                     <label class="label" for="title">Título</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Título del nuevo hilo" name="title" id="title" required>
+                        <input class="input is-info" type="text" placeholder="Título del nuevo hilo" name="title" id="title" required>
                     </div>
                     <?php if(isset($errors['title'])){ ?>
                         <p class="help is-danger"><?= $errors['title'] ?></p>
@@ -188,7 +187,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result']);
                 <div class="field">
                     <label class="label" for="content">Mensaje</label>
                     <div class="control">
-                        <textarea class="input textarea-min-height" type="text" name="content" id="content"
+                        <textarea class="textarea is-info textarea-min-height" type="text" name="content" id="content"
                                   rows="8" cols="50" required></textarea>
                     </div>
                     <?php if(isset($errors['content'])){ ?>
@@ -197,7 +196,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result']);
                 </div>
                 <div class="field is-grouped">
                     <div class="control">
-                        <button class="button is-link">Nuevo mensaje</button>
+                        <button class="button is-link" name="action-thread" value="add-thread">Nuevo mensaje</button>
                     </div>
                     <div class="control">
                         <button class="button is-link is-light" type="reset">

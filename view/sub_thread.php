@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$thread_id = $_GET['id-thread'] ?? null;
+$thread_id = (int) $_GET['id-thread'] ?? null;
 //TODO llevar a una vista de error
 if ($thread_id === null) {
     header("Location: theme.php");
@@ -14,17 +14,20 @@ if ($thread_id === null) {
 }
 
 $FORMAT_DATE = "h:iA - d M, Y ";
-$LIMIT = 5;
-$page = $_GET['pag'] ?? 0;
+$LIMIT = 2;
+$page = (int) $_GET['pag'] ?? 0;
 $response = SubThreadController::getSubThreadsData($thread_id, $LIMIT, $page * $LIMIT);
-$total_registers = $response['count'] ?? 0;
+$total_registers = (int) $response['count'] ?? 0;
 $last_page = ceil($total_registers / $LIMIT);
 $sub_threads = $response['sub_threads'] ?? [];
 
 $user = $_SESSION['user'] ?? null;
 
+$errors = $_SESSION['errors'] ?? [];
 $result = $_SESSION['result'] ?? false;
 $critical_error = $_SESSION['critical_error'] ?? false;
+
+unset($_SESSION['errors'],$_SESSION['result'], $_SESSION['critical_error']);
 
 ?>
 
@@ -43,6 +46,14 @@ $critical_error = $_SESSION['critical_error'] ?? false;
     <header>
         <?php require_once __DIR__ . "/../components/nav_bar.php"; ?>
     </header>
+
+    <div class="container">
+        <?php if($user !== null){ ?>
+            <a href="#new-sub-thread"
+               class="pagination-previous">Nuevo mensaje</a>
+        <?php } ?>
+    </div>
+
     <main class="container">
         <!-- Toast cuando se haya editado el usuario, confirme que se ha hecho bien-->
         <?php if($result || $critical_error){ ?>
@@ -139,11 +150,27 @@ $critical_error = $_SESSION['critical_error'] ?? false;
                             <p class="title is-4"><?= $sub_thread['username'] ?? 'Unknown' ?></p>
                             <p class="subtitle is-6"><?= ucfirst($sub_thread['role']) ?? 'User' ?></p>
                         </div>
+                        <?php if(isset($user) &&  ($user['email'] === $sub_thread['author'] ||
+                                strtolower($user['role']) === 'moderator' ||
+                                strtolower($user['role']) === 'admin')){
+                            ?>
+                            <div class="media-right">
+                                <div class="tags has-addons">
+                                    <a class="tag is-link">
+                                        Editar
+                                    </a>
+                                    <a class="tag is-danger"
+                                       href="../controller/SubThreadController.php?action=delete-sub-thread&id-thread=<?= $thread_id ?>&id-sub-thread=<?= $sub_thread['id']?>"
+                                    >Borrar</a>
+                                </div>
+                            </div>
+                        <?php } ?>
                     </div>
-
+                    <hr />
                     <div class="content">
                         <?= $sub_thread['content'] ?? ''?>
                         <br><br>
+                        <hr />
                         <div class="is-display-flex is-justify-content-space-between">
                             <time>Creado: <?= date_format(date_create($sub_thread['created_at']), $FORMAT_DATE) ?></time>
                             <time>Última edición: <?= date_format(date_create($sub_thread['updated_at']), $FORMAT_DATE) ?></time>
@@ -155,14 +182,14 @@ $critical_error = $_SESSION['critical_error'] ?? false;
 
         <?php if($user !== null){ ?>
             <!-- Formulario para un nuevo thread-->
-            <form action="../controller/ThreadController.php" method="post" class="user-form box" id="new-thread">
+            <form action="../controller/SubThreadController.php" method="post" class="user-form box" id="new-sub-thread">
                 <input class="input" type="hidden" name="author" id="author" value="<?= $user['email'] ?>">
-                <input class="input" type="hidden" name="theme_id" id="theme_id" value="<?= $thread_id ?>">
-                <input class="input" type="hidden" name="action" id="action" value="add">
+                <input class="input" type="hidden" name="thread_id" id="thread_id" value="<?= $thread_id ?>">
+                <input class="input" type="hidden" name="last_page" id="last_page" value="<?= $last_page != 0 ? $last_page - 1 : 0 ?>">
                 <div class="field">
                     <label class="label" for="content">Mensaje</label>
                     <div class="control">
-                        <textarea class="input textarea-min-height" type="text" name="content" id="content"
+                        <textarea class="textarea textarea-min-height is-info" type="text" name="content" id="content"
                                   rows="8" cols="50" required></textarea>
                     </div>
                     <?php if(isset($errors['content'])){ ?>
@@ -171,12 +198,10 @@ $critical_error = $_SESSION['critical_error'] ?? false;
                 </div>
                 <div class="field is-grouped">
                     <div class="control">
-                        <button class="button is-link">Nuevo mensaje</button>
+                        <button class="button is-link" name="action-sub-thread" value="add-sub-thread">Nuevo mensaje</button>
                     </div>
                     <div class="control">
-                        <button class="button is-link is-light" type="reset">
-                            Limpiar
-                        </button>
+                        <button class="button is-link is-light" type="reset">Limpiar</button>
                     </div>
                 </div>
             </form>

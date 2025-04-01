@@ -48,4 +48,15 @@ class SubThreadModel
             return 0;
         }
     }
+
+    public function deleteSubThread(int $sub_thread_id): int
+    {
+        try{
+            $stmt = $this->db->prepare(DELETE_SUB_THREAD);
+            $stmt->execute([":sub_thread_id" => $sub_thread_id]);
+            return $stmt->rowCount();
+        }catch (PDOException $e){
+            return 0;
+        }
+    }
 }

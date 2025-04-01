@@ -41,3 +41,12 @@ function extractParamsThread(): array
     $params["main"] = true;
     return $params;
 }
+
+function extractParamsSubThread(): array
+{
+    $params = array();
+    $params["thread_id"] = trim($_POST['thread_id'] ?? '');
+    $params["author"] = trim($_POST['author'] ?? '');
+    $params["content"] = trim($_POST['content'] ?? '');
+    return $params;
+}

@@ -80,3 +80,15 @@ function validateValidThread($errors, $params) {
 
     return $errors;
 }
+
+function validateValidSubThread($errors, $params) {
+    $MIN_LEN_CONTENT = 10;
+
+    if(trim($params['author']) == '')
+        $errors['author'] = "Autor desconocido";
+
+    if(strlen(trim($params['content'])) < $MIN_LEN_CONTENT)
+        $errors['content'] = "El mensaje no puede tener menos de  " . $MIN_LEN_CONTENT . " caracteres";
+
+    return $errors;
+}
