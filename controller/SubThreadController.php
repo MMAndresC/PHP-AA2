@@ -28,6 +28,12 @@ class SubThreadController
         $subThreadModel = new SubThreadModel();
         return $subThreadModel->countSubThreads($thread_id);
     }
+
+    public static function updateSubThread(int $sub_thread_id, string $content): int
+    {
+        $subThreadModel = new SubThreadModel();
+        return $subThreadModel->updateSubThread($sub_thread_id, $content);
+    }
 }
 
 
@@ -71,7 +77,6 @@ switch ($action) {
         exit();
     }
 
- //TODO dialog de confirmacion
     case "delete-sub-thread": {
          $deleted_row_count = SubThreadController::deleteSubThread($sub_thread_id);
          if($deleted_row_count === 0) {
@@ -91,5 +96,28 @@ switch ($action) {
          }
          header("Location: ../view/sub_thread.php?pag=0&id-thread=" . $thread_id);
          exit();
+    }
+
+    case "edit-sub-thread": {
+        $content = $_POST["edited-content"] ?? null;
+        $sub_thread_id = isset($_POST["sub_thread_id"]) ? (int)$_POST["sub_thread_id"] : null;
+        $thread_id = isset($_POST["thread_id"]) ? (int)$_POST["thread_id"] : null;
+        if($sub_thread_id === null || $thread_id === null) {
+            $errors['critical_error'] = "No se ha podido editar el mensaje";
+            if($thread_id === null) $thread_id = 1;
+            header("Location: ../view/sub_thread.php?pag=0&id-thread=" . $thread_id );
+            exit();
+        }
+        if(strlen(trim($content)) < 10)  $errors['edited_content'] = "El mensaje tiene que tener mas de 10 caracteres";
+        if(!empty($errors)) {
+            $_SESSION["errors"] = $errors;
+        }else{
+            $row_count = SubThreadController::updateSubThread($sub_thread_id, $content);
+            if($row_count === 0) $_SESSION["critical_error"] = "No se ha podido editar el mensaje";
+            else $_SESSION["result-sub-thread"] = "Mensaje editado";
+        }
+        $page = $_POST["page"] ?? 0;
+        header("Location: ../view/sub_thread.php?pag=" . $page . "&id-thread=" . $thread_id);
+        exit();
     }
 }

@@ -69,6 +69,20 @@ class SubThreadModel
         }catch(PDOException $e){
             return -1;
         }
+    }
 
+    public function updateSubThread(int $sub_thread_id, string $content): int
+    {
+        try{
+            $stmt = $this->db->prepare(GET_SUB_THREAD_BY_ID);
+            $stmt->execute([":sub_thread_id" => $sub_thread_id]);
+            $sub_thread = $stmt->fetch(PDO::FETCH_ASSOC);
+            if(!$sub_thread) return 0;
+            $stmt = $this->db->prepare(UPDATE_CONTENT_SUB_THREAD);
+            $stmt->execute([":sub_thread_id" => $sub_thread_id, ":content" => $content]);
+            return $stmt->rowCount();
+        }catch (PDOException $e){
+            return 0;
+        }
     }
 }

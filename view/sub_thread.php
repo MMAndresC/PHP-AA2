@@ -171,9 +171,12 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                             </div>
                         <?php } ?>
                     </div>
+                    <!-- Formulario de edición del mensaje -->
                     <div class="content">
-                        <form class="user-form" method="post">
-                            <input type="hidden" name="id" value="<?= $sub_thread['id'] ?>" />
+                        <form class="user-form" action="../controller/SubThreadController.php" method="post">
+                            <input type="hidden" name="sub_thread_id" value="<?= $sub_thread['id'] ?>" />
+                            <input type="hidden" name="thread_id" value="<?= $sub_thread['thread_id'] ?>" />
+                            <input type="hidden" name="page" value="<?= $page ?>" />
                             <div class="field">
                                 <textarea id="edited-content-<?= $sub_thread['id'] ?>" name="edited-content" readonly
                                           class="textarea"> <?= $sub_thread['content'] ?? ''?>
@@ -192,6 +195,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                                 </div>
                             </div>
                         </form>
+
                         <div class="is-display-flex is-justify-content-space-between">
                             <time>Creado: <?= date_format(date_create($sub_thread['created_at']), $FORMAT_DATE) ?></time>
                             <time>Última edición: <?= date_format(date_create($sub_thread['updated_at']), $FORMAT_DATE) ?></time>

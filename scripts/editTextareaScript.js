@@ -8,6 +8,7 @@ const changeEditionMode = (id) => {
         textarea.readOnly = false;
         btnEdit.hidden = false;
         btnCancel.hidden = false;
+        textarea.focus();
     }
 }
 
