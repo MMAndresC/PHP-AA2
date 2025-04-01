@@ -33,6 +33,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
 
 <script type="text/javascript">
     <?php require_once "../scripts/userPanelScript.js"?>
+    <?php require_once "../scripts/editTextareaScript.js"?>
 </script>
 
 
@@ -119,7 +120,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                 <!-- Posterior al seleccionado -->
                 <?php if($page + 2 < $last_page){ ?>
                     <li><a href="sub_thread.php?pag=<?= $page + 1 ?>&id-thread=<?= $thread_id ?>"
-                           class="pagination-link" aria-label="Ir a página <?= $page + 2 ?>">P<?= $page + 2 ?></a>
+                           class="pagination-link" aria-label="Ir a página <?= $page + 2 ?>"><?= $page + 2 ?></a>
                     </li>
                 <?php } ?>
                 <!-- ... -->
@@ -160,19 +161,37 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                             ?>
                             <div class="media-right">
                                 <div class="tags has-addons">
-                                    <a class="tag is-link">
+                                    <button class="tag is-link" onclick="changeEditionMode(<?= $sub_thread['id'] ?>)">
                                         Editar
-                                    </a>
-                                    <button type="button" class="button tag is-light is-danger js-modal-trigger" data-target="modal-delete-<?=$sub_thread['id']?>">Borrar</button>
+                                    </button>
+                                    <button type="button" class="button tag is-light is-danger js-modal-trigger"
+                                            data-target="modal-delete-<?=$sub_thread['id']?>">Borrar
+                                    </button>
                                 </div>
                             </div>
                         <?php } ?>
                     </div>
-                    <hr />
                     <div class="content">
-                        <?= $sub_thread['content'] ?? ''?>
-                        <br><br>
-                        <hr />
+                        <form class="user-form" method="post">
+                            <input type="hidden" name="id" value="<?= $sub_thread['id'] ?>" />
+                            <div class="field">
+                                <textarea id="edited-content-<?= $sub_thread['id'] ?>" name="edited-content" readonly
+                                          class="textarea"> <?= $sub_thread['content'] ?? ''?>
+                                </textarea>
+                            </div>
+                            <div class="field is-grouped">
+                                <div class="control">
+                                    <button id="btn-edit-<?= $sub_thread['id'] ?>" class="is-link"
+                                            name="action-sub-thread" value="edit-sub-thread" hidden>Guardar cambios
+                                    </button>
+                                </div>
+                                <div class="control">
+                                    <button id="btn-cancel-<?= $sub_thread['id'] ?>" class="is-link is-light"
+                                            type="reset" hidden onclick="cancelEditionMode(<?= $sub_thread['id'] ?>)">Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                         <div class="is-display-flex is-justify-content-space-between">
                             <time>Creado: <?= date_format(date_create($sub_thread['created_at']), $FORMAT_DATE) ?></time>
                             <time>Última edición: <?= date_format(date_create($sub_thread['updated_at']), $FORMAT_DATE) ?></time>
