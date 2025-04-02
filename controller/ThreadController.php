@@ -75,4 +75,23 @@ switch ($action) {
         }
         exit();
     }
+
+    case "edit-thread": {
+        $params = extractParamsEditThread();
+        if(!isset($params["theme_id"]) || !isset($params["thread_id"])){
+            $errors['edition'] = "No se encuentra el id del tema o el id de hilo";
+            $_SESSION['errors'] = $errors;
+            header("Location: ../view/thread.php?pag=0&id-theme=" . $params["old_theme_id"]);
+            exit();
+        }
+        $updated = ThreadController::updateThread($params);
+        if($updated){
+            $_SESSION['result-thread'] = "Modificaciones guardadas";
+            header("Location: ../view/thread.php?pag=0&id-theme=" . $params["theme_id"]);
+        }else{
+            $_SESSION['error_critical'] = "No se han podido guardar las modificaciones";
+            header("Location: ../view/thread.php?pag=0&id-theme=" . $params["old_theme_id"]);
+        }
+        exit();
+    }
 }

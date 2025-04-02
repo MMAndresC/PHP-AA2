@@ -15,6 +15,7 @@ if ($theme_id === null) {
     exit();
 }
 
+//Paginación de los threads
 $FORMAT_DATE = "d/m/Y H:i";
 $LIMIT = 5;
 $page = (int) $_GET['pag'] ?? 0;
@@ -22,13 +23,26 @@ $response = ThreadController::getThreadsByTheme($theme_id, $LIMIT, $page * $LIMI
 $total_registers = (int) $response['count'] ?? 0;
 $last_page = ceil($total_registers / $LIMIT);
 $threads = $response['threads'] ?? [];
-$theme_actual = ThemeController::getTheme($theme_id);
+
+//Conseguir los datos del tema actual
+$themes = $_SESSION['themes'] ?? [];
+if(!empty($themes)) {
+    $themes_find = array_filter($themes, function ($theme) use ($theme_id) {
+        return $theme['id'] === $theme_id;
+    });
+    $theme_actual = reset($themes_find); //Devuelve el primer elemento de la array o falso si no hay nada
+}
+if(empty($themes) || !$theme_actual) {
+    $theme_actual = ThemeController::getTheme($theme_id);
+}
 $name_theme = $theme_actual['name'] ?? '';
 $_SESSION['theme_id'] = $theme_id;
 
+//Breadcrumb
 $bc_theme = ["theme_id" => $theme_id, "name" => $name_theme];
 $_SESSION['breadcrumbs']['theme'] = $bc_theme;
 
+//Respuesta de la base de datos
 $errors = $_SESSION['errors'] ?? [];
 $error_critical = $_SESSION['error_critical'] ?? false;
 $result = $_SESSION['result-thread'] ?? false;
@@ -78,7 +92,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                     <?php if($result){ ?>
                         <p><?= $result ?></p>
                     <?php } else { ?>
-                        <p><?= $error_critical ?>></p>
+                        <p><?= $error_critical ?></p>
                     <?php } ?>
                     <button class="delete" aria-label="delete" onclick="document.getElementById('toast').remove()"></button>
                 </div>
@@ -181,6 +195,48 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                         </div>
                     </section>
                 </div>
+                <!-- Formulario de edición del admin-->
+                <?php if(isset($user) && $user['role'] === 'admin'){ ?>
+                <section class="hero is-warning is-small">
+                    <div class="hero-body">
+                        <form class="user-form is-display-flex is-flex-direction-column"
+                              action="../controller/ThreadController.php" method="post"
+                        >
+                            <div class="field is-horizontal is-justify-content-space-around">
+                                <input type="hidden" name="thread_id" value="<?= $thread['id'] ?>">
+                                <input type="hidden" name="old-theme-id" value="<?= $theme_id ?>">
+                                <input id="title-<?= $thread['id'] ?>" class="input is-info"
+                                       style="max-width: 50%;"
+                                       value="<?= $thread['title'] ?>" name="title"
+                                >
+                                <label class="checkbox">
+                                    <input type="checkbox" name="is-closed" checked="<?php $thread['status'] == 'closed' ?>"/>
+                                    Cerrar el hilo
+                                </label>
+                                <div class="select is-info is-small">
+                                    <select name="theme_id">
+                                        <?php foreach ($themes as $theme){ ?>
+                                            <option value="<?= $theme['id']?>"
+                                                <?= $theme['id'] == $theme_id ? 'selected' : ''?>
+                                            ><?= $theme['name']?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <?php if(isset($errors['edition'])){ ?>
+                                <p class="help is-danger"><?= $errors['edition'] ?></p>
+                            <?php } ?>
+
+                            <div class="is-display-flex is-justify-content-center">
+                                <button id="btn-edit-<?= $thread['id'] ?>"
+                                        class="tag is-medium is-primary is-light"
+                                        name="action-thread" value="edit-thread" >Guardar cambios
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                <?php } ?>
             </article>
         <?php } ?>
 
