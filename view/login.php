@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . "/../config/config.php";
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -19,6 +21,7 @@ $isRegister = ($mode === 'register');
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Forum</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>

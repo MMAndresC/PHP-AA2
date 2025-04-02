@@ -13,6 +13,7 @@ unset($_SESSION['result_verification']);
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Forum</title>
     <link rel="stylesheet" href="">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>

@@ -80,7 +80,7 @@ if($position !== false && str_contains($url, "id-theme=")){
                 <div class="navbar-item">
                     <div class="buttons">
                         <div class="tag is-success has-radius-rounded is-medium"><?= $initial ?></div>
-                        <a class="button is-light is-small" href="../view/theme.php?mode=close">
+                        <a class="button is-danger is-outlined is-small" href="../view/theme.php?mode=close">
                             Cerrar Sesión
                         </a>
                     </div>

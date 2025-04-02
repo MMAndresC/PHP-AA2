@@ -50,3 +50,6 @@ phpunit.xml.dist
 # Ignorar archivos del sistema operativo
 .DS_Store
 Thumbs.db
+
+# Ignorar el directorio de logs
+logs/

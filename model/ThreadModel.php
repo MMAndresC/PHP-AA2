@@ -3,7 +3,7 @@
 use database\Database;
 
 require_once __DIR__ . "/../config/Database.php";
-require_once  __DIR__ . "/../config/db_queries_thread.php";
+require_once __DIR__ . "/../config/queries/db_queries_thread.php";
 class ThreadModel
 {
     private PDO $db;

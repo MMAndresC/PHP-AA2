@@ -9,7 +9,7 @@ class Seeder
 {
     public static function loadSeed($connection): array
     {
-        require_once "config/db_queries.php";
+        require_once __DIR__ . "/../config/queries/db_queries.php";
         $messages = array();
         if(self::countRegisters($connection, COUNT_USERS) == 0)
             $messages[] = self::executeConsults(USER_DATA, $connection, "user");
