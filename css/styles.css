@@ -3,12 +3,12 @@
 }
 
 .themes-section {
-    width: 60% !important;
-    margin-left: 20% !important;
+    width: 40% !important;
+    margin-left: 30% !important;
 }
 
 .themes-section figure {
-    max-height: 250px;
+    max-height: 150px !important;
     width: 100%;
 }
 

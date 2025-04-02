@@ -282,5 +282,6 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
             </form>
         <?php } ?>
     </main>
+    <?php require_once __DIR__ . "/../components/footer.php"?>
 </body>
 </html>

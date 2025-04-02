@@ -35,6 +35,7 @@ if(!$user){
     <title>Foro</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
@@ -226,7 +227,7 @@ if(!$user){
     </article>
     <?php } ?>
 </main>
-
+<?php require_once __DIR__ . "/../components/footer.php"?>
 
 </body>
 
