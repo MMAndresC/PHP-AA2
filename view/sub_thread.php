@@ -199,6 +199,9 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                                           class="textarea"> <?= $sub_thread['content'] ?? ''?>
                                 </textarea>
                             </div>
+                            <?php if(isset($errors['content'])){ ?>
+                                <p class="help is-danger"><?= $errors['edited_content'] ?></p>
+                            <?php } ?>
                             <div class="field is-grouped">
                                 <div class="control">
                                     <button id="btn-edit-<?= $sub_thread['id'] ?>"
@@ -232,7 +235,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                         <button class="delete" aria-label="close"></button>
                     </header>
                     <section class="modal-card-body">
-                        <p class="is-danger">El mensaje se borrará, esta acción no se puede deshacer.</p>
+                        <p class="has-text-danger">El mensaje se borrará, esta acción no se puede deshacer.</p>
                     </section>
                     <footer class="modal-card-foot">
                         <div class="buttons">

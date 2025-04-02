@@ -50,3 +50,26 @@ function extractParamsSubThread(): array
     $params["content"] = trim($_POST['content'] ?? '');
     return $params;
 }
+
+function extractParamsEditThread(): array
+{
+    $params = array();
+    $params["thread_id"] = trim($_POST['thread_id'] ?? null);
+    $params["old_theme_id"] = trim($_POST['old-theme-id'] ?? null);
+     $is_closed= trim($_POST['is-closed'] ?? false);
+     if($is_closed) $params["status"] = "closed";
+    $params["title"]= trim($_POST['title'] ?? '');
+    $params["theme_id"]= trim($_POST['theme_id'] ?? null);
+    return $params;
+}
+
+function extractParamsDeleteThread(): array
+{
+    $params = array();
+    $params["thread_id"] = trim($_POST['thread_id'] ?? null);
+    $params["email"] = trim($_POST['email'] ?? '');
+    $params['page'] = trim($_POST['page'] ?? 0);
+    $params["password"] = trim($_POST['password'] ?? '');
+    $params['theme_id'] = trim($_POST['theme_id'] ?? '');
+    return $params;
+}
