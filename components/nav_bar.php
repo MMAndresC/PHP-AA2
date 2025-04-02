@@ -13,8 +13,10 @@ if(!isset($_SESSION["themes"])){
 $themes = $_SESSION["themes"];
 
 $isLoggedIn = false;
+$initial = 'X';
 if(isset($_SESSION["user"])){
    $isLoggedIn = true;
+   $initial = ucfirst(substr($_SESSION["user"]['username'], 0,1));
 }
 
 //Para saber que theme está seleccionado, ya que no le llega el $_GET
@@ -77,7 +79,8 @@ if($position !== false && str_contains($url, "id-theme=")){
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-light" href="../view/theme.php?mode=close">
+                        <div class="tag is-success has-radius-rounded is-medium"><?= $initial ?></div>
+                        <a class="button is-light is-small" href="../view/theme.php?mode=close">
                             Cerrar Sesión
                         </a>
                     </div>
@@ -87,10 +90,10 @@ if($position !== false && str_contains($url, "id-theme=")){
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a class="button is-primary" href="../view/login.php?mode=register">
+                            <a class="button is-primary is-small" href="../view/login.php?mode=register">
                                 <strong>Registrarse</strong>
                             </a>
-                            <a class="button is-light" href="../view/login.php?mode=login">
+                            <a class="button is-light is-small" href="../view/login.php?mode=login">
                                 Iniciar sesión
                             </a>
                         </div>

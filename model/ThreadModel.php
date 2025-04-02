@@ -98,15 +98,17 @@ class ThreadModel
         }
     }
 
-    public function getTitle(int $thread_id): string{
+    public function getTitleStatus(int $thread_id): array
+    {
         try{
-            $stmt = $this->db->prepare(GET_TITLE);
+            $stmt = $this->db->prepare(GET_TITLE_STATUS);
             $stmt->execute([":thread_id" => $thread_id]);
             $thread = $stmt->fetch(PDO::FETCH_ASSOC);
-            if(!isset($thread)) return "";
-            return $thread["title"];
+            $title = $thread["title"] ?? '';
+            $status = $thread["status"] ?? 'active';
+            return ["title" => $title, "status" => $status];
         }catch (PDOException $e){
-            return "";
+            return [];
         }
     }
 }

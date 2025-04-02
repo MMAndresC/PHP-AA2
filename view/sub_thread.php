@@ -13,10 +13,11 @@ if ($thread_id === null) {
     header("Location: theme.php");
     exit();
 }
-$title = ThreadController::getTitle($thread_id);
-$bc_thread = ["thread_id" =>$thread_id, "title" => $title];
+$thread_data = ThreadController::getTitleStatus($thread_id);
+$bc_thread = ["thread_id" =>$thread_id, "title" => $thread_data['title']];
 $bc_theme = $_SESSION['breadcrumbs']['theme'];
 
+//Conseguir los sub thread
 $FORMAT_DATE = "h:iA - d M, Y ";
 $LIMIT = 5;
 $page = (int) $_GET['pag'] ?? 0;
@@ -25,8 +26,10 @@ $total_registers = (int) $response['count'] ?? 0;
 $last_page = ceil($total_registers / $LIMIT);
 $sub_threads = $response['sub_threads'] ?? [];
 
+// Usuario
 $user = $_SESSION['user'] ?? null;
 
+//Respuesta de la base de datos
 $errors = $_SESSION['errors'] ?? [];
 $result = $_SESSION['result-sub-thread'] ?? false;
 $critical_error = $_SESSION['critical_error'] ?? false;
@@ -170,7 +173,8 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                             <p class="title is-4"><?= $sub_thread['username'] ?? 'Unknown' ?></p>
                             <p class="subtitle is-6"><?= ucfirst($sub_thread['role']) ?? 'User' ?></p>
                         </div>
-                        <?php if(isset($user) &&  ($user['email'] === $sub_thread['author'] ||
+                        <?php if(isset($user) &&
+                            (($user['email'] === $sub_thread['author'] && $thread_data['status'] != 'closed')||
                                 strtolower($user['role']) === 'moderator' ||
                                 strtolower($user['role']) === 'admin')){
                             ?>
@@ -249,7 +253,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
             </div>
         <?php } ?>
 
-        <?php if($user !== null){ ?>
+        <?php if($user !== null && $thread_data['status'] != 'closed'){ ?>
             <!-- Formulario para un nuevo thread-->
             <form action="../controller/SubThreadController.php" method="post" class="user-form box" id="new-sub-thread">
                 <input class="input" type="hidden" name="author" id="author" value="<?= $user['email'] ?>">

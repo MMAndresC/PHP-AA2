@@ -2,7 +2,7 @@
 
 /* Consulta tabla thread*/
 
-const GET_TITLE = "SELECT title FROM thread WHERE id = :thread_id";
+const GET_TITLE_STATUS = "SELECT title, status FROM thread WHERE id = :thread_id";
 const GET_THREAD_BY_THEME = "SELECT t.id, t.title, t.status, t.updated_at, u1.username as updater, u2.username as author 
 FROM thread t
 INNER JOIN user u1 ON u1.email = t.last_updater 
