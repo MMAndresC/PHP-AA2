@@ -1,6 +1,6 @@
 <?php
 
-require_once "email_messages.php";
+require_once __DIR__ . "/email_messages.php";
 class Email
 {
     public static function sendVerificationEmail($mail_data): string

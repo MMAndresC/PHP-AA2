@@ -3,9 +3,14 @@
 use controller\DatabaseController;
 
 require_once "controller/DatabaseController.php";
+require_once "controller/ThemeController.php";
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $messages = (new DatabaseController())->dbConnect();
+$_SESSION["themes"] = ThemeController::getAllThemes();
 ?>
 
 <!DOCTYPE html>
@@ -26,8 +31,7 @@ if (is_array($messages)) {
     }
 } else if(is_string($messages))
     echo $messages . "<br>";
-//header("Location: view/login.php?mode=login");
-header("Location: view/main.php");
+header("Location: view/theme.php");
 exit();
 ?>
 </body>

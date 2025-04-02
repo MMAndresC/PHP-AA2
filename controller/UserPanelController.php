@@ -1,8 +1,8 @@
 <?php
 
-require_once "../model/UserPanelModel.php";
-require_once "../util/validation.php";
-require_once "../util/extract_params.php";
+require_once __DIR__ . "/../model/UserPanelModel.php";
+require_once __DIR__ . "/../util/validation.php";
+require_once __DIR__ . "/../util/extract_params.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -20,7 +20,7 @@ $userPanelModel = new UserPanelModel();
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     $_SESSION['data'] = $userPanelModel->getUserByEmail($email);
-    require_once "../view/user_panel.php";
+    require_once __DIR__ . "/../view/user_panel.php";
 }
 
 if (isset($_POST["action"])) {
@@ -50,14 +50,14 @@ if (isset($_POST["action"])) {
             if($response === 0){
                 $_SESSION["failed_delete"] = true;
             }else{
-                require_once "../util/destroy_session.php";
-                header("Location: ../view/main.php");
+                require_once __DIR__ . "/../util/destroy_session.php";
+                header("Location: ../view/theme.php");
                 exit();
             }
         }else  $_SESSION["failed_delete"] = true;
     }
 }
 
-require_once "../view/user_panel.php";
+require_once __DIR__ . "/../view/user_panel.php";
 
 

@@ -1,3 +1,42 @@
 .cursor-type {
     cursor: pointer !important;
 }
+
+.themes-section {
+    width: 60% !important;
+    margin-left: 20% !important;
+}
+
+.themes-section figure {
+    max-height: 250px;
+    width: 100%;
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    min-width: 200px;
+    display: none;
+    z-index: 1000;
+}
+
+.textarea-min-height {
+    min-height: 15em !important;
+}
+
+.btn {
+    border: red 1px solid !important;
+   /* align-items: center;
+    background-color: hsl(233deg, 100%,calc(96% + 0%));
+    border-radius: var(--bulma-radius);
+    color: hsl(var(--bulma-tag-h), var(--bulma-tag-s), var(--bulma-tag-color-l));
+    display: inline-flex;
+    font-size: var(--bulma-size-small);
+    height: 2em;
+    justify-content: center;
+    line-height: 1.5;
+    padding-left: .75em;
+    padding-right: .75em;
+    white-space: nowrap;*/
+}

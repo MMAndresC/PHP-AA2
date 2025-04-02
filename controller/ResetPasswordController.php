@@ -1,6 +1,6 @@
 <?php
 
-require_once "../model/ResetPasswordModel.php";
+require_once __DIR__ . "/../model/ResetPasswordModel.php";
 
 session_start();
 $errors = array();
@@ -37,7 +37,7 @@ $resetPasswordModel = new ResetPasswordModel();
 if(trim($token) == ''){
     $response = $resetPasswordModel->sendMailToResetPassword($email);
     if(isset($response['token'])){
-       require_once "../email/Email.php";
+       require_once __DIR__ . "/../email/Email.php";
        $_SESSION['response'] = Email::sendResetPasswordEmail($email, $response['token']);
     }else{
         $_SESSION['response'] = $response['error'];

@@ -2,9 +2,9 @@
 
 use database\Database;
 
-require_once "../config/Database.php";
-require_once  "../config/db_queries.php";
-require_once  "../util/process_image.php";
+require_once __DIR__ . "/../config/Database.php";
+require_once  __DIR__ . "/../config/db_queries_user.php";
+require_once  __DIR__ . "/../util/process_image.php";
 
 class UserPanelModel
 {

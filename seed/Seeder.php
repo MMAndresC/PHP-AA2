@@ -4,7 +4,7 @@ namespace seed;
 
 use PDO;
 
-require_once "seed/db_data.php";
+require_once __DIR__ . "/db_data.php";
 class Seeder
 {
     public static function loadSeed($connection): array
@@ -15,8 +15,6 @@ class Seeder
             $messages[] = self::executeConsults(USER_DATA, $connection, "user");
         if(self::countRegisters($connection, COUNT_THEMES) == 0)
             $messages[] = self::executeConsults(THEME_DATA, $connection, "theme");
-        if(self::countRegisters($connection, COUNT_TOPICS) == 0)
-            $messages[] = self::executeConsults(TOPIC_DATA, $connection, "topic");
         if(self::countRegisters($connection, COUNT_THREADS) == 0)
             $messages[] = self::executeConsults(THREAD_DATA, $connection, "thread");
         if(self::countRegisters($connection, COUNT_SUB_THREADS) == 0)
