@@ -152,11 +152,11 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
 
         <?php foreach ($threads as $thread){ ?>
             <article class="message">
-                <div class="message-header">
-                    <a href="sub_thread.php?pag=0&id-thread=<?= $thread['id'] ?>">
-                        <p class="subtitle is-5"><?= $thread['title'] ?></p>
-                    </a>
-                </div>
+                <a href="sub_thread.php?pag=0&id-thread=<?= $thread['id'] ?>">
+                    <div class="message-header">
+                        <p class="subtitle is-5"><?= ucfirst($thread['title']) ?></p>
+                    </div>
+                </a>
                 <div class="message-body">
                     <section class="level">
                         <div class="level-item has-text-centered">

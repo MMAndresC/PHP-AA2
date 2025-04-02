@@ -33,7 +33,7 @@ if($position !== false && str_contains($url, "id-theme=")){
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <a class="navbar-item" href="">
+        <a class="navbar-item" href="../index.php">
             <?php require_once __DIR__ . "/../assets/images/logo/logo.svg"; ?>
         </a>
 
@@ -47,14 +47,6 @@ if($position !== false && str_contains($url, "id-theme=")){
 
     <div id="navbarMain" class="navbar-menu">
         <div class="navbar-start">
-            <a class="navbar-item">
-                Reglas de uso
-            </a>
-            <?php if($isLoggedIn){ ?>
-                <a class="navbar-item" href="../controller/UserPanelController.php">
-                    Zona de Usuario
-                </a>
-            <?php } ?>
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
                     Foros
@@ -71,6 +63,14 @@ if($position !== false && str_contains($url, "id-theme=")){
                     <?php } ?>
                 </div>
             </div>
+            <a class="navbar-item">
+                Reglas de uso
+            </a>
+            <?php if($isLoggedIn){ ?>
+                <a class="navbar-item" href="../controller/UserPanelController.php">
+                    Zona de Usuario
+                </a>
+            <?php } ?>
         </div>
 
         <?php if($isLoggedIn){ ?>

@@ -18,7 +18,7 @@ $bc_thread = ["thread_id" =>$thread_id, "title" => $title];
 $bc_theme = $_SESSION['breadcrumbs']['theme'];
 
 $FORMAT_DATE = "h:iA - d M, Y ";
-$LIMIT = 2;
+$LIMIT = 5;
 $page = (int) $_GET['pag'] ?? 0;
 $response = SubThreadController::getSubThreadsData($thread_id, $LIMIT, $page * $LIMIT);
 $total_registers = (int) $response['count'] ?? 0;
@@ -57,14 +57,14 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
     </header>
 
     <div class="container mb-6 mt-6">
-        <p class="has-text-centered is-size-2 mt-2"><?= $bc_thread['title']?></p>
+        <p class="has-text-centered is-size-2 mt-2"><?= ucfirst($bc_thread['title'])?></p>
 
         <!-- Breadcrumb-->
         <nav class="breadcrumb has-succeeds-separator" aria-label="breadcrumbs">
             <ul>
                 <li><a href="theme.php">Temas</a></li>
-                <li><a href="thread.php?pag=0&id-theme=<?= $bc_theme['theme_id']?>"><?= $bc_theme['name']?></a></li>
-                <li class="is-active"><a aria-current="page"><?= $bc_thread['title'] ?></a></li>
+                <li><a href="thread.php?pag=0&id-theme=<?= $bc_theme['theme_id']?>"><?= ucfirst($bc_theme['name'])?></a></li>
+                <li class="is-active"><a aria-current="page"><?= ucfirst($bc_thread['title']) ?></a></li>
             </ul>
         </nav>
 
@@ -176,10 +176,12 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                             ?>
                             <div class="media-right">
                                 <div class="tags has-addons">
-                                    <button class="tag is-link" onclick="changeEditionMode(<?= $sub_thread['id'] ?>)">
+                                    <button id="btn-menu-edit-<?= $sub_thread['id'] ?>"
+                                            class="tag is-link" onclick="changeEditionMode(<?= $sub_thread['id'] ?>)">
                                         Editar
                                     </button>
-                                    <button type="button" class="button tag is-light is-danger js-modal-trigger"
+                                    <button type="button" id="btn-menu-delete-<?= $sub_thread['id'] ?>"
+                                            class="button tag is-light is-danger js-modal-trigger"
                                             data-target="modal-delete-<?=$sub_thread['id']?>">Borrar
                                     </button>
                                 </div>
@@ -199,12 +201,14 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                             </div>
                             <div class="field is-grouped">
                                 <div class="control">
-                                    <button id="btn-edit-<?= $sub_thread['id'] ?>" class="is-link"
-                                            name="action-sub-thread" value="edit-sub-thread" hidden>Guardar cambios
+                                    <button id="btn-edit-<?= $sub_thread['id'] ?>"
+                                            class="tag is-medium is-primary is-light is-hidden"
+                                            name="action-sub-thread" value="edit-sub-thread" >Guardar cambios
                                     </button>
                                 </div>
                                 <div class="control">
-                                    <button id="btn-cancel-<?= $sub_thread['id'] ?>" class="is-link is-light"
+                                    <button id="btn-cancel-<?= $sub_thread['id'] ?>"
+                                            class="tag is-medium  is-light is-hidden is-link is-light"
                                             type="reset" hidden onclick="cancelEditionMode(<?= $sub_thread['id'] ?>)">Cancelar
                                     </button>
                                 </div>
