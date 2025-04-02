@@ -30,10 +30,10 @@ class ThreadController
         return $threadModel->updateThread($params);
     }
 
-    public static function getTitle(int $thread_id): string
+    public static function getTitleStatus(int $thread_id): array
     {
         $threadModel = new ThreadModel();
-        return $threadModel->getTitle($thread_id);
+        return $threadModel->getTitleStatus($thread_id);
     }
 }
 
