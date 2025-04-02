@@ -94,4 +94,26 @@ switch ($action) {
         }
         exit();
     }
+
+    case "delete-thread": {
+        $params = extractParamsDeleteThread();
+        //Tendría que refactorizar el controller de user, ahora mismo es imposible usarlo para esto,
+        //por eso uso directamente el modelo
+        require_once __DIR__ . "/../model/UserPanelModel.php";
+        $userModel = new UserPanelModel();
+        $is_correct_password = $userModel->isCorrectPassword($params["email"], $params["password"]);
+        if(!$is_correct_password){
+            $_SESSION['error_critical'] = "Contraseña incorrecta";
+            header("Location: ../view/thread.php?pag=" . $params['page'] . "&id-theme=" . $params["theme_id"]);
+            exit();
+        }
+        $row_count = ThreadController::deleteThread($params["thread_id"]);
+        if($row_count == 0){
+            $_SESSION['error_critical'] = "No se ha podido eliminar el hilo";
+        }else {
+            $_SESSION['result-thread'] = "Eliminado el hilo " . $params["name"];
+        }
+        header("Location: ../view/thread.php?pag=" . $params['page'] . "&id-theme=" . $params["theme_id"]);
+        exit();
+    }
 }

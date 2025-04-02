@@ -110,14 +110,17 @@ class UserPanelModel
     public function deleteUser($email, $password, $deleteContent): int
     {
         try{
-            $stmt = $this->db->prepare(FIND_EMAIL_USER);
+            //TODO chequear que la sustitución este bien
+           /* $stmt = $this->db->prepare(FIND_EMAIL_USER);
             $stmt->execute([":email" => $email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if (!$user || !password_verify($password, $user["password"])) {
                 // Si no existe el usuario o la contraseña es incorrecta, no hacemos nada
                 return 0;
-            }
+            }*/
+
+            if(!$this->isCorrectPassword($email, $password)) return 0;
 
             $stmt = $this->db->prepare(DELETE_USER);
             $stmt->execute([":email" => $email]);
@@ -133,5 +136,14 @@ class UserPanelModel
         } catch (PDOException $e) {
             return 0;
         }
+    }
+
+    public function isCorrectPassword($email, $password): bool
+    {
+        $stmt = $this->db->prepare(FIND_EMAIL_USER);
+        $stmt->execute([":email" => $email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        //Si existe que devuelva true, por eso está invertida la condición, porque si cumple eso es la opción mala
+        return !(!$user || !password_verify($password, $user["password"]));
     }
 }

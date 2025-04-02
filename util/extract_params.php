@@ -62,3 +62,14 @@ function extractParamsEditThread(): array
     $params["theme_id"]= trim($_POST['theme_id'] ?? null);
     return $params;
 }
+
+function extractParamsDeleteThread(): array
+{
+    $params = array();
+    $params["thread_id"] = trim($_POST['thread_id'] ?? null);
+    $params["email"] = trim($_POST['email'] ?? '');
+    $params['page'] = trim($_POST['page'] ?? 0);
+    $params["password"] = trim($_POST['password'] ?? '');
+    $params['theme_id'] = trim($_POST['theme_id'] ?? '');
+    return $params;
+}

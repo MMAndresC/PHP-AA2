@@ -51,6 +51,10 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
 
 ?>
 
+<script type="text/javascript">
+    <?php require_once "../scripts/userPanelScript.js"?>
+</script>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -203,18 +207,19 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                               action="../controller/ThreadController.php" method="post"
                         >
                             <div class="field is-horizontal is-justify-content-space-around">
-                                <input type="hidden" name="thread_id" value="<?= $thread['id'] ?>">
-                                <input type="hidden" name="old-theme-id" value="<?= $theme_id ?>">
-                                <input id="title-<?= $thread['id'] ?>" class="input is-info"
+                                <input type="hidden" id="edit-thread-id-<?= $thread['id'] ?>" name="thread_id" value="<?= $thread['id'] ?>">
+                                <input type="hidden" id="edit-old-theme-<?= $thread['id'] ?>" name="old-theme-id" value="<?= $theme_id ?>">
+                                <input id="edit-title-<?= $thread['id'] ?>" class="input is-info"
                                        style="max-width: 50%;"
                                        value="<?= $thread['title'] ?>" name="title"
                                 >
                                 <label class="checkbox">
-                                    <input type="checkbox" name="is-closed" checked="<?php $thread['status'] == 'closed' ?>"/>
+                                    <input id="edit-status-<?= $thread['id'] ?>" type="checkbox"
+                                           name="is-closed" <?= $thread['status'] == 'closed' ? 'checked' : '' ?>/>
                                     Cerrar el hilo
                                 </label>
                                 <div class="select is-info is-small">
-                                    <select name="theme_id">
+                                    <select name="theme_id" id="edit-theme-<?= $thread['id'] ?>">
                                         <?php foreach ($themes as $theme){ ?>
                                             <option value="<?= $theme['id']?>"
                                                 <?= $theme['id'] == $theme_id ? 'selected' : ''?>
@@ -227,13 +232,45 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                                 <p class="help is-danger"><?= $errors['edition'] ?></p>
                             <?php } ?>
 
-                            <div class="is-display-flex is-justify-content-center">
+                            <div class="is-display-flex is-justify-content-space-around">
                                 <button id="btn-edit-<?= $thread['id'] ?>"
-                                        class="tag is-medium is-primary is-light"
+                                        class="button tag is-small is-primary is-light"
                                         name="action-thread" value="edit-thread" >Guardar cambios
+                                </button>
+                                <button type="button" id="btn-delete-<?= $thread['id'] ?>"
+                                        class="button tag is-small is-light is-danger js-modal-trigger"
+                                        data-target="modal-delete-<?=$thread['id']?>">
+                                    Borrar el hilo completo
                                 </button>
                             </div>
                         </form>
+                    </div>
+
+                    <!-- Borrar el thread por el admin-->
+                    <div id="modal-delete-<?= $thread['id']?>" class="modal">
+                        <div class="modal-background"></div>
+                        <div class="modal-card">
+                            <header class="modal-card-head">
+                                <p class="modal-card-title">Borrar el hilo</p>
+                                <button class="delete" aria-label="close"></button>
+                            </header>
+                            <form class="user-form" method="post" action="../controller/ThreadController.php">
+                                <section class="modal-card-body">
+                                    <input type="hidden" name="email" value="<?= $user['email'] ?>">
+                                    <input type="hidden" name="thread_id" value="<?= $thread['id'] ?>">
+                                    <input type="hidden" name="page" value="<?= $page ?>">
+                                    <input type="hidden" name="theme_id" value="<?= $theme_id ?>">
+                                    <label class="has-text-danger" for="password">Confirmar contraseña</label>
+                                    <input class="input is-small" type="password" name="password" id="password" placeholder="Contraseña" />
+                                </section>
+                                <footer class="modal-card-foot">
+                                    <div class="buttons">
+                                        <button type="submit" class="tag is-danger" name="action-thread" value="delete-thread">Borrar</button>
+                                        <button type="button" class="button tag is-link">Cancelar</button>
+                                    </div>
+                                </footer>
+                            </form>
+                        </div>
                     </div>
                 </section>
                 <?php } ?>

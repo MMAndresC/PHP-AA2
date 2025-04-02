@@ -235,7 +235,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                         <button class="delete" aria-label="close"></button>
                     </header>
                     <section class="modal-card-body">
-                        <p class="is-danger">El mensaje se borrará, esta acción no se puede deshacer.</p>
+                        <p class="has-text-danger">El mensaje se borrará, esta acción no se puede deshacer.</p>
                     </section>
                     <footer class="modal-card-foot">
                         <div class="buttons">
