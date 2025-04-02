@@ -23,7 +23,11 @@ $total_registers = (int) $response['count'] ?? 0;
 $last_page = ceil($total_registers / $LIMIT);
 $threads = $response['threads'] ?? [];
 $theme_actual = ThemeController::getTheme($theme_id);
+$name_theme = $theme_actual['name'] ?? '';
 $_SESSION['theme_id'] = $theme_id;
+
+$bc_theme = ["theme_id" => $theme_id, "name" => $name_theme];
+$_SESSION['breadcrumbs']['theme'] = $bc_theme;
 
 $errors = $_SESSION['errors'] ?? [];
 $error_critical = $_SESSION['error_critical'] ?? false;
@@ -50,7 +54,16 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
     </header>
 
     <div class="container mb-6 mt-6">
-        <p class="has-text-centered is-size-2 mt-2"><?= (is_array($theme_actual) && isset($theme_actual['name'])) ? $theme_actual['name'] : '' ?></p>
+        <p class="has-text-centered is-size-2 mt-2"><?= $name_theme?></p>
+
+        <!-- Breadcrumb-->
+        <nav class="breadcrumb has-succeeds-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="theme.php">Temas</a></li>
+                <li class="is-active"><a aria-current="page"><?= $bc_theme['name']?></a></li>
+            </ul>
+        </nav>
+
         <?php if($user !== null){ ?>
             <a href="#new-thread"
                class="tag is-light is-primary is-medium">Nuevo mensaje</a>

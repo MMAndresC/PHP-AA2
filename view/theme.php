@@ -26,6 +26,8 @@ $themes = $_SESSION["themes"];
 
 $banner_path = '../assets/images/banner/';
 
+unset($_SESSION["breadcrumbs"]);
+
 ?>
 
 <!DOCTYPE html>

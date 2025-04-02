@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . "/../controller/SubThreadController.php";
+require_once __DIR__ . "/../controller/ThreadController.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -12,6 +13,9 @@ if ($thread_id === null) {
     header("Location: theme.php");
     exit();
 }
+$title = ThreadController::getTitle($thread_id);
+$bc_thread = ["thread_id" =>$thread_id, "title" => $title];
+$bc_theme = $_SESSION['breadcrumbs']['theme'];
 
 $FORMAT_DATE = "h:iA - d M, Y ";
 $LIMIT = 2;
@@ -53,6 +57,17 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
     </header>
 
     <div class="container mb-6 mt-6">
+        <p class="has-text-centered is-size-2 mt-2"><?= $bc_thread['title']?></p>
+
+        <!-- Breadcrumb-->
+        <nav class="breadcrumb has-succeeds-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="theme.php">Temas</a></li>
+                <li><a href="thread.php?pag=0&id-theme=<?= $bc_theme['theme_id']?>"><?= $bc_theme['name']?></a></li>
+                <li class="is-active"><a aria-current="page"><?= $bc_thread['title'] ?></a></li>
+            </ul>
+        </nav>
+
         <?php if($user !== null){ ?>
             <a href="#new-sub-thread"
                class="tag is-medium is-primary is-light">Nuevo mensaje</a>

@@ -97,4 +97,16 @@ class ThreadModel
             return false;
         }
     }
+
+    public function getTitle(int $thread_id): string{
+        try{
+            $stmt = $this->db->prepare(GET_TITLE);
+            $stmt->execute([":thread_id" => $thread_id]);
+            $thread = $stmt->fetch(PDO::FETCH_ASSOC);
+            if(!isset($thread)) return "";
+            return $thread["title"];
+        }catch (PDOException $e){
+            return "";
+        }
+    }
 }

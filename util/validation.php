@@ -43,6 +43,8 @@ function validateValidDataAuth($errors, $params, $mode){
 function validateValidDataUser($errors, $params)
 {
     $MIN_LEN = 3;
+    $MAX_LEN = 30;
+    $MAX_LEN_USERNAME = 15;
 
     $password = $params['password'];
     $new_password = $params['new_password'];
@@ -53,27 +55,28 @@ function validateValidDataUser($errors, $params)
         }
     }
 
-    if (strlen($params['name']) < $MIN_LEN)
-        $errors['name'] = "El nombre debe tener al menos 3 caracteres";
+    if (strlen($params['name']) < $MIN_LEN && strlen($params['name']) > $MAX_LEN)
+        $errors['name'] = "El nombre debe tener al menos " . $MIN_LEN . " caracteres y máximo " . $MAX_LEN;
 
-    if (strlen($params['surname']) < $MIN_LEN)
-        $errors['surname'] = "El apellido debe tener al menos 3 caracteres";
+    if (strlen($params['surname']) < $MIN_LEN && strlen($params['surname']) > $MAX_LEN)
+        $errors['surname'] = "El apellido debe tener al menos " . $MIN_LEN . " caracteres y máximo " . $MAX_LEN;
 
-    if (strlen($params['username']) < $MIN_LEN)
-        $errors['username'] = "El nombre de usuario debe tener al menos 3 caracteres";
+    if (strlen($params['username']) < $MIN_LEN && strlen($params['username']) > $MAX_LEN_USERNAME)
+        $errors['username'] = "El nombre de usuario debe tener al menos " . $MIN_LEN . " caracteres y máximo " . $MAX_LEN_USERNAME;
 
     return $errors;
 }
 
 function validateValidThread($errors, $params) {
     $MIN_LEN_TITLE = 5;
+    $MAX_LEN_TITLE = 50;
     $MIN_LEN_CONTENT = 10;
 
     if(trim($params['author']) == '' || trim($params['last_updater']) == '')
         $errors['author'] = "Autor desconocido";
 
-    if(strlen(trim($params['title'])) < $MIN_LEN_TITLE)
-        $errors['title'] = "Titulo del nuevo post obligatorio y no menor de " . $MIN_LEN_TITLE . " caracteres";
+    if(strlen(trim($params['title'])) < $MIN_LEN_TITLE || strlen(trim($params['title'])) > $MAX_LEN_TITLE)
+        $errors['title'] = "Titulo del nuevo post obligatorio y no menor de " . $MIN_LEN_TITLE . " ni superior a" . $MAX_LEN_TITLE . "caracteres";
 
     if(strlen(trim($params['content'])) < $MIN_LEN_CONTENT)
         $errors['content'] = "El mensaje no puede tener menos de  " . $MIN_LEN_CONTENT . " caracteres";

@@ -29,6 +29,12 @@ class ThreadController
         $threadModel = new ThreadModel();
         return $threadModel->updateThread($params);
     }
+
+    public static function getTitle(int $thread_id): string
+    {
+        $threadModel = new ThreadModel();
+        return $threadModel->getTitle($thread_id);
+    }
 }
 
 
