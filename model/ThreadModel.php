@@ -61,6 +61,40 @@ class ThreadModel
         }catch(PDOException $e){
             return 0;
         }
+    }
 
+    public function updateThread(array $params): bool
+    {
+        try{
+            $thread_id = $params["thread_id"];
+            $stmt = $this->db->prepare(GET_THREAD_BY_ID);
+            $stmt->execute([":thread_id" => $thread_id]);
+            $thread = $stmt->fetch(PDO::FETCH_ASSOC);
+            if(!isset($thread)) return false;
+            //Modificar el objeto devuelto con los datos nuevos
+            $changed_status = '';
+            foreach ($params as $key => $value) {
+                if($key == "status" && $value == "closed"){
+                    $changed_status = " (Closed)";
+                }
+                if($key == "theme_id" && $value != $thread["theme_id"] && $thread["status"] != "closed"){
+                    $thread["status"] = "moved";
+                    $changed_status = " (Moved)";
+                }
+                $thread[$key] = $value;
+            }
+            $thread["title"] = $thread["title"] . $changed_status;
+            $stmt = $this->db->prepare(UPDATE_THREAD);
+            $stmt->execute([
+                ":thread_id" => $thread_id,
+                ":title" => $thread["title"],
+                ":status" => $thread["status"],
+                ":last_updater" => $thread["last_updater"],
+                ":theme_id" => $thread["theme_id"]
+            ]);
+            return $stmt->rowCount() > 0;
+        }catch (PDOException $e){
+            return false;
+        }
     }
 }

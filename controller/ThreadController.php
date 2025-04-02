@@ -23,6 +23,12 @@ class ThreadController
         $threadModel = new ThreadModel();
         return $threadModel->deleteThread($thread_id);
     }
+
+    public static function updateThread(array $params): bool
+    {
+        $threadModel = new ThreadModel();
+        return $threadModel->updateThread($params);
+    }
 }
 
 

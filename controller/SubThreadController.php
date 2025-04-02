@@ -70,6 +70,13 @@ switch ($action) {
             $_SESSION["critical_error"] = "No se ha podido añadir el nuevo mensaje";
             header("Location: ../view/sub_thread.php?pag=0&id-thread=" . $params["thread_id"] . "#new-sub-thread");
         } else {
+            //Con el nuevo mensaje añadido hay que actualizar el update_at y el last_updater de thread
+            require_once "ThreadController.php";
+            $newParams = [
+                "thread_id" => $params["thread_id"],
+                "last_updater" => $params["author"]
+            ];
+            ThreadController::updateThread($newParams);
             $last_page = $_POST["last_page"] ?? 0;
             $_SESSION["result-sub-thread"] = "Nuevo mensaje añadido";
             header("Location: ../view/sub_thread.php?pag=" . $last_page . "&id-thread=" . $params["thread_id"]);
