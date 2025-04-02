@@ -1,0 +1,10 @@
+RewriteEngine On
+RewriteBase /forum/
+DirectoryIndex index.php
+ErrorDocument 400 /forum/view/error_http.php
+ErrorDocument 401 /forum/view/error_http.php
+ErrorDocument 403 /forum/view/error_http.php
+ErrorDocument 404 /forum/view/error_http.php
+ErrorDocument 405 /forum/view/error_http.php
+ErrorDocument 408 /forum/view/error_http.php
+Options -Indexes

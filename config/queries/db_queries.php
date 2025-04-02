@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/db_connection.php";
+require_once __DIR__ . "/../db_connection.php";
 
 /* Crear la base de datos forum*/
 const CREATE_DATABASE = "CREATE DATABASE IF NOT EXISTS " . DB_NAME . "  CHARACTER SET utf8 COLLATE utf8_spanish_ci";

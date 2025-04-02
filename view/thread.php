@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . "/../config/config.php";
 require_once __DIR__ . "/../controller/ThreadController.php";
 require_once __DIR__ . "/../controller/ThemeController.php";
 
@@ -61,6 +62,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Foro</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>

@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . "/../config/config.php";
 require_once __DIR__ . "/../controller/SubThreadController.php";
 require_once __DIR__ . "/../controller/ThreadController.php";
 
@@ -49,6 +50,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Foro</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>

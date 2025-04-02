@@ -8,7 +8,7 @@ use PDOException;
 use seed\Seeder;
 
 require_once __DIR__ . "/db_connection.php";
-require_once __DIR__ . "/db_queries.php";
+require_once __DIR__ . "/queries/db_queries.php";
 
 class Database
 {
@@ -42,7 +42,7 @@ class Database
     public static function createTables(): void
     {
         try{
-            require_once __DIR__ . "/../config/db_queries.php";
+            require_once __DIR__ . "/../config/queries/db_queries.php";
             //Obtener la conexión a la base de datos
             $connection = self::connect();
             //Crear todas las tablas en orden de dependencia
