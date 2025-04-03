@@ -19,6 +19,9 @@ if(isset($_SESSION["user"])){
    $initial = ucfirst(substr($_SESSION["user"]['username'], 0,1));
 }
 
+//En la vista de login y register mostrar una version más reducida del navBar
+$mode = $_GET["mode"] ?? null;
+
 //Para saber que theme está seleccionado, ya que no le llega el $_GET
 $id_selected = -1;
 $url = $_SERVER['REQUEST_URI'];
@@ -87,6 +90,7 @@ if($position !== false && str_contains($url, "id-theme=")){
                 </div>
             </div>
             <?php } else { ?>
+                <?php if(!isset($mode)) {?>
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
@@ -99,6 +103,7 @@ if($position !== false && str_contains($url, "id-theme=")){
                         </div>
                     </div>
                 </div>
+                <?php } ?>
         <?php } ?>
 
     </div>

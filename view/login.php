@@ -31,8 +31,9 @@ $isRegister = ($mode === 'register');
 <body>
 
 <header>
-    <h2 class="title is-2 has-text-centered mt-6 mb-4"><?= $isRegister ? 'Registro de Usuario' : 'Inicio de Sesión' ?></h2>
+   <?php require_once __DIR__ . "/../components/nav_bar.php"?>
 </header>
+    <h2 class="title is-2 has-text-centered mt-6 mb-4"><?= $isRegister ? 'Registro de Usuario' : 'Inicio de Sesión' ?></h2>
     <h3 class="title is-3 has-text-centered"><?= $message ?></h3>
     <section class="box form-width p-6">
         <form class="mb-4" action="../controller/AuthController.php" method="post">
