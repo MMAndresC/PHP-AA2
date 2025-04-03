@@ -4,6 +4,7 @@ use database\Database;
 
 require_once __DIR__ . "/../config/Database.php";
 require_once __DIR__ . "/../config/queries/db_queries_user.php";
+require_once __DIR__ . "/../util/log_error.php";
 
 class AuthModel
 {
@@ -16,17 +17,21 @@ class AuthModel
 
     public function login($email, $password)
     {
-        $stmt = $this->db->prepare(FIND_EMAIL_VERIFIED_USER);
-        $stmt->bindValue(":email", $email);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        try{
+            $stmt = $this->db->prepare(FIND_EMAIL_VERIFIED_USER);
+            $stmt->bindValue(":email", $email);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user['password'])) {
-            // Quitar los datos sensibles del usuario antes de devolverlo
-            unset($user['password'], $user['name'], $user['surname']);
-            return $user;
+            if ($user && password_verify($password, $user['password'])) {
+                // Quitar los datos sensibles del usuario antes de devolverlo
+                unset($user['password'], $user['name'], $user['surname']);
+                return $user;
+            }
+            return false;
+        }catch (PDOException $e){
+            logError("AuthModel-Login: " . $e->getMessage());
         }
-        return false;
     }
 
     public function register($email, $password, $username, $name, $surname): array
@@ -36,10 +41,19 @@ class AuthModel
             $stmt = $this->db->prepare(FIND_EMAIL_USER);
             $stmt->bindValue(":email", $email);
             $stmt->execute();
-            // Email ya existe
-            if ($stmt->fetch()) {
-                return ["registerSuccess" => false];
+            // Email ya existe, ver si está verificado y si el token está caducado
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($user){
+                //Sí está caducado, borrar usuario y seguir el proceso normal
+                if($user['verified'] === false && $user['verification_expires'] < time()) {
+                    $stmt = $this->db->prepare(DELETE_USER);
+                    $stmt->bindValue(":email", $email);
+                    $stmt->execute();
+                }else{
+                    return ["registerSuccess" => false];
+                }
             }
+
             $tries = 3;
             $done = false;
             // Verificar si el username ya existe
@@ -78,6 +92,7 @@ class AuthModel
                 "token" => $token
             ];
         }catch (PDOException $e){
+            logError("AuthModel-Register: " . $e->getMessage());
             return ["registerSuccess" => false];
         }
 

@@ -22,10 +22,11 @@ function getVerificationEmail($token,$name,$surname): string
                 <h3>Hola $name $surname:<br>Su Cuenta ha sido creada con éxito.</h3>
                 <br>
                 <h4>Confirme su email en este <a href='http://localhost/forum/email/verify.php?token=$token'>link</a></h4>
+                <h4>El enlace tiene validez de una hora</h4>
             </article>
         </section>
         <footer>
-            <p>Foro Ocio</p>
+            <p>Foro Cocina</p>
         </footer>
     </body>
     </html>";
@@ -56,7 +57,7 @@ function getResetPasswordEmail($email, $token): string
             </article>
         </section>
         <footer>
-            <p>Foro Ocio</p>
+            <p>Foro Cocina</p>
         </footer>
     </body>
     </html>";

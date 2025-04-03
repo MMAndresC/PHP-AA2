@@ -24,7 +24,7 @@ if (isset($_GET['token'])) {
             $stmt->execute();
             $message = "Mail verificado con éxito";
         }else{
-            $message = "El link ya no es válido";
+            $message = "El link ya no es válido, registrarse de nuevo";
         }
     }catch (PDOException|Exception $e){
         $message = "No se ha podido verificar su mail";

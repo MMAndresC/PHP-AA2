@@ -16,6 +16,7 @@ const CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS `user` (
     `image_name` VARCHAR(100) DEFAULT NULL ,
     `verified` BOOLEAN DEFAULT FALSE ,
     `verification_token` CHAR(64) DEFAULT NULL ,
+    `verification_expires` DATETIME DEFAULT NULL,
     `reset_token` CHAR(100) DEFAULT NULL ,
     `reset_token_expires` DATETIME DEFAULT NULL ,
     PRIMARY KEY (`email`)
