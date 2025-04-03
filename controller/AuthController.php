@@ -3,10 +3,13 @@
 require_once __DIR__ . "/../model/AuthModel.php";
 require_once __DIR__ . "/../util/validation.php";
 require_once __DIR__ . "/../util/extract_params.php";
+//Vaciar sesión
+require_once __DIR__ . "/../util/unset_session.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 
 function existErrors($errors, $old_data, $mode): void
 {

@@ -9,7 +9,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $thread_id = (int) $_GET['id-thread'] ?? null;
-//TODO llevar a una vista de error
 if ($thread_id === null) {
     header("Location: theme.php");
     exit();
@@ -54,7 +53,6 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
     <title>Foro</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>

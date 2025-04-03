@@ -16,6 +16,10 @@ $isRegister = ($mode === 'register');
 
 ?>
 
+<script type="text/javascript">
+    <?php require_once __DIR__ . "/../scripts/btnEventSubmitRegister.js"?>
+</script>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,18 +29,16 @@ $isRegister = ($mode === 'register');
     <title>Forum</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
-
-<header>
-   <?php require_once __DIR__ . "/../components/nav_bar.php"?>
-</header>
+    <header>
+       <?php require_once __DIR__ . "/../components/nav_bar.php"?>
+    </header>
     <h2 class="title is-2 has-text-centered mt-6 mb-4"><?= $isRegister ? 'Registro de Usuario' : 'Inicio de Sesión' ?></h2>
-    <h3 class="title is-3 has-text-centered"><?= $message ?></h3>
+    <h3 class="title is-3 has-text-centered mb-2"><?= $message ?></h3>
     <section class="box form-width p-6">
-        <form class="mb-4" action="../controller/AuthController.php" method="post">
+        <form class="mb-4" action="../controller/AuthController.php" method="post" id="form-register">
             <!-- Campo mode para diferenciar registro de login en el controlador -->
             <input type="hidden" name="mode" value="<?= $mode ?>">
             <!-- Campo Email-->
@@ -182,10 +184,11 @@ $isRegister = ($mode === 'register');
                 </div>
             <?php } ?>
 
-            <!-- Botones del formulario -->
+            <!-- Botón del formulario -->
             <div class="field is-grouped is-justify-content-center">
                 <div class="control">
-                    <button type="submit" class="button is-link is-light" name="<?= $mode ?>" value="<?= $mode ?>">
+                    <button type="submit" class="button is-link is-light" name="<?= $mode ?>"
+                            value="<?= $mode ?>" id="btn-register">
                         <?= $isRegister ? 'Registrarse' : 'Iniciar Sesión' ?>
                     </button>
                 </div>
@@ -213,9 +216,6 @@ $isRegister = ($mode === 'register');
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <?php require_once __DIR__ . "/../components/footer.php"?>
 </body>
 </html>
 
