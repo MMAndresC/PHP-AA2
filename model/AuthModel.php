@@ -45,7 +45,7 @@ class AuthModel
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             if($user){
                 //Sí está caducado, borrar usuario y seguir el proceso normal
-                if($user['verified'] === false && $user['verification_expires'] < time()) {
+                if(!$user['verified'] && strtotime($user['verification_expires']) < time()) {
                     $stmt = $this->db->prepare(DELETE_USER);
                     $stmt->bindValue(":email", $email);
                     $stmt->execute();
