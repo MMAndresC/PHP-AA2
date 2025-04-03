@@ -2,16 +2,6 @@
     cursor: pointer !important;
 }
 
-.themes-section {
-    width: 40% !important;
-    margin-left: 30% !important;
-}
-
-.themes-section figure {
-    max-height: 150px !important;
-    width: 100%;
-}
-
 .toast {
     position: fixed;
     bottom: 20px;
