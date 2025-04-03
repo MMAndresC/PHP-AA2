@@ -4,6 +4,7 @@ use database\Database;
 
 require_once __DIR__ . "/../config/Database.php";
 require_once __DIR__ . "/../config/queries/db_queries_thread.php";
+require_once __DIR__ . "/../util/log_error.php";
 class ThreadModel
 {
     private PDO $db;
@@ -28,6 +29,7 @@ class ThreadModel
             }
             return $response;
         }catch(PDOException $e){
+            logError($e->getMessage());
             return ["count" => 0, "threads" => []];
         }
     }
@@ -48,6 +50,7 @@ class ThreadModel
                 return $thread;
             }else return [];
         }catch(PDOException $e){
+            logError($e->getMessage());
             return [];
         }
     }
@@ -59,6 +62,7 @@ class ThreadModel
             $stmt->execute([":thread_id" => $thread_id]);
             return $stmt->rowCount();
         }catch(PDOException $e){
+            logError($e->getMessage());
             return 0;
         }
     }
@@ -94,6 +98,7 @@ class ThreadModel
             ]);
             return $stmt->rowCount() > 0;
         }catch (PDOException $e){
+            logError($e->getMessage());
             return false;
         }
     }
@@ -108,6 +113,7 @@ class ThreadModel
             $status = $thread["status"] ?? 'active';
             return ["title" => $title, "status" => $status];
         }catch (PDOException $e){
+            logError($e->getMessage());
             return [];
         }
     }

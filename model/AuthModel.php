@@ -5,6 +5,7 @@ use database\Database;
 require_once __DIR__ . "/../config/Database.php";
 require_once __DIR__ . "/../config/queries/db_queries_user.php";
 require_once __DIR__ . "/../util/log_error.php";
+require_once __DIR__ . "/../util/log_error.php";
 
 class AuthModel
 {
@@ -30,7 +31,8 @@ class AuthModel
             }
             return false;
         }catch (PDOException $e){
-            logError("AuthModel-Login: " . $e->getMessage());
+            logError($e->getMessage());
+            return [];
         }
     }
 
@@ -92,7 +94,7 @@ class AuthModel
                 "token" => $token
             ];
         }catch (PDOException $e){
-            logError("AuthModel-Register: " . $e->getMessage());
+            logError($e->getMessage());
             return ["registerSuccess" => false];
         }
 

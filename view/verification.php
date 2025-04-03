@@ -20,7 +20,7 @@ unset($_SESSION['result_verification']);
 </head>
 
 <body>
-<section class="hero is-large is-success">
+<section class="hero is-large is-info">
     <div class="hero-body">
         <p class="title">Verificación de mail</p>
         <p class="subtitle"><?= $message ?></p>

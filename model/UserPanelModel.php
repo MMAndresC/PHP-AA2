@@ -5,6 +5,7 @@ use database\Database;
 require_once __DIR__ . "/../config/Database.php";
 require_once __DIR__ . "/../config/queries/db_queries_user.php";
 require_once  __DIR__ . "/../util/process_image.php";
+require_once __DIR__ . "/../util/log_error.php";
 
 class UserPanelModel
 {
@@ -25,6 +26,7 @@ class UserPanelModel
             }
             return false;
         }catch(PDOException $e){
+            logError($e->getMessage());
             return false;
         }
     }
@@ -102,6 +104,7 @@ class UserPanelModel
             return ['data' => $newData, 'success' => true];
 
         }catch (PDOException $e){
+            logError($e->getMessage());
             $errors['critical'] = 'Error en la base de datos';
             return ['errors' => $errors];
         }
@@ -134,6 +137,7 @@ class UserPanelModel
 
             return $result;
         } catch (PDOException $e) {
+            logError($e->getMessage());
             return 0;
         }
     }

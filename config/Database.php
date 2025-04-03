@@ -9,6 +9,7 @@ use seed\Seeder;
 
 require_once __DIR__ . "/db_connection.php";
 require_once __DIR__ . "/queries/db_queries.php";
+require_once __DIR__ . "/../util/log_error.php";
 
 class Database
 {
@@ -51,6 +52,7 @@ class Database
             $connection->exec(CREATE_TABLE_THREADS);
             $connection->exec(CREATE_TABLE_SUB_THREADS);
         }catch(PDOException|Exception $e){
+            logError($e->getMessage());
             throw new Exception("Error to create tables: " . $e->getMessage());
         }
     }
@@ -62,6 +64,7 @@ class Database
             $connection = self::connect();
             return Seeder::loadSeed($connection);
         } catch (PDOException|Exception $e) {
+            logError($e->getMessage());
             throw new Exception("Error loading seed: " . $e->getMessage());
         }
     }

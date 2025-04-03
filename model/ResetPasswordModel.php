@@ -4,6 +4,7 @@ use database\Database;
 
 require_once __DIR__ . "/../config/Database.php";
 require_once __DIR__ . "/../config/queries/db_queries_user.php";
+require_once __DIR__ . "/../util/log_error.php";
 
 class ResetPasswordModel
 {
@@ -33,6 +34,7 @@ class ResetPasswordModel
             return ["token" => $token];
 
         }catch (PDOException $e){
+            logError($e->getMessage());
             return ["error" => "No es posible realizar la operación. Inténtelo más tarde"];
         }
 
@@ -51,6 +53,7 @@ class ResetPasswordModel
             $stmt->execute([":password" => $hashed_password,":email" => $user['email']]);
             return "Contraseña actualizada";
         }catch (PDOException $e){
+            logError($e->getMessage());
             return "No es posible realizar la operación. Inténtelo más tarde";
         }
     }
