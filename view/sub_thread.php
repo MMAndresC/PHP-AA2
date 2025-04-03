@@ -54,6 +54,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
     <title>Foro</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
@@ -177,8 +178,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                         </div>
                         <?php if(isset($user) &&
                             (($user['email'] === $sub_thread['author'] && $thread_data['status'] != 'closed')||
-                                strtolower($user['role']) === 'moderator' ||
-                                strtolower($user['role']) === 'admin')){
+                                strtolower($user['role']) !== 'user')){
                             ?>
                             <div class="media-right">
                                 <div class="tags has-addons">

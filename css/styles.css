@@ -24,3 +24,8 @@
 .textarea-min-height {
     min-height: 15em !important;
 }
+
+.form-width {
+    width: 60% !important;
+    margin-left: 20% !important;
+}

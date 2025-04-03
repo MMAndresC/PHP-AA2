@@ -15,7 +15,6 @@ unset($_SESSION["errors"],$_SESSION["success"], $_SESSION["failed_delete"]);
 
 if(trim($data['image_name']) == '') $data['image_name'] = null;
 if(!$user){
-    unset($_SESSION["user"]);
     header("Location:login.php");
     exit();
 }
@@ -42,11 +41,11 @@ if(!$user){
 <header>
 <?php require_once __DIR__ . "/../components/nav_bar.php"; ?>
 </header>
-<main class="container">
+<main class="container mt-6">
     <form class="user-form box" action="../controller/UserPanelController.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="email" id="email" value="<?= $data['email'] ?>" readonly>
         <div class="is-flex-direction-row is-display-flex field is-align-items-center" id="container-image">
-            <div >
+            <div>
                 <figure class="image is-128x128 cursor-type" onclick="document.getElementById('image').click()">
                     <img class="is-rounded" id="previewImg"
                          src="<?= $data['image_name'] != null ? "../../uploads/" . $data['image_name'] : "../assets/images/no_image.jpg"; ?>"
@@ -56,57 +55,55 @@ if(!$user){
                 <input type="file" name="image" id="image" accept="image/*" class="is-display-none"/>
             </div>
 
-            <div class="ml-5">
+            <div class="ml-5" style="width: 100%;">
                 <label class="label" for="username">Nombre de usuario</label>
-                <div class="control has-icons-right">
+                <div class="control">
                     <input class="input <?= isset($errors['username']) ? 'is-danger' : ''?>"
                            type="text" placeholder="Nombre de usuario"
                            name="username" id="username" required
                            value="<?= $data['username'] ?>"
                     >
-                    <span class="icon is-small is-right">
-                        <i class="fas fa-check"></i>
-                    </span>
                 </div>
-                <p class="help <?= isset($errors['username']) ? 'is-danger' : 'is-hidden'?>"><?= $errors['username'] ?>></p>
+                <?php if (isset($errors['username'])){ ?>
+                    <p class="help is-danger"><?= $errors['username'] ?></p>
+                <?php } ?>
             </div>
         </div>
 
-        <div class="is-flex-direction-row is-display-flex field is-align-items-center">
-           <div>
+
+        <div class="is-flex-direction-row is-display-flex field is-align-items-center" >
+           <div style="width: 50%;">
                <label class="label" for="name">Nombre</label>
-               <div class="control has-icons-right">
+               <div class="control">
                    <input class="input <?= isset($errors['name']) ? 'is-danger' : ''?>"
                           type="text" placeholder="Nombre"
                           name="name" id="name" required
                           value="<?= $data['name'] ?>"
                    >
-                   <span class="icon is-small is-right">
-                    <i class="fas fa-check"></i>
-                </span>
                </div>
-               <p class="help <?= isset($errors['name']) ? 'is-danger' : 'is-hidden'?>"><?= $errors['name'] ?>></p>
+               <?php if (isset($errors['name'])){ ?>
+                   <p class="help is-danger"><?= $errors['name'] ?></p>
+               <?php } ?>
            </div>
-           <div class="ml-5">
+           <div class="ml-5" style="width: 50%;">
                <label class="label" for="surname">Apellidos</label>
-               <div class="control has-icons-right">
+               <div class="control">
                    <input class="input <?= isset($errors['surname']) ? 'is-danger' : ''?>"
                           type="text" placeholder="Apellidos"
                           name="surname" id="surname" required
                           value="<?= $data['surname'] ?>"
                    >
-                   <span class="icon is-small is-right">
-                    <i class="fas fa-check"></i>
-                </span>
                </div>
-               <p class="help <?= isset($errors['surname']) ? 'is-danger' : 'is-hidden'?>"><?= $errors['surname'] ?>></p>
+               <?php if (isset($errors['surname'])){ ?>
+                   <p class="help is-danger"><?= $errors['surname'] ?></p>
+               <?php } ?>
            </div>
         </div>
 
-        <div class="field">
+        <div class="field mt-4">
             <p class="help is-danger">*Solo para cambiar contraseña</p>
             <label class="label" for="password">Contraseña actual</label>
-            <p class="control has-icons-right has-icons-left">
+            <p class="control has-icons-left">
                 <input class="input <?= isset($errors['password']) ? 'is-danger' : ''?>"
                        type="password" placeholder="Contraseña actual"
                        name="password" id="password"
@@ -114,29 +111,30 @@ if(!$user){
                 <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
                 </span>
-                <span class="icon is-small is-right">
-                    <i class="fas fa-check"></i>
-                </span>
             </p>
-            <p class="help <?= isset($errors['password']) ? 'is-danger' : 'is-hidden'?>"><?= $errors['password'] ?>></p>
+            <?php if (isset($errors['password'])){ ?>
+                <p class="help is-danger"><?= $errors['password'] ?></p>
+            <?php } ?>
         </div>
 
-        <div class="field">
+        <div class="field mb-6">
             <label class="label" for="new_password">Nueva contraseña</label>
-            <div class="control has-icons-right">
+            <div class="control has-icons-left">
                 <input class="input <?= isset($errors['new_password']) ? 'is-danger' : ''?>"
                        type="password" placeholder="Nueva contraseña"
                         name="new_password" id="new_password"
                 >
-                <span class="icon is-small is-right">
-                    <i class="fas fa-check"></i>
+                <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
                 </span>
             </div>
-            <p class="help <?= isset($errors['new_password']) ? 'is-danger' : 'is-hidden'?>"><?= $errors['new_password'] ?></p>
+            <?php if (isset($errors['new_password'])){ ?>
+                <p class="help is-danger"><?= $errors['new_password'] ?></p>
+            <?php } ?>
         </div>
 
         <!-- Botones del formulario -->
-        <div class="field is-grouped">
+        <div class="field is-grouped is-justify-content-center">
             <div class="control">
                 <button type="button" class="button is-light is-warning js-modal-trigger" data-target="modal-edit">
                     Modificar

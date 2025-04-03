@@ -36,6 +36,9 @@ function validateValidDataAuth($errors, $params, $mode){
 
         if (strlen($params['username']) < $MIN_LEN)
             $errors['username'] = "El nombre de usuario debe tener al menos 3 caracteres";
+
+        if(!$params['use-terms'])
+            $errors['use-terms'] = "Tienes que aceptar los condiciones de uso para el registro";
     }
     return $errors;
 }

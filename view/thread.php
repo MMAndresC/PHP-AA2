@@ -235,7 +235,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                                 <p class="help is-danger"><?= $errors['edition'] ?></p>
                             <?php } ?>
 
-                            <div class="is-display-flex is-justify-content-space-around">
+                            <div class="is-display-flex is-justify-content-center">
                                 <button id="btn-edit-<?= $thread['id'] ?>"
                                         class="button tag is-small is-primary is-light"
                                         name="action-thread" value="edit-thread" >Guardar cambios
