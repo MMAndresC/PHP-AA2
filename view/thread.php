@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../config/config.php";
+require_once __DIR__ . "/../config/config_error.php";
 require_once __DIR__ . "/../controller/ThreadController.php";
 require_once __DIR__ . "/../controller/ThemeController.php";
 
@@ -104,6 +104,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                 </div>
             </article>
         <?php } ?>
+
         <!-- Paginación -->
         <nav class="pagination is-small" role="navigation" aria-label="pagination">
             <!-- Botones anterior/siguiente-->
@@ -182,7 +183,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                         <div class="level-item has-text-centered">
                             <div>
                                 <p class="heading">Creado por</p>
-                                <p class="subtitle is-5"><?= $thread['author'] ?></p>
+                                <p class="subtitle is-5"><?= $thread['author'] ?? 'Anónimo'?></p>
                             </div>
                         </div>
                         <div class="level-item has-text-centered">
@@ -196,7 +197,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                         <div class="level-item has-text-centered">
                             <div>
                                 <p class="heading">Último mensaje por</p>
-                                <p class="subtitle is-5"><?= $thread['updater'] ?></p>
+                                <p class="subtitle is-5"><?= $thread['updater'] ?? 'Anónimo' ?></p>
                             </div>
                         </div>
                     </section>
@@ -234,13 +235,13 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                                 <p class="help is-danger"><?= $errors['edition'] ?></p>
                             <?php } ?>
 
-                            <div class="is-display-flex is-justify-content-space-around">
+                            <div class="is-display-flex is-justify-content-center mt-3">
                                 <button id="btn-edit-<?= $thread['id'] ?>"
                                         class="button tag is-small is-primary is-light"
                                         name="action-thread" value="edit-thread" >Guardar cambios
                                 </button>
                                 <button type="button" id="btn-delete-<?= $thread['id'] ?>"
-                                        class="button tag is-small is-light is-danger js-modal-trigger"
+                                        class="button tag is-small is-light is-danger js-modal-trigger ml-3"
                                         data-target="modal-delete-<?=$thread['id']?>">
                                     Borrar el hilo completo
                                 </button>
@@ -316,6 +317,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
             </form>
         <?php } ?>
     </main>
+    <?php require_once __DIR__ . "/../components/footer.php"?>
 </body>
 </html>
 

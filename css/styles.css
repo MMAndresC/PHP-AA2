@@ -2,16 +2,6 @@
     cursor: pointer !important;
 }
 
-.themes-section {
-    width: 60% !important;
-    margin-left: 20% !important;
-}
-
-.themes-section figure {
-    max-height: 250px;
-    width: 100%;
-}
-
 .toast {
     position: fixed;
     bottom: 20px;
@@ -23,4 +13,9 @@
 
 .textarea-min-height {
     min-height: 15em !important;
+}
+
+.form-width {
+    width: 60% !important;
+    margin-left: 20% !important;
 }

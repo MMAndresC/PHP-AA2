@@ -4,6 +4,7 @@ use database\Database;
 
 require_once __DIR__ . "/../config/Database.php";
 require_once __DIR__ . "/../config/queries/db_queries_theme.php";
+require_once __DIR__ . "/../util/log_error.php";
 
 class ThemeModel
 {
@@ -21,6 +22,7 @@ class ThemeModel
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }catch (PDOException $e){
+            logError($e->getMessage());
             return [];
         }
     }
@@ -34,6 +36,7 @@ class ThemeModel
             if($theme) return $theme;
             return [];
         }catch (PDOException $e){
+            logError($e->getMessage());
             return [];
         }
     }

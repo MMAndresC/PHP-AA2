@@ -2,7 +2,13 @@
 
 require_once __DIR__ . "/../model/ResetPasswordModel.php";
 
-session_start();
+//Vaciar sesión
+require_once __DIR__ . "/../util/unset_session.php";
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $errors = array();
 $token = trim($_POST['token']) ?? '';
 $email = trim($_POST['email']) ?? '';
@@ -45,7 +51,7 @@ if(trim($token) == ''){
     header("Location: ../view/reset_password.php");
 }else{
     $_SESSION['message'] = $resetPasswordModel->resetPassword($token, $password);
-    header("Location: ../view/login.php");
+    header("Location: ../view/login.php?mode=login");
 }
 
 exit();

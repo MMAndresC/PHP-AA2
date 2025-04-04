@@ -19,6 +19,10 @@ if(isset($_SESSION["user"])){
    $initial = ucfirst(substr($_SESSION["user"]['username'], 0,1));
 }
 
+//En la vista de login y register mostrar una version más reducida del navBar
+//De la ruta del archivo en ejecución, basename extrae el nombre del fichero
+$current_page = basename($_SERVER['PHP_SELF']);
+
 //Para saber que theme está seleccionado, ya que no le llega el $_GET
 $id_selected = -1;
 $url = $_SERVER['REQUEST_URI'];
@@ -74,32 +78,32 @@ if($position !== false && str_contains($url, "id-theme=")){
                 </a>
             <?php } ?>
         </div>
-
-        <?php if($isLoggedIn){ ?>
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <div class="tag is-success has-radius-rounded is-medium"><?= $initial ?></div>
-                        <a class="button is-danger is-outlined is-small" href="../view/theme.php?mode=close">
-                            Cerrar Sesión
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <?php } else { ?>
+        <?php if($current_page !== 'login.php' && $current_page !== 'reset_password.php') {?>
+            <?php if($isLoggedIn){ ?>
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a class="button is-primary is-small" href="../view/login.php?mode=register">
-                                <strong>Registrarse</strong>
-                            </a>
-                            <a class="button is-light is-small" href="../view/login.php?mode=login">
-                                Iniciar sesión
+                            <div class="tag is-success has-radius-rounded is-medium"><?= $initial ?></div>
+                            <a class="button is-danger is-outlined is-small" href="../view/theme.php?mode=close">
+                                Cerrar Sesión
                             </a>
                         </div>
                     </div>
                 </div>
+                <?php } else { ?>
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                <a class="button is-primary is-small" href="../view/login.php?mode=register">
+                                    <strong>Registrarse</strong>
+                                </a>
+                                <a class="button is-light is-small" href="../view/login.php?mode=login">
+                                    Iniciar sesión
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+            <?php } ?>
         <?php } ?>
-
     </div>
 </nav>

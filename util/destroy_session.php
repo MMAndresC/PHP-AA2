@@ -5,12 +5,12 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Destruir todas las variables de sesión.
-$themes =  $_SESSION['themes'];
+$themes =  $_SESSION['themes'] ?? null;
 $_SESSION = array();
 //Si themes existe se deja porque la usa el navBar y es poco probable que cambie
 if(isset($themes)) $_SESSION['themes'] = $themes;
 
-// Si se desea destruir la sesión completamente, borrar también la cookie de sesión.
+// Borrar también la cookie de sesión.
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
     setcookie(session_name(), '', time() - 42000,
@@ -19,5 +19,5 @@ if (ini_get("session.use_cookies")) {
     );
 }
 
-// Finalmente, destruir la sesión.
+// Destruir la sesión
 session_destroy();
