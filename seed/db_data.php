@@ -30,22 +30,22 @@ const THEME_DATA = [
 ];
 
 const THREAD_DATA = [
-    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`) 
-     VALUES (1, 'Cual es la mejor tortilla de patata', 'active', 'gg@example.com');",
-    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`) 
-     VALUES (1, 'Mi receta de cocido', 'active', 'super_pro99@example.com');",
-    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`) 
-     VALUES (1, 'Los mejores macarrones', 'active', 'gg@example.com');",
-    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`) 
-     VALUES (1, 'Receta de flan', 'active', 'super_pro99@example.com');",
-    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`) 
-     VALUES (1, 'Arroz con leche. Mejores trucos', 'active', 'gg@example.com');",
-    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`) 
-     VALUES (1, 'Echarle guisantes a la paella', 'active', 'super_pro99@example.com');",
-     "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`) 
-     VALUES (4, 'La mejor manera de cocinar sushi', 'active', 'super_pro99@example.com');",
-    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`) 
-     VALUES (3, 'La mejor receta criolla', 'active', 'super_pro99@example.com');"
+    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`, `created_by`) 
+     VALUES (1, 'Cual es la mejor tortilla de patata', 'active', 'gg@example.com', 'admin@example.com');",
+    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`, `created_by`) 
+     VALUES (1, 'Mi receta de cocido', 'active', 'super_pro99@example.com', 'super_pro99@example.com');",
+    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`, `created_by`) 
+     VALUES (1, 'Los mejores macarrones', 'active', 'gg@example.com', 'gg@example.com');",
+    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`, `created_by`) 
+     VALUES (1, 'Receta de flan', 'active', 'super_pro99@example.com', 'super_pro99@example.com');",
+    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`, `created_by`) 
+     VALUES (1, 'Arroz con leche. Mejores trucos', 'active', 'gg@example.com', 'gg@example.com');",
+    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`, `created_by`) 
+     VALUES (1, 'Echarle guisantes a la paella', 'active', 'super_pro99@example.com', 'super_pro99@example.com');",
+     "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`, `created_by`) 
+     VALUES (4, 'La mejor manera de cocinar sushi', 'active', 'super_pro99@example.com', 'super_pro99@example.com');",
+    "INSERT INTO `thread` (`theme_id`, `title`, `status`, `last_updater`, `created_by`) 
+     VALUES (3, 'La mejor receta criolla', 'active', 'super_pro99@example.com', 'super_pro99@example.com');"
 ];
 
 const SUB_THREAD_DATA = [

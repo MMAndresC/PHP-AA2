@@ -39,9 +39,11 @@ const CREATE_TABLE_THREADS = "CREATE TABLE IF NOT EXISTS `thread` (
     `status` VARCHAR(20) NOT NULL ,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    `created_by` VARCHAR(50)  ,
     `last_updater` VARCHAR(50) ,
     FOREIGN KEY (`theme_id`) REFERENCES `theme`(`id`) ON DELETE CASCADE ON UPDATE CASCADE ,
-    FOREIGN KEY (`last_updater`) REFERENCES `user`(`email`) ON UPDATE CASCADE ,
+    FOREIGN KEY (`created_by`) REFERENCES `user`(`email`) ON DELETE SET NULL ON UPDATE CASCADE ,
+    FOREIGN KEY (`last_updater`) REFERENCES `user`(`email`) ON DELETE SET NULL ON UPDATE CASCADE ,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 ";
@@ -49,13 +51,13 @@ const CREATE_TABLE_THREADS = "CREATE TABLE IF NOT EXISTS `thread` (
 const CREATE_TABLE_SUB_THREADS = "CREATE TABLE IF NOT EXISTS `sub_thread` ( 
     `id` INT(11) NOT NULL AUTO_INCREMENT ,
     `thread_id` INT(11) NOT NULL ,
-    `author` VARCHAR(50) NOT NULL ,
+    `author` VARCHAR(50) ,
     `content` TEXT NOT NULL ,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     `main` BOOLEAN NOT NULL DEFAULT FALSE ,
     PRIMARY KEY (`id`) , 
-    FOREIGN KEY (`author`) REFERENCES `user`(`email`) ON UPDATE CASCADE ,
+    FOREIGN KEY (`author`) REFERENCES `user`(`email`) ON DELETE SET NULL ON UPDATE CASCADE ,
     FOREIGN KEY (`thread_id`) REFERENCES `thread`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB;
 ";
