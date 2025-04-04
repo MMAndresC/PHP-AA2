@@ -32,8 +32,10 @@ if (!file_exists($fatal_errors_log)) {
 function customErrorHandler($errno, $errstr, $errfile, $errline) {
     $logs_dir = __DIR__ . "/../logs/";
     $errors_log = $logs_dir . "php_error.log";
+    $date = date("Y-m-d H:i:s");
     // Guardar error en un log
-    error_log("Error [$errno]: $errstr en $errfile línea $errline", 3, $errors_log);
+    $message = "[$date] ERROR [$errno]: $errstr en $errfile línea $errline" . PHP_EOL;
+    error_log($message, 3, $errors_log);
 
     // Mostrar los mensajes
     if ($errno == E_WARNING || $errno == E_NOTICE || $errno == E_USER_WARNING) {
@@ -59,7 +61,9 @@ function fatalErrorHandler(): void
 
     if ($error && ($error['type'] === E_ERROR || $error['type'] === E_PARSE || $error['type'] === E_CORE_ERROR || $error['type'] === E_COMPILE_ERROR)) {
         // Guardar error en un log
-        error_log("Fatal Error: {$error['message']} en {$error['file']} línea {$error['line']}", 3, $fatal_errors_log);
+        $date = date("Y-m-d H:i:s");
+        $message = "[$date] FATAL ERROR: {$error['message']} en {$error['file']} línea {$error['line']}" . PHP_EOL;
+        error_log($message, 3, $fatal_errors_log);
 
         // Redirigir a una vista personalizada
         header("Location: ../view/error_fatal.php");

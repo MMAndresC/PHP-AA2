@@ -3,7 +3,7 @@
 use controller\DatabaseController;
 
 // Control de errores
-require_once __DIR__ . "/config/config.php";
+require_once __DIR__ . "/config/config_error.php";
 
 //Inicializar la base de datos
 require_once __DIR__ . "/controller/DatabaseController.php";
