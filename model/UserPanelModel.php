@@ -34,22 +34,24 @@ class UserPanelModel
     public function modifyUser($params): array
     {
         try{
-            $errors = array();
+            $response = ['data' => [], 'success' => false, 'errors' => []];
 
             //Buscar al usuario
             $stmt = $this->db->prepare(FIND_EMAIL_USER);
             $stmt->execute([":email" => $params['email']]);
             $data = $stmt->fetch(PDO::FETCH_ASSOC);
             if(!$data) {
-                $errors['critical'] = 'Email no encontrado en la base de datos';
-                return ['errors' => $errors];
+                $response['errors']['critical'] = 'Email no encontrado en la base de datos';
+                return $response;
             }
+
+            $response['data'] = $data;
 
             //En caso de que haya que cambiar contraseña, verificarla
             if(trim($params['new_password']) != ""){
                 if (!password_verify($params['password'], $data["password"])) {
-                    $errors['password'] = 'Password incorrecto';
-                    return ['errors' => $errors];
+                    $response['errors']['password'] = 'Password incorrecto';
+                    return $response;
                 }
             }
 
@@ -58,8 +60,8 @@ class UserPanelModel
             $stmt = $this->db->prepare(FIND_USERNAME_NOT_EMAIL_USER);
             $stmt->execute([":username" => $params['username'], ":email" => $params['email']]);
             if($stmt->fetch()){
-                $errors['username'] = 'Nombre de usuario ya existente';
-                return ['errors' => $errors];
+                $response['errors']['username'] = 'Nombre de usuario ya existente';
+                return $response;
             }
             //Preparar los datos para hacer el update diferenciando si han mandado cambio de password
             // Tratar la imagen
@@ -101,12 +103,14 @@ class UserPanelModel
                 "surname" => $params['surname'],
                 "image_name" => $image_name
             ];
-            return ['data' => $newData, 'success' => true];
+            $response['data'] = $newData;
+            $response["success"] = true;
+            return $response;
 
         }catch (PDOException $e){
             logError($e->getMessage());
-            $errors['critical'] = 'Error en la base de datos';
-            return ['errors' => $errors];
+            $response['errors']['critical'] = 'Error en la base de datos';
+            return $response;
         }
     }
 

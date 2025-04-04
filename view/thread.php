@@ -175,7 +175,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
             <article class="message">
                 <a href="sub_thread.php?pag=0&id-thread=<?= $thread['id'] ?>">
                     <div class="message-header">
-                        <p class="subtitle is-5"><?= ucfirst($thread['title']) ?></p>
+                        <p class="subtitle is-5"><?= ucfirst($thread['title'] ?? "") ?></p>
                     </div>
                 </a>
                 <div class="message-body">

@@ -53,7 +53,6 @@ function validateValidDataUser($errors, $params)
     $MAX_LEN = 30;
     $MAX_LEN_USERNAME = 15;
 
-    $password = $params['password'];
     $new_password = $params['new_password'];
     if(trim($new_password) != ""){
         // Validar la contraseña (mínimo 8 caracteres, un número y un carácter especial)
@@ -62,13 +61,13 @@ function validateValidDataUser($errors, $params)
         }
     }
 
-    if (strlen($params['name']) < $MIN_LEN && strlen($params['name']) > $MAX_LEN)
+    if (strlen($params['name']) < $MIN_LEN || strlen($params['name']) > $MAX_LEN)
         $errors['name'] = "El nombre debe tener al menos " . $MIN_LEN . " caracteres y máximo " . $MAX_LEN;
 
-    if (strlen($params['surname']) < $MIN_LEN && strlen($params['surname']) > $MAX_LEN)
+    if (strlen($params['surname']) < $MIN_LEN || strlen($params['surname']) > $MAX_LEN)
         $errors['surname'] = "El apellido debe tener al menos " . $MIN_LEN . " caracteres y máximo " . $MAX_LEN;
 
-    if (strlen($params['username']) < $MIN_LEN && strlen($params['username']) > $MAX_LEN_USERNAME)
+    if (strlen($params['username']) < $MIN_LEN || strlen($params['username']) > $MAX_LEN_USERNAME)
         $errors['username'] = "El nombre de usuario debe tener al menos " . $MIN_LEN . " caracteres y máximo " . $MAX_LEN_USERNAME;
 
     return $errors;

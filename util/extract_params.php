@@ -24,6 +24,7 @@ function extractParamsUser(): array
     $params["username"] = trim($_POST['username'] ?? '');
     $params["name"] = trim($_POST['name'] ?? '');
     $params["surname"] = trim($_POST['surname'] ?? '');
+    $params["image_name"] = trim($_POST['image_name'] ?? null);
     return $params;
 }
 

@@ -30,12 +30,20 @@ if (isset($_POST["action"])) {
         $errors = validateValidDataUser($errors, $data);
         if (empty($errors)) {
              $response = $userPanelModel->modifyUser($data);
+             $critical = $response["critical"] ?? null;
+             if(isset($critical)){
+                 require_once __DIR__ . "/../util/destroy_session.php";
+                 header("Location: ../index.php");
+                 exit();
+             }
              if(isset($response["errors"])) $errors = $response["errors"];
              if(isset($response["data"])) $data = $response["data"];
-             if(isset($response["success"])) $_SESSION["success"] = true;
+             if(isset($response["success"]) && $response["success"]) $_SESSION["success"] = true;
         }
+
         $_SESSION["data"] = $data;
         $_SESSION['errors'] = $errors;
+
     }else if($_POST["action"] === "delete"){
         $email_delete = $_POST["email_delete"] ?? null;
         // Si no coincide el mail que viene en el formulario con el guardado de la sesión se termina,
