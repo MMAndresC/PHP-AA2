@@ -3,7 +3,8 @@
 use database\Database;
 
 require_once __DIR__ . "/../config/Database.php";
-require_once  __DIR__ . "/../config/db_queries_thread.php";
+require_once __DIR__ . "/../config/queries/db_queries_thread.php";
+require_once __DIR__ . "/../util/log_error.php";
 class ThreadModel
 {
     private PDO $db;
@@ -28,6 +29,7 @@ class ThreadModel
             }
             return $response;
         }catch(PDOException $e){
+            logError($e->getMessage());
             return ["count" => 0, "threads" => []];
         }
     }
@@ -40,7 +42,8 @@ class ThreadModel
                 ":theme_id" => $thread["theme_id"],
                 ":title" => $thread["title"],
                 ":status" => $thread["status"],
-                ":last_updater" => $thread["last_updater"]
+                ":last_updater" => $thread["last_updater"],
+                "created_by" => $thread["last_updater"]
             ]);
             $success = $stmt->rowCount() > 0;
             if($success){
@@ -48,6 +51,7 @@ class ThreadModel
                 return $thread;
             }else return [];
         }catch(PDOException $e){
+            logError($e->getMessage());
             return [];
         }
     }
@@ -59,6 +63,7 @@ class ThreadModel
             $stmt->execute([":thread_id" => $thread_id]);
             return $stmt->rowCount();
         }catch(PDOException $e){
+            logError($e->getMessage());
             return 0;
         }
     }
@@ -94,19 +99,33 @@ class ThreadModel
             ]);
             return $stmt->rowCount() > 0;
         }catch (PDOException $e){
+            logError($e->getMessage());
             return false;
         }
     }
 
-    public function getTitle(int $thread_id): string{
+    public function getTitleStatus(int $thread_id): array
+    {
         try{
-            $stmt = $this->db->prepare(GET_TITLE);
+            $stmt = $this->db->prepare(GET_TITLE_STATUS);
             $stmt->execute([":thread_id" => $thread_id]);
             $thread = $stmt->fetch(PDO::FETCH_ASSOC);
-            if(!isset($thread)) return "";
-            return $thread["title"];
+            $title = $thread["title"] ?? '';
+            $status = $thread["status"] ?? 'active';
+            return ["title" => $title, "status" => $status];
         }catch (PDOException $e){
-            return "";
+            logError($e->getMessage());
+            return [];
+        }
+    }
+
+    public function deleteEmptyThreads():void
+    {
+        try{
+            $stmt = $this->db->prepare(DELETE_EMPTY_THREADS);
+            $stmt->execute();
+        }catch (PDOException $e){
+            logError($e->getMessage());
         }
     }
 }

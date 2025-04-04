@@ -42,14 +42,18 @@ if (isset($_POST["action"])) {
         // no dejamos que se borre un usuario que no haya iniciado sesión
         if($email === $email_delete) {
             $password_delete = $_POST["password_delete"] ?? null;
-            $deleteContent = $_POST["content_delete"] ?? false;
+            $delete_content = $_POST["content_delete"] ?? false;
             $response = 0;
             if($email_delete !== null && $password_delete !== null){
-                $response = $userPanelModel->deleteUser($email_delete, $password_delete, $deleteContent);
+                $response = $userPanelModel->deleteUser($email_delete, $password_delete, $delete_content);
             }
             if($response === 0){
                 $_SESSION["failed_delete"] = true;
             }else{
+                //Barrido para borrar los thread que se hayan quedado sin sub-thread
+                require_once __DIR__ . "/ThreadController.php";
+                ThreadController::deleteEmptyThreads();
+                //Borra la sesión
                 require_once __DIR__ . "/../util/destroy_session.php";
                 header("Location: ../view/theme.php");
                 exit();

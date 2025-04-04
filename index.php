@@ -2,15 +2,13 @@
 
 use controller\DatabaseController;
 
-require_once "controller/DatabaseController.php";
-require_once "controller/ThemeController.php";
+// Control de errores
+require_once __DIR__ . "/config/config_error.php";
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
+//Inicializar la base de datos
+require_once __DIR__ . "/controller/DatabaseController.php";
 $messages = (new DatabaseController())->dbConnect();
-$_SESSION["themes"] = ThemeController::getAllThemes();
+
 ?>
 
 <!DOCTYPE html>

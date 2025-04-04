@@ -3,7 +3,8 @@
 use database\Database;
 
 require_once __DIR__ . "/../config/Database.php";
-require_once  __DIR__ . "/../config/db_queries_sub_thread.php";
+require_once __DIR__ . "/../config/queries/db_queries_sub_thread.php";
+require_once __DIR__ . "/../util/log_error.php";
 
 class SubThreadModel
 {
@@ -30,6 +31,7 @@ class SubThreadModel
             }
             return $response;
         }catch(PDOException $e){
+            logError($e->getMessage());
             return ["count" => 0, "threads" => []];
         }
     }
@@ -45,6 +47,7 @@ class SubThreadModel
             ]);
             return $stmt->rowCount();
         }catch (PDOException $e){
+            logError($e->getMessage());
             return 0;
         }
     }
@@ -56,6 +59,7 @@ class SubThreadModel
             $stmt->execute([":sub_thread_id" => $sub_thread_id]);
             return $stmt->rowCount();
         }catch (PDOException $e){
+            logError($e->getMessage());
             return 0;
         }
     }
@@ -67,6 +71,7 @@ class SubThreadModel
             $stmt->execute([":thread_id" => $thread_id]);
             return $stmt->rowCount();
         }catch(PDOException $e){
+            logError($e->getMessage());
             return -1;
         }
     }
@@ -82,6 +87,7 @@ class SubThreadModel
             $stmt->execute([":sub_thread_id" => $sub_thread_id, ":content" => $content]);
             return $stmt->rowCount();
         }catch (PDOException $e){
+            logError($e->getMessage());
             return 0;
         }
     }

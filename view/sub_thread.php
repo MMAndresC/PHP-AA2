@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . "/../config/config_error.php";
 require_once __DIR__ . "/../controller/SubThreadController.php";
 require_once __DIR__ . "/../controller/ThreadController.php";
 
@@ -8,15 +9,15 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $thread_id = (int) $_GET['id-thread'] ?? null;
-//TODO llevar a una vista de error
 if ($thread_id === null) {
     header("Location: theme.php");
     exit();
 }
-$title = ThreadController::getTitle($thread_id);
-$bc_thread = ["thread_id" =>$thread_id, "title" => $title];
+$thread_data = ThreadController::getTitleStatus($thread_id);
+$bc_thread = ["thread_id" =>$thread_id, "title" => $thread_data['title']];
 $bc_theme = $_SESSION['breadcrumbs']['theme'];
 
+//Conseguir los sub thread
 $FORMAT_DATE = "h:iA - d M, Y ";
 $LIMIT = 5;
 $page = (int) $_GET['pag'] ?? 0;
@@ -25,9 +26,12 @@ $total_registers = (int) $response['count'] ?? 0;
 $last_page = ceil($total_registers / $LIMIT);
 $sub_threads = $response['sub_threads'] ?? [];
 
+// Usuario
 $user = $_SESSION['user'] ?? null;
 
+//Respuesta de la base de datos
 $errors = $_SESSION['errors'] ?? [];
+$error_edit = $errors['edited_content'] ?? null;
 $result = $_SESSION['result-sub-thread'] ?? false;
 $critical_error = $_SESSION['critical_error'] ?? false;
 
@@ -46,6 +50,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Foro</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
@@ -76,13 +81,15 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
 
     <main class="container">
         <!-- Toast cuando se haya editado el usuario, confirme que se ha hecho bien-->
-        <?php if($result || $critical_error){ ?>
+        <?php if($result || $critical_error || $error_edit){ ?>
             <article class="message <?= $result ? 'is-success' : 'is-warning'?> " id="toast">
                 <div class="message-header">
                     <?php if($result){ ?>
                         <p><?= $result ?></p>
+                    <?php } else if($critical_error){ ?>
+                        <p><?= $critical_error ?></p>
                     <?php } else { ?>
-                        <p><?= $critical_error ?>></p>
+                        <p><?= $error_edit ?></p>
                     <?php } ?>
                     <button class="delete" aria-label="delete" onclick="document.getElementById('toast').remove()"></button>
                 </div>
@@ -167,12 +174,12 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                             </figure>
                         </div>
                         <div class="media-content">
-                            <p class="title is-4"><?= $sub_thread['username'] ?? 'Unknown' ?></p>
+                            <p class="title is-4"><?= $sub_thread['username'] ?? 'Anónimo' ?></p>
                             <p class="subtitle is-6"><?= ucfirst($sub_thread['role']) ?? 'User' ?></p>
                         </div>
-                        <?php if(isset($user) &&  ($user['email'] === $sub_thread['author'] ||
-                                strtolower($user['role']) === 'moderator' ||
-                                strtolower($user['role']) === 'admin')){
+                        <?php if(isset($user) &&
+                            (($user['email'] === $sub_thread['author'] && $thread_data['status'] != 'closed')||
+                                strtolower($user['role']) !== 'user')){
                             ?>
                             <div class="media-right">
                                 <div class="tags has-addons">
@@ -232,7 +239,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                         <button class="delete" aria-label="close"></button>
                     </header>
                     <section class="modal-card-body">
-                        <p class="is-danger">El mensaje se borrará, esta acción no se puede deshacer.</p>
+                        <p class="has-text-danger">El mensaje se borrará, esta acción no se puede deshacer.</p>
                     </section>
                     <footer class="modal-card-foot">
                         <div class="buttons">
@@ -246,7 +253,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
             </div>
         <?php } ?>
 
-        <?php if($user !== null){ ?>
+        <?php if($user !== null && $thread_data['status'] != 'closed'){ ?>
             <!-- Formulario para un nuevo thread-->
             <form action="../controller/SubThreadController.php" method="post" class="user-form box" id="new-sub-thread">
                 <input class="input" type="hidden" name="author" id="author" value="<?= $user['email'] ?>">
@@ -273,5 +280,6 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
             </form>
         <?php } ?>
     </main>
+    <?php require_once __DIR__ . "/../components/footer.php"?>
 </body>
 </html>

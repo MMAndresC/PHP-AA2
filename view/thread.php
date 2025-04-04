@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . "/../config/config_error.php";
 require_once __DIR__ . "/../controller/ThreadController.php";
 require_once __DIR__ . "/../controller/ThemeController.php";
 
@@ -15,6 +16,7 @@ if ($theme_id === null) {
     exit();
 }
 
+//Paginación de los threads
 $FORMAT_DATE = "d/m/Y H:i";
 $LIMIT = 5;
 $page = (int) $_GET['pag'] ?? 0;
@@ -22,13 +24,26 @@ $response = ThreadController::getThreadsByTheme($theme_id, $LIMIT, $page * $LIMI
 $total_registers = (int) $response['count'] ?? 0;
 $last_page = ceil($total_registers / $LIMIT);
 $threads = $response['threads'] ?? [];
-$theme_actual = ThemeController::getTheme($theme_id);
+
+//Conseguir los datos del tema actual
+$themes = $_SESSION['themes'] ?? [];
+if(!empty($themes)) {
+    $themes_find = array_filter($themes, function ($theme) use ($theme_id) {
+        return $theme['id'] === $theme_id;
+    });
+    $theme_actual = reset($themes_find); //Devuelve el primer elemento de la array o falso si no hay nada
+}
+if(empty($themes) || !$theme_actual) {
+    $theme_actual = ThemeController::getTheme($theme_id);
+}
 $name_theme = $theme_actual['name'] ?? '';
 $_SESSION['theme_id'] = $theme_id;
 
+//Breadcrumb
 $bc_theme = ["theme_id" => $theme_id, "name" => $name_theme];
 $_SESSION['breadcrumbs']['theme'] = $bc_theme;
 
+//Respuesta de la base de datos
 $errors = $_SESSION['errors'] ?? [];
 $error_critical = $_SESSION['error_critical'] ?? false;
 $result = $_SESSION['result-thread'] ?? false;
@@ -37,12 +52,17 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
 
 ?>
 
+<script type="text/javascript">
+    <?php require_once "../scripts/userPanelScript.js"?>
+</script>
+
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Foro</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="icon" href="../assets/images/logo/favicon.png" type="image/x-icon"/>
@@ -78,12 +98,13 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                     <?php if($result){ ?>
                         <p><?= $result ?></p>
                     <?php } else { ?>
-                        <p><?= $error_critical ?>></p>
+                        <p><?= $error_critical ?></p>
                     <?php } ?>
                     <button class="delete" aria-label="delete" onclick="document.getElementById('toast').remove()"></button>
                 </div>
             </article>
         <?php } ?>
+
         <!-- Paginación -->
         <nav class="pagination is-small" role="navigation" aria-label="pagination">
             <!-- Botones anterior/siguiente-->
@@ -162,7 +183,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                         <div class="level-item has-text-centered">
                             <div>
                                 <p class="heading">Creado por</p>
-                                <p class="subtitle is-5"><?= $thread['author'] ?></p>
+                                <p class="subtitle is-5"><?= $thread['author'] ?? 'Anónimo'?></p>
                             </div>
                         </div>
                         <div class="level-item has-text-centered">
@@ -176,11 +197,86 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                         <div class="level-item has-text-centered">
                             <div>
                                 <p class="heading">Último mensaje por</p>
-                                <p class="subtitle is-5"><?= $thread['updater'] ?></p>
+                                <p class="subtitle is-5"><?= $thread['updater'] ?? 'Anónimo' ?></p>
                             </div>
                         </div>
                     </section>
                 </div>
+                <!-- Formulario de edición del admin-->
+                <?php if(isset($user) && $user['role'] === 'admin'){ ?>
+                <section class="hero is-warning is-small">
+                    <div class="hero-body">
+                        <form class="user-form is-display-flex is-flex-direction-column"
+                              action="../controller/ThreadController.php" method="post"
+                        >
+                            <div class="field is-horizontal is-justify-content-space-around">
+                                <input type="hidden" id="edit-thread-id-<?= $thread['id'] ?>" name="thread_id" value="<?= $thread['id'] ?>">
+                                <input type="hidden" id="edit-old-theme-<?= $thread['id'] ?>" name="old-theme-id" value="<?= $theme_id ?>">
+                                <input id="edit-title-<?= $thread['id'] ?>" class="input is-info"
+                                       style="max-width: 50%;"
+                                       value="<?= $thread['title'] ?>" name="title"
+                                >
+                                <label class="checkbox">
+                                    <input id="edit-status-<?= $thread['id'] ?>" type="checkbox"
+                                           name="is-closed" <?= $thread['status'] == 'closed' ? 'checked' : '' ?>/>
+                                    Cerrar el hilo
+                                </label>
+                                <div class="select is-info is-small">
+                                    <select name="theme_id" id="edit-theme-<?= $thread['id'] ?>">
+                                        <?php foreach ($themes as $theme){ ?>
+                                            <option value="<?= $theme['id']?>"
+                                                <?= $theme['id'] == $theme_id ? 'selected' : ''?>
+                                            ><?= $theme['name']?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <?php if(isset($errors['edition'])){ ?>
+                                <p class="help is-danger"><?= $errors['edition'] ?></p>
+                            <?php } ?>
+
+                            <div class="is-display-flex is-justify-content-center mt-3">
+                                <button id="btn-edit-<?= $thread['id'] ?>"
+                                        class="button tag is-small is-primary is-light"
+                                        name="action-thread" value="edit-thread" >Guardar cambios
+                                </button>
+                                <button type="button" id="btn-delete-<?= $thread['id'] ?>"
+                                        class="button tag is-small is-light is-danger js-modal-trigger ml-3"
+                                        data-target="modal-delete-<?=$thread['id']?>">
+                                    Borrar el hilo completo
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Borrar el thread por el admin-->
+                    <div id="modal-delete-<?= $thread['id']?>" class="modal">
+                        <div class="modal-background"></div>
+                        <div class="modal-card">
+                            <header class="modal-card-head">
+                                <p class="modal-card-title">Borrar el hilo</p>
+                                <button class="delete" aria-label="close"></button>
+                            </header>
+                            <form class="user-form" method="post" action="../controller/ThreadController.php">
+                                <section class="modal-card-body">
+                                    <input type="hidden" name="email" value="<?= $user['email'] ?>">
+                                    <input type="hidden" name="thread_id" value="<?= $thread['id'] ?>">
+                                    <input type="hidden" name="page" value="<?= $page ?>">
+                                    <input type="hidden" name="theme_id" value="<?= $theme_id ?>">
+                                    <label class="has-text-danger" for="password">Confirmar contraseña</label>
+                                    <input class="input is-small" type="password" name="password" id="password" placeholder="Contraseña" />
+                                </section>
+                                <footer class="modal-card-foot">
+                                    <div class="buttons">
+                                        <button type="submit" class="tag is-danger" name="action-thread" value="delete-thread">Borrar</button>
+                                        <button type="button" class="button tag is-link">Cancelar</button>
+                                    </div>
+                                </footer>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                <?php } ?>
             </article>
         <?php } ?>
 
@@ -221,6 +317,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
             </form>
         <?php } ?>
     </main>
+    <?php require_once __DIR__ . "/../components/footer.php"?>
 </body>
 </html>
 

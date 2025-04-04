@@ -10,6 +10,7 @@ function extractParamsAuth($mode): array
         $params["username"] = trim($_POST['username'] ?? '');
         $params["name"] = trim($_POST['name'] ?? '');
         $params["surname"] = trim($_POST['surname'] ?? '');
+        $params["use-terms"] = $_POST['use-terms'] ?? false;
     }
     return $params;
 }
@@ -35,6 +36,7 @@ function extractParamsThread(): array
     $params["title"] = trim($_POST['title'] ?? '');
     $params["status"] = 'active';
     $params["last_updater"] = trim($_POST['author'] ?? '');
+    $params["created_by"] = trim($_POST['author'] ?? '');
     //Propios de sub-thread, solo faltara thread_id
     $params["author"] = trim($_POST['author'] ?? '');
     $params["content"] = trim($_POST['content'] ?? '');
@@ -48,5 +50,28 @@ function extractParamsSubThread(): array
     $params["thread_id"] = trim($_POST['thread_id'] ?? '');
     $params["author"] = trim($_POST['author'] ?? '');
     $params["content"] = trim($_POST['content'] ?? '');
+    return $params;
+}
+
+function extractParamsEditThread(): array
+{
+    $params = array();
+    $params["thread_id"] = trim($_POST['thread_id'] ?? null);
+    $params["old_theme_id"] = trim($_POST['old-theme-id'] ?? null);
+     $is_closed= trim($_POST['is-closed'] ?? false);
+     if($is_closed) $params["status"] = "closed";
+    $params["title"]= trim($_POST['title'] ?? '');
+    $params["theme_id"]= trim($_POST['theme_id'] ?? null);
+    return $params;
+}
+
+function extractParamsDeleteThread(): array
+{
+    $params = array();
+    $params["thread_id"] = trim($_POST['thread_id'] ?? null);
+    $params["email"] = trim($_POST['email'] ?? '');
+    $params['page'] = trim($_POST['page'] ?? 0);
+    $params["password"] = trim($_POST['password'] ?? '');
+    $params['theme_id'] = trim($_POST['theme_id'] ?? '');
     return $params;
 }

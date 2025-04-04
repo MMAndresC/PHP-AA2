@@ -3,8 +3,9 @@
 use database\Database;
 
 require_once __DIR__ . "/../config/Database.php";
-require_once  __DIR__ . "/../config/db_queries_user.php";
+require_once __DIR__ . "/../config/queries/db_queries_user.php";
 require_once  __DIR__ . "/../util/process_image.php";
+require_once __DIR__ . "/../util/log_error.php";
 
 class UserPanelModel
 {
@@ -25,6 +26,7 @@ class UserPanelModel
             }
             return false;
         }catch(PDOException $e){
+            logError($e->getMessage());
             return false;
         }
     }
@@ -102,36 +104,47 @@ class UserPanelModel
             return ['data' => $newData, 'success' => true];
 
         }catch (PDOException $e){
+            logError($e->getMessage());
             $errors['critical'] = 'Error en la base de datos';
             return ['errors' => $errors];
         }
     }
 
-    public function deleteUser($email, $password, $deleteContent): int
+    public function deleteUser($email, $password, $delete_content): int
+    {
+        try{
+            $is_correct_password = $this->isCorrectPassword($email, $password);
+            if(!$is_correct_password) return 0;
+            // Si el delete_content es true, eliminamos los sub thread, hay que hacerlo antes porque si no
+            //tal como está hecha la tabla si borra primero user pondrá el atributo author a null
+            //por lo que la consulta de borrado posterior por author fallara
+            if ($delete_content) {
+                $stmt = $this->db->prepare(DELETE_SUB_THREAD_USER);
+                $stmt->execute([":email" => $email]);
+            }
+            $stmt = $this->db->prepare(DELETE_USER);
+            $stmt->execute([":email" => $email]);
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            logError($e->getMessage());
+            return 0;
+        }
+    }
+
+    public function isCorrectPassword($email, $password): bool
     {
         try{
             $stmt = $this->db->prepare(FIND_EMAIL_USER);
             $stmt->execute([":email" => $email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$user || !password_verify($password, $user["password"])) {
-                // Si no existe el usuario o la contraseña es incorrecta, no hacemos nada
-                return 0;
-            }
-
-            $stmt = $this->db->prepare(DELETE_USER);
-            $stmt->execute([":email" => $email]);
-            $result = $stmt->rowCount();
-
-            // Si se eliminó el usuario y deleteContent es true, eliminamos su contenido asociado
-            if ($result > 0 && $deleteContent) {
-                $stmt = $this->db->prepare(DELETE_SUB_THREAD_USER);
-                $stmt->execute([":email" => $email]);
-            }
-
-            return $result;
-        } catch (PDOException $e) {
-            return 0;
+            $t = password_verify($password, $user["password"]);
+            $u = isset($user);
+            //Si existe que devuelva true, por eso está invertida la condición, porque si cumple eso es la opción mala
+            return !(!$user || !password_verify($password, $user["password"]));
+        }catch (PDOException $e){
+            logError($e->getMessage());
+            return false;
         }
+
     }
 }
