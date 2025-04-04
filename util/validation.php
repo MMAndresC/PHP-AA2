@@ -73,7 +73,7 @@ function validateValidDataUser($errors, $params)
 function validateValidThread($errors, $params) {
     $MIN_LEN_TITLE = 5;
     $MAX_LEN_TITLE = 50;
-    $MIN_LEN_CONTENT = 10;
+    $MIN_LEN_CONTENT = 5;
 
     if(trim($params['author']) == '' || trim($params['last_updater']) == '')
         $errors['author'] = "Autor desconocido";
@@ -88,7 +88,7 @@ function validateValidThread($errors, $params) {
 }
 
 function validateValidSubThread($errors, $params) {
-    $MIN_LEN_CONTENT = 10;
+    $MIN_LEN_CONTENT = 5;
 
     if(trim($params['author']) == '')
         $errors['author'] = "Autor desconocido";

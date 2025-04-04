@@ -106,6 +106,7 @@ switch ($action) {
     }
 
     case "edit-sub-thread": {
+        $MIN_LEN_CONTENT = 5;
         $content = $_POST["edited-content"] ?? null;
         $sub_thread_id = isset($_POST["sub_thread_id"]) ? (int)$_POST["sub_thread_id"] : null;
         $thread_id = isset($_POST["thread_id"]) ? (int)$_POST["thread_id"] : null;
@@ -115,7 +116,8 @@ switch ($action) {
             header("Location: ../view/sub_thread.php?pag=0&id-thread=" . $thread_id );
             exit();
         }
-        if(strlen(trim($content)) < 10)  $errors['edited_content'] = "El mensaje tiene que tener mas de 10 caracteres";
+        if(strlen(trim($content)) < $MIN_LEN_CONTENT)
+            $errors['edited_content'] = "El mensaje tiene que tener más de " . $MIN_LEN_CONTENT . " caracteres";
         if(!empty($errors)) {
             $_SESSION["errors"] = $errors;
         }else{

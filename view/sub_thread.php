@@ -203,7 +203,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                                           class="textarea"> <?= $sub_thread['content'] ?? ''?>
                                 </textarea>
                             </div>
-                            <?php if(isset($errors['content'])){ ?>
+                            <?php if(isset($errors['edited-content'])){ ?>
                                 <p class="help is-danger"><?= $errors['edited_content'] ?></p>
                             <?php } ?>
                             <div class="field is-grouped">
