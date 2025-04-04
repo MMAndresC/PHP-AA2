@@ -117,7 +117,7 @@ switch ($action) {
             exit();
         }
         if(strlen(trim($content)) < $MIN_LEN_CONTENT)
-            $errors['edited_content'] = "El mensaje tiene que tener más de " . $MIN_LEN_CONTENT . " caracteres";
+            $errors['edited_content'] = "El nuevo mensaje editado tiene que tener más de " . $MIN_LEN_CONTENT . " caracteres";
         if(!empty($errors)) {
             $_SESSION["errors"] = $errors;
         }else{

@@ -31,6 +31,7 @@ $user = $_SESSION['user'] ?? null;
 
 //Respuesta de la base de datos
 $errors = $_SESSION['errors'] ?? [];
+$error_edit = $errors['edited_content'] ?? null;
 $result = $_SESSION['result-sub-thread'] ?? false;
 $critical_error = $_SESSION['critical_error'] ?? false;
 
@@ -80,13 +81,15 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
 
     <main class="container">
         <!-- Toast cuando se haya editado el usuario, confirme que se ha hecho bien-->
-        <?php if($result || $critical_error){ ?>
+        <?php if($result || $critical_error || $error_edit){ ?>
             <article class="message <?= $result ? 'is-success' : 'is-warning'?> " id="toast">
                 <div class="message-header">
                     <?php if($result){ ?>
                         <p><?= $result ?></p>
+                    <?php } else if($critical_error){ ?>
+                        <p><?= $critical_error ?></p>
                     <?php } else { ?>
-                        <p><?= $critical_error ?>></p>
+                        <p><?= $error_edit ?></p>
                     <?php } ?>
                     <button class="delete" aria-label="delete" onclick="document.getElementById('toast').remove()"></button>
                 </div>
@@ -203,9 +206,6 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                                           class="textarea"> <?= $sub_thread['content'] ?? ''?>
                                 </textarea>
                             </div>
-                            <?php if(isset($errors['edited-content'])){ ?>
-                                <p class="help is-danger"><?= $errors['edited_content'] ?></p>
-                            <?php } ?>
                             <div class="field is-grouped">
                                 <div class="control">
                                     <button id="btn-edit-<?= $sub_thread['id'] ?>"

@@ -234,13 +234,13 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                                 <p class="help is-danger"><?= $errors['edition'] ?></p>
                             <?php } ?>
 
-                            <div class="is-display-flex is-justify-content-center">
+                            <div class="is-display-flex is-justify-content-center mt-3">
                                 <button id="btn-edit-<?= $thread['id'] ?>"
                                         class="button tag is-small is-primary is-light"
                                         name="action-thread" value="edit-thread" >Guardar cambios
                                 </button>
                                 <button type="button" id="btn-delete-<?= $thread['id'] ?>"
-                                        class="button tag is-small is-light is-danger js-modal-trigger"
+                                        class="button tag is-small is-light is-danger js-modal-trigger ml-3"
                                         data-target="modal-delete-<?=$thread['id']?>">
                                     Borrar el hilo completo
                                 </button>
