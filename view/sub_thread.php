@@ -62,14 +62,14 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
     </header>
 
     <div class="container mb-6 mt-6">
-        <p class="has-text-centered is-size-2 mt-2"><?= ucfirst($bc_thread['title'])?></p>
+        <p class="has-text-centered is-size-2 mt-2"><?= ucfirst($bc_thread['title'] ?? "")?></p>
 
         <!-- Breadcrumb-->
         <nav class="breadcrumb has-succeeds-separator" aria-label="breadcrumbs">
             <ul>
                 <li><a href="theme.php">Temas</a></li>
-                <li><a href="thread.php?pag=0&id-theme=<?= $bc_theme['theme_id']?>"><?= ucfirst($bc_theme['name'])?></a></li>
-                <li class="is-active"><a aria-current="page"><?= ucfirst($bc_thread['title']) ?></a></li>
+                <li><a href="thread.php?pag=0&id-theme=<?= $bc_theme['theme_id']?>"><?= ucfirst($bc_theme['name'] ?? "")?></a></li>
+                <li class="is-active"><a aria-current="page"><?= ucfirst($bc_thread['title']  ?? "") ?></a></li>
             </ul>
         </nav>
 
@@ -175,7 +175,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                         </div>
                         <div class="media-content">
                             <p class="title is-4"><?= $sub_thread['username'] ?? 'Anónimo' ?></p>
-                            <p class="subtitle is-6"><?= ucfirst($sub_thread['role']) ?? 'User' ?></p>
+                            <p class="subtitle is-6"><?= ucfirst($sub_thread['role'] ??'User') ?></p>
                         </div>
                         <?php if(isset($user) &&
                             (($user['email'] === $sub_thread['author'] && $thread_data['status'] != 'closed')||

@@ -39,6 +39,7 @@ if(!$user){
 <header>
 <?php require_once __DIR__ . "/../components/nav_bar.php"; ?>
 </header>
+
 <main class="container mt-6">
 
     <!-- Toast cuando se haya editado el usuario, confirme que se ha hecho bien-->
