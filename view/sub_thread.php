@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../config/config.php";
+require_once __DIR__ . "/../config/config_error.php";
 require_once __DIR__ . "/../controller/SubThreadController.php";
 require_once __DIR__ . "/../controller/ThreadController.php";
 
@@ -174,7 +174,7 @@ unset($_SESSION['errors'],$_SESSION['result-sub-thread'], $_SESSION['critical_er
                             </figure>
                         </div>
                         <div class="media-content">
-                            <p class="title is-4"><?= $sub_thread['username'] ?? 'Unknown' ?></p>
+                            <p class="title is-4"><?= $sub_thread['username'] ?? 'Anónimo' ?></p>
                             <p class="subtitle is-6"><?= ucfirst($sub_thread['role']) ?? 'User' ?></p>
                         </div>
                         <?php if(isset($user) &&

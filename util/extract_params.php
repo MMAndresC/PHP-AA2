@@ -36,6 +36,7 @@ function extractParamsThread(): array
     $params["title"] = trim($_POST['title'] ?? '');
     $params["status"] = 'active';
     $params["last_updater"] = trim($_POST['author'] ?? '');
+    $params["created_by"] = trim($_POST['author'] ?? '');
     //Propios de sub-thread, solo faltara thread_id
     $params["author"] = trim($_POST['author'] ?? '');
     $params["content"] = trim($_POST['content'] ?? '');

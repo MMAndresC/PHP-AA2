@@ -12,6 +12,7 @@ function validateNotEmpty($params): array
 }
 
 function validateValidDataAuth($errors, $params, $mode){
+    $LOCKED_USERNAME = 'anónimo';
     $MIN_LEN = 3;
     // Validar email
     if (!filter_var($params['email'], FILTER_VALIDATE_EMAIL)) {
@@ -36,6 +37,9 @@ function validateValidDataAuth($errors, $params, $mode){
 
         if (strlen($params['username']) < $MIN_LEN)
             $errors['username'] = "El nombre de usuario debe tener al menos 3 caracteres";
+        if(strtolower($params['username']) === $LOCKED_USERNAME){
+            $errors['username'] = "Nombre de usuario no disponible";
+        }
 
         if(!$params['use-terms'])
             $errors['use-terms'] = "Tienes que aceptar los condiciones de uso para el registro";

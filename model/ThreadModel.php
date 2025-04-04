@@ -42,7 +42,8 @@ class ThreadModel
                 ":theme_id" => $thread["theme_id"],
                 ":title" => $thread["title"],
                 ":status" => $thread["status"],
-                ":last_updater" => $thread["last_updater"]
+                ":last_updater" => $thread["last_updater"],
+                "created_by" => $thread["last_updater"]
             ]);
             $success = $stmt->rowCount() > 0;
             if($success){

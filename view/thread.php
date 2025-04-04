@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../config/config.php";
+require_once __DIR__ . "/../config/config_error.php";
 require_once __DIR__ . "/../controller/ThreadController.php";
 require_once __DIR__ . "/../controller/ThemeController.php";
 
@@ -104,6 +104,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                 </div>
             </article>
         <?php } ?>
+
         <!-- Paginación -->
         <nav class="pagination is-small" role="navigation" aria-label="pagination">
             <!-- Botones anterior/siguiente-->
@@ -182,7 +183,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                         <div class="level-item has-text-centered">
                             <div>
                                 <p class="heading">Creado por</p>
-                                <p class="subtitle is-5"><?= $thread['author'] ?></p>
+                                <p class="subtitle is-5"><?= $thread['created_by'] ?? 'Anónimo'?></p>
                             </div>
                         </div>
                         <div class="level-item has-text-centered">
@@ -196,7 +197,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                         <div class="level-item has-text-centered">
                             <div>
                                 <p class="heading">Último mensaje por</p>
-                                <p class="subtitle is-5"><?= $thread['updater'] ?></p>
+                                <p class="subtitle is-5"><?= $thread['updater'] ?? 'Anónimo' ?></p>
                             </div>
                         </div>
                     </section>

@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../config/config.php";
+require_once __DIR__ . "/../config/config_error.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -13,7 +13,6 @@ $success = $_SESSION["success"] ?? false;
 $failed_delete = $_SESSION["failed_delete"] ?? false;
 unset($_SESSION["errors"],$_SESSION["success"], $_SESSION["failed_delete"]);
 
-if(trim($data['image_name']) == '') $data['image_name'] = null;
 if(!$user){
     header("Location:login.php");
     exit();
@@ -41,12 +40,28 @@ if(!$user){
 <?php require_once __DIR__ . "/../components/nav_bar.php"; ?>
 </header>
 <main class="container mt-6">
+
+    <!-- Toast cuando se haya editado el usuario, confirme que se ha hecho bien-->
+    <?php if($success || $failed_delete){ ?>
+        <article class="message <?= $success ? 'is-success' : 'is-warning'?> " id="toast">
+            <div class="message-header">
+                <?php if($success){ ?>
+                    <p>Datos modificados con éxito</p>
+                <?php } else { ?>
+                    <p>No se ha podido borrar la cuenta, email o password no correctos</p>
+                <?php } ?>
+                <button class="delete" aria-label="delete" onclick="document.getElementById('toast').remove()"></button>
+            </div>
+        </article>
+    <?php } ?>
+
     <form class="user-form box" action="../controller/UserPanelController.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="email" id="email" value="<?= $data['email'] ?>" readonly>
         <div class="is-flex-direction-row is-display-flex field is-align-items-center" id="container-image">
             <div>
                 <figure class="image is-128x128 cursor-type" onclick="document.getElementById('image').click()">
-                    <img class="is-rounded" id="previewImg"
+                    <img class="is-rounded wid" id="previewImg"
+                         style="max-width: 100%; max-height: 100%; object-fit: contain;"
                          src="<?= $data['image_name'] != null ? "../../uploads/" . $data['image_name'] : "../assets/images/no_image.jpg"; ?>"
                          alt="avatar"
                     />
@@ -177,7 +192,7 @@ if(!$user){
             </header>
             <section class="modal-card-body">
                 <p>¿Borrar la cuenta de usuario?</p>
-                <p class="is-danger">Está acción no se puede deshacer </p>
+                <p class="is-danger" style="color: darkred;">Está acción no se puede deshacer </p>
             </section>
             <section class="box">
                 <span>Confirmar datos</span>
@@ -188,7 +203,7 @@ if(!$user){
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label" for="password_delete">Email</label>
+                    <label class="label" for="password_delete">Contraseña</label>
                     <div class="control">
                         <input class="input" type="password" name="password_delete" id="password_delete" placeholder="Contraseña">
                     </div>
@@ -209,20 +224,6 @@ if(!$user){
             </footer>
         </form>
     </div>
-
-    <!-- Toast cuando se haya editado el usuario, confirme que se ha hecho bien-->
-    <?php if($success || $failed_delete){ ?>
-    <article class="message <?= $success ? 'is-success' : 'is-warning'?> " id="toast">
-        <div class="message-header">
-            <?php if($success){ ?>
-                <p>Datos modificados con éxito</p>
-            <?php } else { ?>
-                <p>No se ha podido borrar la cuenta, email o password no correctos</p>
-            <?php } ?>
-            <button class="delete" aria-label="delete" onclick="document.getElementById('toast').remove()"></button>
-        </div>
-    </article>
-    <?php } ?>
 </main>
 <?php require_once __DIR__ . "/../components/footer.php"?>
 
