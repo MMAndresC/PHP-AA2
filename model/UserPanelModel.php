@@ -115,16 +115,16 @@ class UserPanelModel
         try{
             $is_correct_password = $this->isCorrectPassword($email, $password);
             if(!$is_correct_password) return 0;
-            $stmt = $this->db->prepare(DELETE_USER);
-            $stmt->execute([":email" => $email]);
-            $result = $stmt->rowCount();
-            // Si se eliminó el usuario y deleteContent es true, eliminamos su contenido asociado
-            if ($result > 0 && $delete_content) {
+            // Si el delete_content es true, eliminamos los sub thread, hay que hacerlo antes porque si no
+            //tal como está hecha la tabla si borra primero user pondrá el atributo author a null
+            //por lo que la consulta de borrado posterior por author fallara
+            if ($delete_content) {
                 $stmt = $this->db->prepare(DELETE_SUB_THREAD_USER);
                 $stmt->execute([":email" => $email]);
             }
-
-            return $result;
+            $stmt = $this->db->prepare(DELETE_USER);
+            $stmt->execute([":email" => $email]);
+            return $stmt->rowCount();
         } catch (PDOException $e) {
             logError($e->getMessage());
             return 0;

@@ -118,4 +118,14 @@ class ThreadModel
             return [];
         }
     }
+
+    public function deleteEmptyThreads():void
+    {
+        try{
+            $stmt = $this->db->prepare(DELETE_EMPTY_THREADS);
+            $stmt->execute();
+        }catch (PDOException $e){
+            logError($e->getMessage());
+        }
+    }
 }

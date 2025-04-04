@@ -50,9 +50,13 @@ if (isset($_POST["action"])) {
             if($response === 0){
                 $_SESSION["failed_delete"] = true;
             }else{
-               /* require_once __DIR__ . "/../util/destroy_session.php";
+                //Barrido para borrar los thread que se hayan quedado sin sub-thread
+                require_once __DIR__ . "/ThreadController.php";
+                ThreadController::deleteEmptyThreads();
+                //Borra la sesión
+                require_once __DIR__ . "/../util/destroy_session.php";
                 header("Location: ../view/theme.php");
-                exit();*/
+                exit();
             }
         }else  $_SESSION["failed_delete"] = true;
     }

@@ -183,7 +183,7 @@ unset($_SESSION['errors'], $_SESSION['error_critical'], $_SESSION['result-thread
                         <div class="level-item has-text-centered">
                             <div>
                                 <p class="heading">Creado por</p>
-                                <p class="subtitle is-5"><?= $thread['created_by'] ?? 'Anónimo'?></p>
+                                <p class="subtitle is-5"><?= $thread['author'] ?? 'Anónimo'?></p>
                             </div>
                         </div>
                         <div class="level-item has-text-centered">

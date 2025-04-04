@@ -35,6 +35,12 @@ class ThreadController
         $threadModel = new ThreadModel();
         return $threadModel->getTitleStatus($thread_id);
     }
+
+    public static function deleteEmptyThreads(): void
+    {
+        $threadModel = new ThreadModel();
+        $threadModel->deleteEmptyThreads();
+    }
 }
 
 
